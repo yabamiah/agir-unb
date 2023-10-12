@@ -22,4 +22,13 @@ Para o desenvolvimento da automatização do processo anteriormente descrito, ir
 
 ## Coordenadores do projeto
 
+| Membro | Email | 
+|:------:|:------:|
+| Fátima de Souza | ffreire@unb.br |
+
 ## Equipe
+
+| Membro | Email | GitLab |
+|:------:|:-----:|:------:|
+| Mateus S. Santana | | @Mateus-SS |
+|Vinícius M. Martins| viniciusmendes1019@gmail.com | @yabamiah1 |
