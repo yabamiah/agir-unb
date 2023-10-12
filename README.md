@@ -18,6 +18,8 @@ Para o desenvolvimento da automatização do processo anteriormente descrito, ir
 
 ## Arquitetura
 
+![agir modelagem](./assets/agir-modelagem.png)
+
 ## Coordenadores do projeto
 
 ## Equipe
