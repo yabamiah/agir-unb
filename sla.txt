@@ -1,0 +1,12 @@
+# Como usar o AGIR
+- Passar o documento
+- Gerar pdf com os resultados sem gerar o dashboard
+- Gerar pdf e dashboard
+- Gerar só o dashboard
+
+flags:
+doc --file <pdf da licitação a ser analisada>
+gen --pdf <true> ou <false> --dash <true> <false>
+
+padrão é scanear o site que está no código e gerar o dashboard.
+
