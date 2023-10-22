@@ -11,23 +11,23 @@ class Licitacao:
     Classe para representar um banco de dados sobre as informações das licitações coletadas
 
     Atributos:
-    - n_licitacao (list): Lista de números de licitação.
-    - modalidade (list): Lista de modalidades de licitação.
-    - situacao (list): Lista de situações das licitações.
-    - orgao (list): Lista de órgãos responsáveis pelas licitações.
-    - tipo (list): Lista de tipos de licitação.
-    - titulo (list): Lista de títulos das licitações.
-    - edital_url (list): Lista de URLs dos editais.
+    - n_licitacao (str): Número de licitação.
+    - modalidade (str): Modalidade de licitação.
+    - situacao (str): Situação da licitação.
+    - orgao (str): Órgão responsável pela licitação.
+    - tipo (str): Tipo de licitação.
+    - titulo (str): Título da licitação.
+    - edital_url (str): URL do edital.
     """
 
     def __init__(self):
-        n_licitacao = [] 
-        modalidade = []  
-        situacao = []   
-        orgao = []
-        tipo = []
-        titulo = []
-        edital_url = []
+        self.n_licitacao = ""
+        self.modalidade= ""  
+        self.situacao= ""   
+        self.orgao= ""
+        self.tipo= ""
+        self.titulo= ""
+        self.edital_url= ""
 
 class Lara:
     """
@@ -38,7 +38,7 @@ class Lara:
     - url (str): URL da página de licitações.
     - header (dict): Cabeçalho para evitar detecção como um script.
     - total (int): Total de alguma métrica não especificada.
-    - licitacao (Licitacao): Instância da classe Licitacao.
+    - licitacoes (list): Lista de instâncias da classe Licitacao.
 
     Métodos:
     - __init__(self, args: str): Inicializa uma instância da classe Lara.
@@ -71,7 +71,7 @@ class Lara:
     url = "https://www.transparencia.df.gov.br/#/licitacoes-contratos/licitacoes"
     header = {'user-agent' : 'Mozilla/5.0'} # Header para a página não identificar que é um script
     total = 0
-    licitacao = None
+    licitacao = []
 
     def __init__(self, args: str):
         print("Bem-vindo ao sistema AGIR!")
