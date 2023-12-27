@@ -1,0 +1,47 @@
+Bem-vindo ao sistema AGIR!
+
+            NOME:
+                [34mAGIR - Automação para uma Governança Inteligente e Responsável[0m
+
+            USO:
+                agir [global options] command [command options] [arguments...]
+
+            VERSÃO:
+                [34m0.0.1[0m
+            
+            COMANDOS:
+                [34mlara, l[0m           Ativa o bot Lara que irá raspar as informações públicas do GDF acerca dos planos de integridade
+                [34mdani, d[0m           Ativa o bot Dani que irá gerar o dashboard com a partir dos parâmetros de qualidade
+                [34mreadpdf, r[0m        Ativa o bot Lara que irá ler as informações do pdf
+                [34mdatadisplay, dd[0m   Exibir dados coletados em planilha
+                [34mhelp, h[0m           Exibe uma lista de comandos
+
+            OPÇÕES GLOBAIS:
+                --help, -h          Exibe ajuda
+                --version, -v       Imprime a versão
+          
+Digite aqui: Scrape pdf data
+5
+Bem-vindo ao sistema AGIR!
+
+            NOME:
+                [34mAGIR - Automação para uma Governança Inteligente e Responsável[0m
+
+            USO:
+                agir [global options] command [command options] [arguments...]
+
+            VERSÃO:
+                [34m0.0.1[0m
+            
+            COMANDOS:
+                [34mlara, l[0m           Ativa o bot Lara que irá raspar as informações públicas do GDF acerca dos planos de integridade
+                [34mdani, d[0m           Ativa o bot Dani que irá gerar o dashboard com a partir dos parâmetros de qualidade
+                [34mreadpdf, r[0m        Ativa o bot Lara que irá ler as informações do pdf
+                [34mdatadisplay, dd[0m   Exibir dados coletados em planilha
+                [34mhelp, h[0m           Exibe uma lista de comandos
+
+            OPÇÕES GLOBAIS:
+                --help, -h          Exibe ajuda
+                --version, -v       Imprime a versão
+          
+Digite aqui: 

@@ -1,12 +1,19 @@
-# LARA - Levantador Automático de Recursos Administrativos
-#
+##############################################################
+## LARA - Levantador Automático de Recursos Administrativos ##
+##############################################################
 
 import pandas as pd
+
 from bs4 import BeautifulSoup
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-# import requests
-import matplotlib
+
+import tabula
+
+import os
+import math
+
 from colorama import Fore, Style
 
 class Empresa:
@@ -51,6 +58,12 @@ class Lara:
     - trigger_dani(self): Ativa o bot Dani.
     """
 
+    url = "https://www.cg.df.gov.br/programa-de-integridade/"
+    pdf_path = "lara/docs/Empresas_Programa_Integridade_2023_05.10.2023.pdf"
+    header = {'user-agent' : 'Mozilla/5.0'}
+    total = 0
+    empresas = []
+    args = ""
     message = f"""
             NOME:
                 {Fore.BLUE}AGIR - Automação para uma Governança Inteligente e Responsável{Style.RESET_ALL}
@@ -62,22 +75,18 @@ class Lara:
                 {Fore.BLUE}0.0.1{Style.RESET_ALL}
             
             COMANDOS:
-                {Fore.BLUE}lara, l{Style.RESET_ALL}          Ativa o bot Lara que irá raspar as informações públicas do GDF acerca das licitações
-                {Fore.BLUE}dani, d{Style.RESET_ALL}             Ativa o bot Dani que irá gerar o dashboard com a partir dos argumentos de qualidade
-                {Fore.BLUE}datadisplay, dd{Style.RESET_ALL}     Exibir dados coletados em planilha
-                {Fore.BLUE}help, h{Style.RESET_ALL}             Exibe uma lista de comandos
+                {Fore.BLUE}lara, l{Style.RESET_ALL}           Ativa o bot Lara que irá raspar as informações públicas do GDF acerca dos planos de integridade
+                {Fore.BLUE}dani, d{Style.RESET_ALL}           Ativa o bot Dani que irá gerar o dashboard com a partir dos parâmetros de qualidade
+                {Fore.BLUE}readpdf, r{Style.RESET_ALL}        Ativa o bot Lara que irá ler as informações do pdf
+                {Fore.BLUE}datadisplay, dd{Style.RESET_ALL}   Exibir dados coletados em planilha
+                {Fore.BLUE}help, h{Style.RESET_ALL}           Exibe uma lista de comandos
+                {Fore.BLUE}quit, q{Style.RESET_ALL}           Sair do AGIR
 
             OPÇÕES GLOBAIS:
                 --help, -h          Exibe ajuda
                 --version, -v       Imprime a versão
           """
-    url = "https://www.cg.df.gov.br/programa-de-integridade/"
-    pdf = ""
-    header = {'user-agent' : 'Mozilla/5.0'} # Header para a página não identificar que é um script
-    total = 0
-    empresas = []
-    args = ""
-
+    
     def __init__(self):
         print("Bem-vindo ao sistema AGIR!")
         print(self.message)
@@ -87,22 +96,52 @@ class Lara:
     def __help__(self):
         print(self.message)
 
+    def __quit__(self):
+        os._exit(0)
+
     def execute_commands(self, command: str):
         commands = {
             'lara': self.scrape_data, 'l': self.scrape_data,
+            'readpdf': self.scrape_pdf_data, 'r': self.scrape_pdf_data,
             'datadisplay': self.display_data, 'dd': self.display_data,
             'dani': self.trigger_dani, 'd': self.trigger_dani,
-            'help': self.__help__, 'h': self.__help__
+            'help': self.__help__, 'h': self.__help__,
+            'quit': self.__quit__, 'q': self.__quit__
         }
 
         if command in commands:
             commands[command]()
         else:
             print("Comando não reconhecido.")
-            commands[help]()
+            commands['help']()
 
     def scrape_pdf_data(self):
-        print("Scraoe pdf data")
+        print("Scrape pdf data")
+
+        # Gerando o arquivo .csv   
+        data_frama_path = "lara/docs/Empresas_Programa_Integridade_2023_05.10.2023.csv"
+        if not os.path.exists(data_frama_path):
+            tabula.convert_into(self.pdf_path, data_frama_path, output_format="csv", pages="all")
+        else:
+            print("The file already exists")
+
+        data_frame = pd.read_csv(data_frama_path)
+        data_frame = data_frame.fillna('0')
+
+        qtd_rows = len(data_frame.index)
+
+        empresas_data_frame_list = []
+        for i in range(qtd_rows):
+            empresas_data_frame_list.append(data_frame.loc[[i], ['Cadastro de Empresas que adotam Programa de Integridade']]) 
+
+        empresas_list = []
+        for i in range(len(empresas_data_frame_list)):
+            formata_nome = (str(empresas_data_frame_list[i]))
+            formata_nome = formata_nome.split("\n")[1]
+            formata_nome = formata_nome.split(maxsplit=1)[1].strip()
+            if formata_nome != '0':
+                empresas_list.append(formata_nome)
+                print(formata_nome)
 
     def scrape_data(self):
         print("Scrape data")
@@ -110,7 +149,7 @@ class Lara:
         browser_driver.get(self.url)
         soup = BeautifulSoup(browser_driver.page_source, 'html.parser')
 
-        # <-----------------> Procurando o botão de pesquisa <----------------->
+        # <-----------------> Procurando o botão de pesquisa <-----------------> #
         search_button = browser_driver.find_element(By.XPATH, "/html/body/main/section[2]/div/div[1]/form/div[8]/input")
         search_button.click()
 
