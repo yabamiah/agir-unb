@@ -101,7 +101,7 @@ class Lara:
 
     def execute_commands(self, command: str):
         commands = {
-            'lara': self.scrape_data, 'l': self.scrape_data,
+            'lara': self.scrape_web_data, 'l': self.scrape_web_data,
             'readpdf': self.scrape_pdf_data, 'r': self.scrape_pdf_data,
             'datadisplay': self.display_data, 'dd': self.display_data,
             'dani': self.trigger_dani, 'd': self.trigger_dani,
@@ -116,9 +116,6 @@ class Lara:
             commands['help']()
 
     def scrape_pdf_data(self):
-        print("Scrape pdf data")
-
-        # Gerando o arquivo .csv   
         data_frama_path = "lara/docs/Empresas_Programa_Integridade_2023_05.10.2023.csv"
         if not os.path.exists(data_frama_path):
             tabula.convert_into(self.pdf_path, data_frama_path, output_format="csv", pages="all")
@@ -135,15 +132,17 @@ class Lara:
             empresas_data_frame_list.append(data_frame.loc[[i], ['Cadastro de Empresas que adotam Programa de Integridade']]) 
 
         empresas_list = []
-        for i in range(len(empresas_data_frame_list)):
+        for i in range(1, len(empresas_data_frame_list)):
             formata_nome = (str(empresas_data_frame_list[i]))
             formata_nome = formata_nome.split("\n")[1]
             formata_nome = formata_nome.split(maxsplit=1)[1].strip()
             if formata_nome != '0':
                 empresas_list.append(formata_nome)
-                print(formata_nome)
 
-    def scrape_data(self):
+        print("Os nomes das empresas foram extraidos...")
+        self.scrape_web_data(empresas_list)
+
+    def scrape_web_data(self, lista_empresas: list):
         print("Scrape data")
         browser_driver = webdriver.Firefox()
         browser_driver.get(self.url)
