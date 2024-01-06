@@ -168,6 +168,7 @@ class Lara:
 
     def scrape_web_data(self, lista_empresas: list):
 
+        empresa_dict = {}
         for i, empresa in enumerate(lista_empresas, start=1):
             payload = empresa + " código de conduta ética e integridade"
         
@@ -179,24 +180,27 @@ class Lara:
             soup = BeautifulSoup(source.text, 'html.parser')
 
             print(f"# Empresa {i}: {empresa}")
+            links = []
+            empresa_format = empresa.lower()
             i += 1
+
             for info in soup.find_all('a', attrs={"data-jsarwt": "1"}):
                 title_link = info.get_text('|').replace("|", " ", 1).split("|")[0].lower()
-                empresa = empresa.lower()
-                # print(empresa)
 
-                if empresa in title_link  and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
+                if empresa_format in title_link  and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
                     print(f"- Found the URL: {info['href']}\n- Title: {title_link}")
-                elif (empresa.split(" ")[0] in title_link and empresa.split(" ")[1] in title_link) and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
+                    links.append(info['href'])
+                elif (empresa_format.split(" ")[0] in title_link and empresa_format.split(" ")[1] in title_link) and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
                     print(f"- Found the URL: {info['href']}\n- Title: {title_link}")
+                    links.append(info['href'])
+                
+                empresa_dict[empresa] = links
             print("---------------------------------")
-
+            
+        print(empresa_dict)
         exit(0)
     def data_to_excel(self):
         print("Data to excel")
-
-    def display_data(self):
-        print("Display data")
 
     def trigger_dani(self):
         print("Trigger dani")
