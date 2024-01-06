@@ -6,35 +6,29 @@ import pandas as pd
 
 from bs4 import BeautifulSoup
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+import requests
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.common.keys import Keys
 
 import tabula
 
 import os
-import math
 
 from colorama import Fore, Style
 
 class Empresa:
     """
-    Classe para representar um banco de dados sobre as informações da Empresa coletada
+    Classe para representar um objeto de dados sobre as informações da Empresa coletada
 
     Atributos:
     - nome_empresa (str): Nome da Empresa.
-    - orgao_contratante (str): Nome do Órgao Contratante.
-    - orgao (str): Órgão responsável pela licitação.
-    - cnpj (str): Valor do CNPJ da empresa.
-    - data_prog (str): Data de Apresentação do Programa.
-    - data_aval (str): Data da avaliação
+    - orgao_contratante (str): Nome do Órgao Contratante..
     """
 
     def __init__(self):
         self.nome_empresa = ""
         self.orgao_contratante = ""  
-        self.cnpj = ""
-        self.data_prog = ""
-        self.data_aval = ""
 
 class Lara:
     """
@@ -58,9 +52,10 @@ class Lara:
     - trigger_dani(self): Ativa o bot Dani.
     """
 
-    url = "https://www.cg.df.gov.br/programa-de-integridade/"
+    url = "https://google.com/search?q="
     pdf_path = "lara/docs/Empresas_Programa_Integridade_2023_05.10.2023.pdf"
-    header = {'user-agent' : 'Mozilla/5.0'}
+    header = {'user-agent' :
+              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'}
     total = 0
     empresas = []
     args = ""
@@ -114,78 +109,89 @@ class Lara:
         else:
             print("Comando não reconhecido.")
             commands['help']()
-
+    
     def scrape_pdf_data(self):
-        data_frama_path = "lara/docs/Empresas_Programa_Integridade_2023_05.10.2023.csv"
-        if not os.path.exists(data_frama_path):
-            tabula.convert_into(self.pdf_path, data_frama_path, output_format="csv", pages="all")
+        
+        data_frame_path = "lara/docs/Empresas_Programa_Integridade_2023_05.10.2023.csv"
+        if not os.path.exists(data_frame_path):
+            tabula.convert_into(self.pdf_path, data_frame_path, output_format="csv", pages="all", lattice=True, stream=True)
+
+            # Retirando a primeira linha do .csv que quebrava o arquivo
+            with open(data_frame_path, 'r') as file:
+                rows = file.readlines()
+
+            rows = rows[1:]
+
+            with open(data_frame_path, 'w') as file:
+                file.writelines(rows)
         else:
-            print("The file already exists")
+            print("O arquivo já existe")
 
-        data_frame = pd.read_csv(data_frama_path)
+        data_frame = pd.read_csv(data_frame_path)
         data_frame = data_frame.fillna('0')
-
         qtd_rows = len(data_frame.index)
+
+        ################### Extraindo empresas ###################
 
         empresas_data_frame_list = []
         for i in range(qtd_rows):
-            empresas_data_frame_list.append(data_frame.loc[[i], ['Cadastro de Empresas que adotam Programa de Integridade']]) 
+            empresas_data_frame_list.append(data_frame.loc[[i], ['EMPRESA']]) 
 
         empresas_list = []
-        for i in range(1, len(empresas_data_frame_list)):
-            formata_nome = (str(empresas_data_frame_list[i]))
-            formata_nome = formata_nome.split("\n")[1]
-            formata_nome = formata_nome.split(maxsplit=1)[1].strip()
-            if formata_nome != '0':
-                empresas_list.append(formata_nome)
+        for i in range(len(empresas_data_frame_list)):
+            format_name = (str(empresas_data_frame_list[i]))
+            format_name = format_name.split("\n")[1]
+            format_name = format_name.split(maxsplit=1)[1].strip()
+            format_name = format_name.replace("LTDA", "").replace("S/A", "").replace("S.A", "").replace(r"\n", " ")
+            if format_name == "EMPRESA": continue
+            if format_name not in empresas_list:
+                empresas_list.append(format_name)
 
-        print("Os nomes das empresas foram extraidos...")
+        ################### Extraindo orgãos contratantes ###################
+
+        orgaos_data_frame_list = []
+        for i in range(qtd_rows):
+            orgaos_data_frame_list.append(data_frame.loc[[i], ['ÓRGÃO CONTRATANTE']])
+        
+        orgaos_list = []
+        for i in range(len(orgaos_data_frame_list)):
+            format_name = (str(orgaos_data_frame_list[i]))
+            format_name = format_name.split("\n")[1]
+            format_name = format_name.split(maxsplit=1)[1].strip()
+            format_name = format_name.replace("LTDA", "").replace("S/A", "").replace("S.A", "").replace(r"\n", " ")
+            if format_name not in orgaos_list:
+                orgaos_list.append(format_name)
+
+        print("As informações do PDF foram extraídas com sucesso...")
+
         self.scrape_web_data(empresas_list)
 
     def scrape_web_data(self, lista_empresas: list):
-        print("Scrape data")
-        browser_driver = webdriver.Firefox()
-        browser_driver.get(self.url)
-        soup = BeautifulSoup(browser_driver.page_source, 'html.parser')
 
-        # <-----------------> Procurando o botão de pesquisa <-----------------> #
-        search_button = browser_driver.find_element(By.XPATH, "/html/body/main/section[2]/div/div[1]/form/div[8]/input")
-        search_button.click()
-
-        # <-----------------> Iterando pelas tabela de licitações para coletar a quantidade de licitações que há <----------------->
-        rows_qtd = 0
-        bidding_table = browser_driver.find_element(By.ID, 'etable')
-        for row in bidding_table.find_elements(By.CSS_SELECTOR, 'tr'):
-            rows_qtd = rows_qtd + 1
+        for i, empresa in enumerate(lista_empresas, start=1):
+            payload = empresa + " código de conduta ética e integridade"
         
-        # <-----------------> Criando uma lista para mepear as licitações em andamento <----------------->
-        rows_list = list((range(rows_qtd)))
-        print(rows_qtd)
-        for i in range(rows_qtd):
-            rows_list[i] = 0
+            try:
+                source = requests.get(self.url + payload, headers=self.header)
+            except requests.exceptions.HTTPError as err:
+                raise SystemExit(err)
+    
+            soup = BeautifulSoup(source.text, 'html.parser')
 
-        # <-----------------> Mapeando a lista <----------------->
-        count = 0
-        for row in bidding_table.find_elements(By.CSS_SELECTOR, 'tr'):
-            count = count + 1
-            for cell in row.find_elements(By.TAG_NAME, 'TD'):
-                if (cell.find_elements(By.CLASS_NAME, "icon-hammer2")):
-                    span_elements = cell.find_elements(By.CLASS_NAME, "icon-hammer2")
-                    for span in span_elements:
-                        if (not span.get_attribute("disabled")):
-                            rows_list[count-1] = 1
+            print(f"# Empresa {i}: {empresa}")
+            i += 1
+            for info in soup.find_all('a', attrs={"data-jsarwt": "1"}):
+                title_link = info.get_text('|').replace("|", " ", 1).split("|")[0].lower()
+                empresa = empresa.lower()
+                # print(empresa)
 
-        print(rows_list)
+                if empresa in title_link  and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
+                    print(f"- Found the URL: {info['href']}\n- Title: {title_link}")
+                elif (empresa.split(" ")[0] in title_link and empresa.split(" ")[1] in title_link) and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
+                    print(f"- Found the URL: {info['href']}\n- Title: {title_link}")
+            print("---------------------------------")
 
-        links = []
-        count = 0
-        for row in bidding_table.find_elements(By.CSS_SELECTOR, 'tr'):
-            count = count + 1
-            for cell in row.find_elements(By.TAG_NAME, 'TD'):
-                if (rows_list[count-1] == 1):
-                    print(cell.find_elements(By.XPATH, "/html/body/main/section[2]/div/div[2]/div/div/div/table/tbody/tr[8]/td[1]/a"))
-        
-
+        exit(0)
     def data_to_excel(self):
         print("Data to excel")
 
