@@ -17,17 +17,17 @@ import os
 
 from colorama import Fore, Style
 
-class Empresa:
+class company:
     """
-    Classe para representar um objeto de dados sobre as informações da Empresa coletada
+    Classe para representar um objeto de dados sobre as informações da company coletada
 
     Atributos:
-    - nome_empresa (str): Nome da Empresa.
+    - nome_company (str): Nome da company.
     - orgao_contratante (str): Nome do Órgao Contratante..
     """
 
     def __init__(self):
-        self.nome_empresa = ""
+        self.nome_company = ""
         self.orgao_contratante = ""  
 
 class Lara:
@@ -54,17 +54,16 @@ class Lara:
 
     url = "https://google.com/search?q="
     pdf_path = "lara/docs/Empresas_Programa_Integridade_2023_05.10.2023.pdf"
-    header = {'user-agent' :
-              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'}
+    header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'}
     total = 0
-    empresas = []
+    companys = []
     args = ""
     message = f"""
             NOME:
                 {Fore.BLUE}AGIR - Automação para uma Governança Inteligente e Responsável{Style.RESET_ALL}
 
             USO:
-                agir [global options] command [command options] [arguments...]
+                agir [comando]
 
             VERSÃO:
                 {Fore.BLUE}0.0.1{Style.RESET_ALL}
@@ -78,15 +77,15 @@ class Lara:
                 {Fore.BLUE}quit, q{Style.RESET_ALL}           Sair do AGIR
 
             OPÇÕES GLOBAIS:
-                --help, -h          Exibe ajuda
-                --version, -v       Imprime a versão
+                help, h          Exibe comandos
+                version, v       Imprime a versão
           """
     
     def __init__(self):
         print("Bem-vindo ao sistema AGIR!")
         print(self.message)
         self.args = input("Digite aqui: ") 
-        self.execute_commands(self.args)
+        self.execute_commands()
     
     def __help__(self):
         print(self.message)
@@ -94,18 +93,22 @@ class Lara:
     def __quit__(self):
         os._exit(0)
 
-    def execute_commands(self, command: str):
+    def __version__(self):
+        print(f"{Fore.BLUE}0.0.1{Style.RESET_ALL}")
+
+    def execute_commands(self):
         commands = {
             'lara': self.scrape_web_data, 'l': self.scrape_web_data,
             'readpdf': self.scrape_pdf_data, 'r': self.scrape_pdf_data,
             'datadisplay': self.display_data, 'dd': self.display_data,
             'dani': self.trigger_dani, 'd': self.trigger_dani,
             'help': self.__help__, 'h': self.__help__,
-            'quit': self.__quit__, 'q': self.__quit__
+            'quit': self.__quit__, 'q': self.__quit__,
+            'version': self.__version__, 'v':self.__version__
         }
 
-        if command in commands:
-            commands[command]()
+        if self.args in commands:
+            commands[self.args]()
         else:
             print("Comando não reconhecido.")
             commands['help']()
@@ -131,21 +134,21 @@ class Lara:
         data_frame = data_frame.fillna('0')
         qtd_rows = len(data_frame.index)
 
-        ################### Extraindo empresas ###################
+        ################### Extraindo companys ###################
 
-        empresas_data_frame_list = []
+        companys_data_frame_list = []
         for i in range(qtd_rows):
-            empresas_data_frame_list.append(data_frame.loc[[i], ['EMPRESA']]) 
+            companys_data_frame_list.append(data_frame.loc[[i], ['EMPRESA']]) 
 
-        empresas_list = []
-        for i in range(len(empresas_data_frame_list)):
-            format_name = (str(empresas_data_frame_list[i]))
+        for i in range(len(companys_data_frame_list)):
+            format_name = (str(companys_data_frame_list[i]))
             format_name = format_name.split("\n")[1]
             format_name = format_name.split(maxsplit=1)[1].strip()
             format_name = format_name.replace("LTDA", "").replace("S/A", "").replace("S.A", "").replace(r"\n", " ")
-            if format_name == "EMPRESA": continue
-            if format_name not in empresas_list:
-                empresas_list.append(format_name)
+            if format_name == "EMPRESA": 
+                continue
+            if format_name not in self.companys:
+                self.companys.append(format_name)
 
         ################### Extraindo orgãos contratantes ###################
 
@@ -164,13 +167,13 @@ class Lara:
 
         print("As informações do PDF foram extraídas com sucesso...")
 
-        self.scrape_web_data(empresas_list)
+        self.scrape_web_data()
 
-    def scrape_web_data(self, lista_empresas: list):
+    def scrape_web_data(self):
 
-        empresa_dict = {}
-        for i, empresa in enumerate(lista_empresas, start=1):
-            payload = empresa + " código de conduta ética e integridade"
+        company_dict = {}
+        for i, company in enumerate(self.companys, start=1):
+            payload = company + " código de conduta ética e integridade"
         
             try:
                 source = requests.get(self.url + payload, headers=self.header)
@@ -178,29 +181,62 @@ class Lara:
                 raise SystemExit(err)
     
             soup = BeautifulSoup(source.text, 'html.parser')
-
-            print(f"# Empresa {i}: {empresa}")
+            print(f"# Empresa {i}: {company}")
             links = []
-            empresa_format = empresa.lower()
+            company_format = company.lower()
             i += 1
-
-            for info in soup.find_all('a', attrs={"data-jsarwt": "1"}):
+            print(soup.prettify())
+            for info in soup.find_all('a', attrs={"data-ved": "2ahUKEwjVmqieqsyDAxUxD7kGHTWtAzYQFnoECAkQAw"}):
                 title_link = info.get_text('|').replace("|", " ", 1).split("|")[0].lower()
-
-                if empresa_format in title_link  and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
+                print(f"assss")
+                if company_format in title_link  and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
                     print(f"- Found the URL: {info['href']}\n- Title: {title_link}")
                     links.append(info['href'])
-                elif (empresa_format.split(" ")[0] in title_link and empresa_format.split(" ")[1] in title_link) and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
+                elif (company_format.split(" ")[0] in title_link and company_format.split(" ")[1] in title_link) and ("ética" in title_link or "compliance" in title_link or "integridade" in title_link):
                     print(f"- Found the URL: {info['href']}\n- Title: {title_link}")
                     links.append(info['href'])
                 
-                empresa_dict[empresa] = links
-            print("---------------------------------")
-            
-        print(empresa_dict)
-        exit(0)
+                company_dict[company] = links
+
+                if not company_dict[f'{company}']:
+                    del company_dict[f'{company}']
+
+        print(company_dict)
+        self.donwload_company_compliance(company_dict)
+
+    def donwload_company_compliance(self, companys_links: dict):
+        # Se a company tiver só um link, trabalha com este
+        # Senão, dar preferência para links com .pdf
+        for company, links in companys_links.items():
+            if len(links) == 1:
+                source = requests.get(links[0], headers=self.header, stream=True)
+                download_files_by_url(company=company, link=links[0], source=source)             
+            else:
+                for i, link in enumerate(links):
+                    source = requests.get(link, headers=self.header, stream=True)
+                    download_files_by_url(company=company+str(i), link=link, source=source)
+
+    def display_data(self):
+        print("Display data")
+
     def data_to_excel(self):
         print("Data to excel")
 
     def trigger_dani(self):
         print("Trigger dani")
+
+def download_files_by_url(company: str, link: str, source: str) -> int:
+    company = company.title().replace(" ", "")
+    if "pdf" in link: 
+        with open(f"../dani/docs/{company}_Compliance.pdf", 'a+') as file:
+            file.write(source.content)
+            return 0
+    elif "docx" in link: 
+        with open(f"../dani/docs/{company}_Compliance.docx", 'a+') as file:
+            file.write(source.content)
+            return 0
+    else:
+        soup = BeautifulSoup(source.text)
+        with open(f"../dani/docs/{company}_Compliance.txt", "a+") as file:
+            file.write(soup.get_text('\n', '\n\n'))
+            return 0
