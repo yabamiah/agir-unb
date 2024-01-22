@@ -1,0 +1,39 @@
+# ETL - Extract Transform and Load
+ETL é um processo de tratamento de dados a partir de uma fonte ou uma combinações de múltiplas fontes para um repositório central (pode ser um banco de dados, no meu caso está sendo um diretório de arquivos em um computador) e, após essa extração, a partir de regras de negócio definidas, organizar e preparar esses dados para carregar em um bando dados, análise de dados ou aprendizado de máquina. 
+
+# Por que usar ETL?
+Atualmente é um processo de tratamento de dados muito utilizado no mercado para a tratar dados estruturados ou não estruturados de vários fontes.
+
+Dados esses que serão aplicados em um processo de extração, transformação e carregamento.
+
+###############################################################################################
+
+# Google dorks
+O Google dorks é um método de pesquisa avançada e específica de algum assunto ou arquivo, talvez possar ser útil para maximizar o nível de pesquisa do nosso objetivo
+
+allintitle [Faz uma busca de palavras que estão no título do site]
+Exemplo: allintitle:seja bem vindo
+(Lista todas as páginas que contém o nome seja bem vindo no título do site)
+
+allinurl [Faz uma busca de arquivos/palavras na url]
+Exemplo: allinurl:index.swf
+(Lista todas as páginas que contém o arquivo index.swf no site)
+
+intext [Faz uma busca específica de palavras que estão na página]
+Exemplo: intext:senhas
+(Lista todas as páginas que contém a palavra “senha” no corpo)
+(Tente pesquisar por intext:seuemail@provedor.com, e veja se há alguma lista com ele)
+
+filetype [Faz uma busca específica e retorna apenas o tipo de arquivo citado]
+Exemplo: filetype:txt
+(Lista apenas arquivos txt, em qualquer site)
+
+Exemplos;
+
+intext:"user" filetype:php intext:"account" inurl:/admin 
+intext:"PHPMyAdmin SQL Dump" filetype:sql
+intitle:phpmyadmin filetype:php intext:"login" site:meusite.com.br
+
+# Links importantes:
+https://ouvidoria.df.gov.br/entidades-e-orgaos-especializados-2/
+nome chave: "Política de Governança, Gestão de Riscos e Compliance"
