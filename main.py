@@ -1,4 +1,3 @@
-from lara.models import Lara
-from dani.models import Dani
+from cli.cli import Cli
 
-scraper = Lara()
+bots = Cli()

@@ -37,3 +37,7 @@ intitle:phpmyadmin filetype:php intext:"login" site:meusite.com.br
 # Links importantes:
 https://ouvidoria.df.gov.br/entidades-e-orgaos-especializados-2/
 nome chave: "Política de Governança, Gestão de Riscos e Compliance"
+
+
+# Compliance
+Compliance vem do inglês que significa "Regras a serem seguidas", então o compliance ele serve com um guia de regras, diretrizes e princípios a serem seguidos em um empresa ou orgão para que diminua os riscos de penalidades.
