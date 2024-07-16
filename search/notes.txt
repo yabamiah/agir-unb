@@ -40,4 +40,18 @@ nome chave: "Política de Governança, Gestão de Riscos e Compliance"
 
 
 # Compliance
-Compliance vem do inglês que significa "Regras a serem seguidas", então o compliance ele serve com um guia de regras, diretrizes e princípios a serem seguidos em um empresa ou orgão para que diminua os riscos de penalidades.
+Compliance vem do inglês que significa "Regras a serem seguidas", então o compliance ele serve com um guia de regras, diretrizes e princípios a serem seguidos em um empresa ou orgão para que diminua os riscos de penalidades.1
+
+
+plano de integridade + df
+Relatórios de Governança - relatórios
+Comite interno de Governança - atas
+Notas técnicas
+
+
+1. Lista do adriano, preencher a tabela 4.1 com o que ele quer em amerlo. Cargos comissionados 
+2. Preencher a tabela 4.3
+3. Falar sobre a automação lara. 
+4. Falar sobre a automação Dani.
+
+filtrar depois os snippets da dani.

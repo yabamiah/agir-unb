@@ -60,8 +60,8 @@ class Cli:
         print(f"{Fore.BLUE}0.0.1{Style.RESET_ALL}")
 
     def trigger_lara(self) -> None:
-        print("Call to Lara")
-        larinha = Lara()        
+        print("Calling to Lara")
+        Lara()        
 
         print("Lara terminou o seu trabalho..")
         sn = input("Deseja continuar com a Dani [S/N]? ")
@@ -71,8 +71,9 @@ class Cli:
             print("Até mais..")            
             exit(0)
 
-    def trigger_dani(self) -> Dani:
-        print("Call to Dani")
+    def trigger_dani(self) -> None:
+        print("Calling to Dani")
+        Dani()
 
 
     def display_data(self) -> None:
