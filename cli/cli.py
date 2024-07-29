@@ -1,6 +1,6 @@
 from colorama import Fore, Style
 
-from dani.models import Dani
+from core.models.dani import Dani
 from lara.models import Lara
 
 class Cli:

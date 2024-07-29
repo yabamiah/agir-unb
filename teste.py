@@ -4,10 +4,13 @@ import pandas as pd
 import re
 from unidecode import unidecode
 import urllib3
+import time
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Função que ler os dados de uma planilha excel e estabele quais órgãos possuem atas do cig
+
+
 def ler_dados_excel(nome_arquivo: str) -> dict[str, bool] | None:
     """_summary_
 
@@ -206,6 +209,7 @@ def load_orgaos_name(adm_direta: list, mista_publica: list) -> int:
 
     return 0
 
+
 def search_link_cig2(acronym: str, orgao: str, param: str, link_base: str, header: dict, limite: int) -> dict:
     """_summary_
 
@@ -245,13 +249,13 @@ def search_link_cig2(acronym: str, orgao: str, param: str, link_base: str, heade
 
                     if (("comitê interno de governança" in link_text) or ("governança" in link_text) or (("atas" in link_text) and "cig" in link_text)):
                         if (acronym.lower() in link_addrs and "df" in link_addrs) or ((verifica_palavras_chaves(link_addrs, orgao) and "df" in link_addrs)):
-                            if link_addrs.split("&")[0] not in link_orgao_dict.get(acronym, []):
+                            if (link_addrs.split("&")[0] not in link_orgao_dict.get(acronym, [])):
                                 link_orgao_dict.setdefault(acronym, []).append(
                                     link_addrs.split("&")[0])
                     elif (("gestão" in link_text and "risco" in link_text) or
                           ("gestão" in link_text and "governança" in link_text)):
                         if ((acronym.lower() in link_addrs and "df" in link_addrs) or (verifica_palavras_chaves(link_addrs, orgao) and "df" in link_addrs)):
-                            if link_addrs.split("&")[0] not in link_orgao_dict.get(acronym, []):
+                            if (link_addrs.split("&")[0] not in link_orgao_dict.get(acronym, [])):
                                 link_orgao_dict.setdefault(acronym, []).append(
                                     link_addrs.split("&")[0])
             links_count += 1
@@ -269,6 +273,7 @@ def search_link_cig2(acronym: str, orgao: str, param: str, link_base: str, heade
     return link_orgao_dict
 
 
+# Verificar se é a página com os links para acessar as atas
 def filter_webpage_type1(url: str, orgao: str) -> tuple[bool, None] | tuple[bool, str]:
     """_summary_
 
@@ -286,9 +291,9 @@ def filter_webpage_type1(url: str, orgao: str) -> tuple[bool, None] | tuple[bool
     try:
         header = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
-        response = requests.get(url, headers=header, verify=False)
+        response = requests.get(url, headers=header, verify=False, timeout=5)
 
-        data_pattern = re.compile(r'\d{2}/\d{2}/\d{4}')
+        data_pattern = re.compile(r'(\d{1,2}/\d{1,2}/\d{2,4})|(\d{4})')
         update_site_pattern = re.compile(
             r'Atualizado em \d{1,2}/\d{1,2}/\d{2,4} às ([01]?[0-9]|2[0-3])h[0-5][0-9]', re.IGNORECASE)
 
@@ -296,7 +301,11 @@ def filter_webpage_type1(url: str, orgao: str) -> tuple[bool, None] | tuple[bool
             re.compile(r'ata da \d+ª reunião', re.IGNORECASE),
             re.compile(r'ata \d+ª reunião', re.IGNORECASE),
             re.compile(r'\d+ª reunião', re.IGNORECASE),
-            re.compile(r'ata da reunião extraordinária Nº \d', re.IGNORECASE),
+            re.compile(r'ata da reunião extraordinária Nº \d{1,2}', re.IGNORECASE),
+            re.compile(r'ata reunião ordinária Nº \d{1,2}', re.IGNORECASE),
+            re.compile(r'Ata de reunião \d{1,2}', re.IGNORECASE),
+            re.compile(r'atas das reuniões cig', re.IGNORECASE)
+
         ]
 
         if response.status_code == 200:
@@ -307,25 +316,28 @@ def filter_webpage_type1(url: str, orgao: str) -> tuple[bool, None] | tuple[bool
 
             links = soup.find_all('a')
 
-        for link in links:
-            link_text = link.get_text().lower()
-            link_href = link.get('href')
-            if ('ata' in link_text or
-                data_pattern.search(link_text) or
-                    any(pattern.search(link_text) for pattern in ata_reuniao_patterns)):
+            for link in links:
+                link_text = link.get_text().lower()
+                link_href = str(link.get('href')).lower()
 
-                print(link_text)
-                print("Link:", link_href)
-
-                if match:
-                    return True, match.group()
-                return True, None
+                print(any(pattern.search(link_text) for pattern in ata_reuniao_patterns))
+                print(f"Texto do link: {link_text}")
+                if (any(pattern.search(link_text) for pattern in ata_reuniao_patterns)):
+                    if match:
+                        return True, match.group()
+                    return True, None
+                elif (data_pattern.search(link_text)):
+                    if (("ata" in link_href and "cig" in link_href) and ".pdf" in link_href):
+                        if match:
+                            return True, match.group()
+                        return True, None
 
             if match:
                 return False, match.group()
             return False, None
+
         else:
-            print("Falha ao carregar o site.")
+            print(f"Falha ao carregar o site: {url}")
             return False, None
     except requests.RequestException as e:
         print(f"filter_webpage_type1. Erro na requisição HTTP: {e}")
@@ -335,8 +347,10 @@ def filter_webpage_type1(url: str, orgao: str) -> tuple[bool, None] | tuple[bool
         print(f"filter_webpage_type1. Erro inesperado: {e}")
         return False, None
 
+# Verificar se um portal do comite de inteterno de governança
 
-def filter_webpage_type2(url: str, orgao: str) -> tuple[bool, None] | tuple[bool, str]:
+
+def filter_webpage_type2(url: str, orgao: str) -> tuple[bool, bool, None] | tuple[bool, bool, str]:
     """_summary_
 
     Args:
@@ -344,7 +358,7 @@ def filter_webpage_type2(url: str, orgao: str) -> tuple[bool, None] | tuple[bool
         orgao (str): _description_
 
     Returns:
-        tuple[bool, None] | tuple[bool, str]: _description_
+        tuple[bool, bool, None] | tuple[bool, bool, str]: _description_
     """
     # Esse função vai realizar uma filtragem pela estrutura html do site
     # A filtragem vai servir para pegar somente os sites sejam nosso objetivo
@@ -359,46 +373,93 @@ def filter_webpage_type2(url: str, orgao: str) -> tuple[bool, None] | tuple[bool
             soup = BeautifulSoup(response.text, 'html.parser')
 
             data_pattern = re.compile(r'\d{1,2}/\d{1,2}/\d{2,4}')
+            year_pattern = re.compile(r'\d{4}')
+            
             update_site_pattern = re.compile(
                 r'Atualizado em \d{1,2}/\d{1,2}/\d{2,4} às ([01]?[0-9]|2[0-3])h[0-5][0-9]', re.IGNORECASE)
-            target_text1 = "decreto n° 39.736, de 28 de março de 2019".lower()
-            target_text2 = "comitê interno de governança".lower()
-            target_text3 = "atas das reuniões".lower()
+            decreto_pattern1 = re.compile(
+                r"decreto\s+n[°º]\s*39\.736(?:,?\s*de\s*28\s*de\s*março\s*de\s*2019)?|decreto\s+n[°º]\s*39\.736/?2019", re.IGNORECASE)
+            decreto_pattern2 = re.compile(
+                r"decreto\s+n[°º]\s*37\.297(?:,?\s*de\s*29\s*de\s*abril\s*de\s*2016)?|decreto\s+n[°º]\s*37\.297/?2016", re.IGNORECASE)
+
+            target_text1 = "comitê interno de governança".lower()
+            target_text1_1 = "comitê de governança e estratégia".lower()
+            target_text2 = "atas das reuniões".lower()
+            target_text2_1 = "atas de memórias de reuniões".lower()
+            target_text2_2 = "atas".lower()
+            target_text3 = "portaria".lower()
 
             page_text = soup.get_text().lower()
             match = update_site_pattern.search(page_text)
 
-            if (target_text1 in page_text and
-                target_text2 in page_text or
-                    target_text3 in page_text):
+            if (((decreto_pattern1.search(page_text) or decreto_pattern2.search(page_text)) and
+                (target_text1 in page_text) or (target_text1_1 in page_text) or
+                ((target_text3 in page_text) and (target_text1 in page_text)) or
+                ((target_text3 in page_text) and (target_text1_1 in page_text)) or
+                    (target_text2 in page_text))):
 
                 links = soup.find_all('a')
 
                 for link in links:
-                    print(link.get_text())
-                    if (target_text3 in link.get_text().lower() or
-                            data_pattern.search(str(link))):
-                        print(link.get_text())
-                        print("Link:", link.get('href'))
+                    link_text = link.get_text().lower()
+                    link_href = str(link.get('href')).lower()
 
+                    if (target_text2 in link_text or target_text2_2 in link_text or data_pattern.search(str(link_text))):
                         if match:
-                            return True, match.group()
+                            return True, True, match.group()
 
-                        return True, None
+                        return True, True, None
+                    elif (year_pattern.search(str(link_text)) and ("atas" in str(link_href) or "cig" in str(link_href))):
+                        if match:
+                            return True, True, match.group()
 
+                        return True, True, None
                 if match:
-                    return False, match.group()
-                return False, None
+                    return True, False, match.group()
+
+                return True, False, None
+
+            elif ((target_text1 in page_text and target_text2 in page_text) or (target_text1_1 in page_text and target_text2 in page_text) or
+                    (target_text1 in page_text and target_text2_1) or (target_text1_1 in page_text and target_text2_1) or
+                    (target_text1 in page_text and target_text2_2) or (target_text1_1 in page_text and target_text2_2)):
+            
+                links = soup.find_all('a')
+                
+                for link in links:
+                    link_text = link.get_text().lower()
+                    link_href = str(link.get('href')).lower()
+                    
+                    is_ata_cig = (verifica_palavras_chaves(link_href, "comite") and verifica_palavras_chaves(
+                        link_href, "interno") and verifica_palavras_chaves(link_href, "governanca"))
+                    
+                    if (year_pattern.search(str(link_text)) and is_ata_cig) or (year_pattern.search(str(link_text)) and "cig" in link_text):
+                        if match:
+                            return True, True, match.group()
+
+                        return True, True, None
+                    
+                    elif (data_pattern.search(str(link_text)) and is_ata_cig) or (data_pattern.search(str(link_text)) and "cig" in link_text):
+                        if match:
+                            return True, True, match.group()
+
+                        return True, True, None 
+                    
+                if match:
+                    return False, False, match.group()
+
+                return False, False, None 
+            else:
+                return False, False, None
         else:
-            print("Falha ao carregar o site.")
-            return False, None
+            print(f"Falha ao carregar o site: {url}")
+            return False, False, None
 
     except requests.RequestException as e:
         print(f"filter_webpage_type2. Erro na requisção: {e}")
-        return False, None
+        return False, False, None
     except Exception as e:
         print(f"filter_webpage_type2. Erro inesperado: {e}")
-        return False, None
+        return False, False, None
 
 
 excel = "FAPDF-Segmentoseitensintegridade(versão20.04.Completo)_corrigido.xlsx"
@@ -413,7 +474,7 @@ header = {
 param = " atas comitê interno de governança"
 
 url = "http://www.ibram.df.gov.br/comite-interno-de-governanca/"
-list_orgaos_name = "lara/docs/list_orgaos_name.txt"
+list_orgaos_name = "data/lara/docs/list_orgaos_name.txt"
 
 adm_direta = []
 mista_publica = []
@@ -429,20 +490,29 @@ for nome in adm_direta:
 dict_lol = search_link_cig2(company_acronym(
     orgao), orgao, param, url_google, header, 4)
 
-for key, value in dict_lol.items():
-    for link in value:
-        link = link.split("=", 1)[1]
-        
-        # ft1 = filter_webpage_type1(link, key)
-        # ft2 = filter_webpage_type2(link, key)
-        print(filter_webpage_type2(link, key))
-        
-        # if (ft1):
-        #     print(f"Página das atas: {link}")            
-        # if (ft2):
-        #     print(f"Portal CIG: {link}")
-        # if (not ft1 and not ft2):
-        #     print(f"Não é nenhum dos dois: {link}")
+for orgao in adm_direta:
+    dict_lol = search_link_cig2(company_acronym(orgao), orgao,
+                                param, url_google, header, 6)
+    time.sleep(7)
+    for key, value in dict_lol.items():
+        for link in value:
+            link = link.split("=", 1)[1]
+
+            link = "https://fap.df.gov.br/atas-cig-2022/"
+            # ft1, _ = filter_webpage_type1(link, key)        
+            ft2, tem_ata, data = filter_webpage_type2(link, key)
+    
+            # if (ft1):
+            #     print(f"Página das atas: {link}")
+            if (ft2):
+                print(f"Portal CIG: {link}")
+                if (tem_ata):
+                    print("Portal CIG com atas acessíveis")
+            else:
+                print(f"Não é portal CIG: {link}")
+            exit(0)
+            # if (not ft1 and not ft2):
+            #     print(f"Não é nenhum dos dois: {link}")
 
 # for orgao in adm_direta:
 #     dict_lol = search_link_cig2(company_acronym(orgao), orgao,
