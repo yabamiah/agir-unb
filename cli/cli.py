@@ -1,7 +1,7 @@
 from colorama import Fore, Style
 
 from core.models.dani import Dani
-from lara.models import Lara
+from core.models.lara import Lara
 
 class Cli:
     args = ""

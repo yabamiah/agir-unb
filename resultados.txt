@@ -1,223 +1,81 @@
-url: https://agricultura.df.gov.br/seagri-realiza-reuniao-do-comite-interno-de-governanca-2/
-Link texto: 
-secretaria de estado da agricultura, abastecimento e desenvolvimento rural
+Orgão não tem ata, e não está na planilha: SEAGRI
+Orgão não tem ata, e não está na planilha: CACI
+Orgão não tem ata, e não está na planilha: CM
+Orgão não tem ata, e não está na planilha: SECOM
+Orgão não tem ata, e não está na planilha: SECEC
+Orgão não tem ata, e não está na planilha: SECTI
+Orgão não tem ata, e não está na planilha: SEDES
+Orgão não tem ata, e não está na planilha: SEE
+Orgão não tem ata, e não está na planilha: SELDF
+Orgão não tem ata, e não está na planilha: SEEC
+Orgão não tem ata, e não está na planilha: SEDUH
+Orgão não tem ata, e não está na planilha: SEJUS
+Orgão não tem ata, e não está na planilha: SEMA
+Orgão não tem ata, e não está na planilha: SMDF
+Orgão não tem ata, e não está na planilha: SEJUV
+Orgão não tem ata, e não está na planilha: SES
+Orgão não tem ata, e não está na planilha: SSP
+Orgão não tem ata, e não está na planilha: SEDET
+Orgão não tem ata, e não está na planilha: SETUR
+Orgão não tem ata, e não está na planilha: SEAPE
+Orgão não tem ata, e não está na planilha: SEPD
+Orgão não tem ata, e não está na planilha: PGDF
+Orgão não tem ata, e não está na planilha: PCDF
+Orgão não tem ata, e não está na planilha: PMDF
+Orgão não tem ata, e não está na planilha: CBM
+Orgão não tem ata, e não está na planilha: ARPDF
+Orgão não tem ata, e não está na planilha: ADASA
+Orgão não tem ata, e não está na planilha: DETRAN-DF
+Orgão não tem ata, e não está na planilha: INAS
+Orgão não tem ata, e não está na planilha: IPREV
+Orgão não tem ata, e não está na planilha: IBRAM
+Orgão não tem ata, e não está na planilha: SLU
+Orgão não tem ata, e não está na planilha: TERRACAP
+Orgão não tem ata, e não está na planilha: IPEDF
+Orgão não tem ata, e não está na planilha: CAESB
+Orgão não tem ata, e não está na planilha: NOVACAP
+Orgão não tem ata, e não está na planilha: EMATER
+Orgão não tem ata, e não está na planilha: TCB
+Orgão não tem ata, e não está na planilha: FAP
+Orgão não tem ata, e não está na planilha: FEPECS
+Orgão não tem ata, e não está na planilha: FHB
+Orgão não tem ata, e não está na planilha: FJZB
+Orgão não tem ata, e não está na planilha: JBB
+Orgão não tem ata, e não está na planilha: UNDF
+Orgão não tem ata, e não está na planilha: EGOV
 
-Link href: https://agricultura.df.gov.br
-Não é nenhum dos dois: https://agricultura.df.gov.br/seagri-realiza-reuniao-do-comite-interno-de-governanca-2/
-Não é nenhum dos dois: https://www.seagri.df.gov.br/gestao-de-riscos/
-Portal CIG: https://www.casacivil.df.gov.br/conselho-de-governanca/
-Portal CIG com atas acessíveis
-Falha ao carregar o site: https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf
-Falha ao carregar o site: https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf
-Não é nenhum dos dois: https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf
-Falha ao carregar o site: https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf
-Falha ao carregar o site: https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf
-Não é nenhum dos dois: https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf
-Portal CIG: https://www.comunicacao.df.gov.br/category/governanca/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.economia.df.gov.br/comite-interno-de-governanca/
-Portal CIG com atas acessíveis
-Não é nenhum dos dois: https://www.cultura.df.gov.br/governanca-de-ti/
-Portal CIG: https://secti.df.gov.br/comite-interno-de-governanca/
-Portal CIG com atas acessíveis
-Portal CIG: https://secti.df.gov.br/category/institucional/governanca/
-Portal CIG com atas acessíveis
-Página das atas: https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/
-Portal CIG: https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.sedes.df.gov.br/sedes-realiza-primeira-reuniao-do-comite-interno-de-governanca/
-Portal CIG com atas acessíveis
-Página das atas: https://esporte.df.gov.br/comite-interno-de-governanca/
-Portal CIG: https://esporte.df.gov.br/comite-interno-de-governanca/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.economia.df.gov.br/comite-interno-de-governanca/
-Portal CIG com atas acessíveis
-Página das atas: https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/
-Portal CIG: https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/
-Página das atas: https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG: https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG: https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/
-Portal CIG com atas acessíveis
-Falha ao carregar o site: https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf
-Falha ao carregar o site: https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf
-Não é nenhum dos dois: https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf
-Portal CIG: https://sema.df.gov.br/comite-interno-de-governanca-cgi/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.sema.df.gov.br/comite-interno-de-governanca/
-Portal CIG com atas acessíveis
-url: https://sema.df.gov.br/governanca-local/
-Link texto: 
-secretaria de estado do meio ambiente e proteção animal do distrito federal
+Este ogão não está na planilha: SEEC
+Orgão links: ['/url?q=https://www.economia.df.gov.br/comite-interno-de-governanca/', '/url?q=https://www.economia.df.gov.br/governanca/']
 
-Link href: https://sema.df.gov.br
-Não é nenhum dos dois: https://sema.df.gov.br/governanca-local/
-Não é nenhum dos dois: https://www.sema.df.gov.br/wp-conteudo/uploads/2020/07/ATA_1_Reuniao_20_02_11_CIG__Comite_Interno_de_Governanc_amp__807_a.pdf
-Portal CIG: https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG com atas acessíveis
-Página das atas: https://familiaejuventude.df.gov.br/comite-interno-de-governanca/
-Portal CIG: https://familiaejuventude.df.gov.br/comite-interno-de-governanca/
-Portal CIG: https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude
-Falha ao carregar o site: https://www.saude.df.gov.br/documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173
-Falha ao carregar o site: https://www.saude.df.gov.br/documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173
-Não é nenhum dos dois: https://www.saude.df.gov.br/documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173
-Falha ao carregar o site: https://www.saude.df.gov.br/documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150
-Falha ao carregar o site: https://www.saude.df.gov.br/documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150
-Não é nenhum dos dois: https://www.saude.df.gov.br/documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150
-Página das atas: https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/
-Portal CIG: https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/
-Portal CIG com atas acessíveis
-Não é nenhum dos dois: https://www.ssp.df.gov.br/wp-conteudo/uploads/2023/06/CIGESP_113744189.pdf
-Portal CIG: https://www.ssp.df.gov.br/governanca-e-estrategia/
-Portal CIG: https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/
-Portal CIG com atas acessíveis
-Não é nenhum dos dois: http://regionalizacao.turismo.gov.br/images/roteiros_brasil/institucionalizacao_da_instancia_de_governanca_regional.pdf
-Portal CIG: https://seape.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.cg.df.gov.br/comites-internos-de-governanca/
-Portal CIG com atas acessíveis
-Página das atas: https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG: https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG: https://seape.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG com atas acessíveis
-Página das atas: https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/
-Portal CIG: https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG com atas acessíveis
-Portal CIG: https://secti.df.gov.br/comite-interno-de-governanca/
-Portal CIG com atas acessíveis
-Página das atas: https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/
-Portal CIG: https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/
-Página das atas: https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca
-Portal CIG: https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca
-Portal CIG com atas acessíveis
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Portaria_49_de_27_05_2019.pdf
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Portaria_49_de_27_05_2019.pdf
-Não é nenhum dos dois: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Portaria_49_de_27_05_2019.pdf
-Página das atas: https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca
-Portal CIG: https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca
-Portal CIG com atas acessíveis
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/2020.11_Ata.pdf
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/2020.11_Ata.pdf
-Não é nenhum dos dois: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/2020.11_Ata.pdf
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/ATA_2.12.pdf
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/ATA_2.12.pdf
-Não é nenhum dos dois: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/ATA_2.12.pdf
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Ata_CIG_20.11.pdf
-Falha ao carregar o site: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Ata_CIG_20.11.pdf
-Não é nenhum dos dois: https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Ata_CIG_20.11.pdf
-Portal CIG: https://www.pmdf.df.gov.br/estrategia-governanca-gestao/
-filter_webpage_type1. Erro na requisição HTTP: HTTPSConnectionPool(host='www.cbm.df.gov.br', port=443): Read timed out. (read timeout=5)
-Portal CIG: https://www.cbm.df.gov.br/governanca/
-Portal CIG com atas acessíveis
-Página das atas: https://www.cbm.df.gov.br/governanca-2/
-Portal CIG: https://www.cbm.df.gov.br/governanca-2/
-Portal CIG com atas acessíveis
-Página das atas: https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/
-Portal CIG: https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/
-Portal CIG com atas acessíveis
-Não é nenhum dos dois: https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf
-Portal CIG: https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/
-Portal CIG: https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/
-Portal CIG com atas acessíveis
-url: https://www.arquivopublico.df.gov.br/audio/teste/
-Link texto: arquivo público do distrito federal
-Link href: https://www.arquivopublico.df.gov.br
-Não é nenhum dos dois: https://www.arquivopublico.df.gov.br/audio/teste/
-Não é nenhum dos dois: https://www.adasa.df.gov.br/images/storage/governanca/atas_reunioes/Pauta1_Reuniao_CIG_01_04_2024_1_Geral.pdf
-Página das atas: https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/
-Portal CIG: https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/
-Portal CIG com atas acessíveis
-Página das atas: https://inas.df.gov.br/governanca/
-Portal CIG: https://inas.df.gov.br/governanca/
-Portal CIG com atas acessíveis
-Portal CIG: https://inas.df.gov.br/governanca-e-gestao-estrategica/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/
-Portal CIG com atas acessíveis
-Página das atas: https://www.iprev.df.gov.br/atas-das-reunioes-cig/
-Portal CIG: https://www.iprev.df.gov.br/atas-das-reunioes-cig/
-url: http://www.ibram.df.gov.br/comite-interno-de-governanca/
-Link texto: brasília ambiental
-Link href: https://www.ibram.df.gov.br
-Não é nenhum dos dois: http://www.ibram.df.gov.br/comite-interno-de-governanca/
-url: https://ibram.df.gov.br/atas-de-reunioes-de-2023-comite-interno-de-governanca/
-Link texto: brasília ambiental
-Link href: https://ibram.df.gov.br
-Não é nenhum dos dois: https://ibram.df.gov.br/atas-de-reunioes-de-2023-comite-interno-de-governanca/
-url: https://www.ibram.df.gov.br/atas-de-reunioes-de-2021-comite-interno-de-governanca/
-Link texto: brasília ambiental
-Link href: https://www.ibram.df.gov.br
-Não é nenhum dos dois: https://www.ibram.df.gov.br/atas-de-reunioes-de-2021-comite-interno-de-governanca/
-url: https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/
-Link texto: brasília ambiental
-Link href: https://brasiliaambiental.df.gov.br
-Não é nenhum dos dois: https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/
-url: https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/
-Link texto: brasília ambiental
-Link href: https://www.ibram.df.gov.br
-Não é nenhum dos dois: https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/
-url: https://www.slu.df.gov.br/comite-interno-de-governanca/
-Link texto: slu
-Link href: https://www.slu.df.gov.br
-Página das atas: https://www.slu.df.gov.br/comite-interno-de-governanca/
-Não é nenhum dos dois: https://www.slu.df.gov.br/wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf
-Falha ao carregar o site: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
-Falha ao carregar o site: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
-Não é nenhum dos dois: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
-Falha ao carregar o site: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D12470
-Falha ao carregar o site: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D12470
-Não é nenhum dos dois: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D12470
-Portal CIG: https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/
-Portal CIG com atas acessíveis
-Não é nenhum dos dois: https://www.novacap.df.gov.br/governanca/
-Não é nenhum dos dois: https://novacap.df.gov.br/category/governanca/%3Fpage%3D2
-Não é nenhum dos dois: https://www.emater.df.gov.br/governanca-corporativa/
-Não é nenhum dos dois: https://tcb.df.gov.br/carta-anual-de-politicas-publicas-e-governanca-corporativa/
-Não é nenhum dos dois: https://www.tcb.df.gov.br/wp-content/uploads/2021/04/Carta-Anual-de-Governanca-2020-versao-final.pdf
-Falha ao carregar o site: https://ri.ceb.com.br/List/Download.aspx%3FArquivo%3D9zgtNowGnLNMZJuhkX/e%2Bw%3D%3D
-Falha ao carregar o site: https://ri.ceb.com.br/List/Download.aspx%3FArquivo%3D9zgtNowGnLNMZJuhkX/e%2Bw%3D%3D
-Não é nenhum dos dois: https://ri.ceb.com.br/List/Download.aspx%3FArquivo%3D9zgtNowGnLNMZJuhkX/e%2Bw%3D%3D
-url: https://www.fap.df.gov.br/2024-2/
-Link texto: fundação de apoio à pesquisa do distrito federal
-Link href: https://www.fap.df.gov.br
-Página das atas: https://www.fap.df.gov.br/2024-2/
-url: https://www.fap.df.gov.br/atas-cig-2023/
-Link texto: fundação de apoio à pesquisa do distrito federal
-Link href: https://www.fap.df.gov.br
-Página das atas: https://www.fap.df.gov.br/atas-cig-2023/
-Portal CIG: https://www.fap.df.gov.br/comite-interno-de-governanca-cig/
-Portal CIG com atas acessíveis
-url: https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1
-Link texto: fundação de apoio à pesquisa do distrito federal
-Link href: https://www.fap.df.gov.br
-Não é nenhum dos dois: https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1
-url: https://fap.df.gov.br/atas-cig-2022/
-Link texto: fundação de apoio à pesquisa do distrito federal
-Link href: https://fap.df.gov.br
-Não é nenhum dos dois: https://fap.df.gov.br/atas-cig-2022/
-url: https://www.fap.df.gov.br/atas-cig-2021/
-Link texto: fundação de apoio à pesquisa do distrito federal
-Link href: https://www.fap.df.gov.br
-Página das atas: https://www.fap.df.gov.br/atas-cig-2021/
-Falha ao carregar o site: https://www.saude.df.gov.br/web/guest/w/comit%25C3%25AA-da-sa%25C3%25BAde-avan%25C3%25A7a-na-aplica%25C3%25A7%25C3%25A3o-da-governan%25C3%25A7a-e-compliance
-Falha ao carregar o site: https://www.saude.df.gov.br/web/guest/w/comit%25C3%25AA-da-sa%25C3%25BAde-avan%25C3%25A7a-na-aplica%25C3%25A7%25C3%25A3o-da-governan%25C3%25A7a-e-compliance
-Não é nenhum dos dois: https://www.saude.df.gov.br/web/guest/w/comit%25C3%25AA-da-sa%25C3%25BAde-avan%25C3%25A7a-na-aplica%25C3%25A7%25C3%25A3o-da-governan%25C3%25A7a-e-compliance
-url: https://www.fhb.df.gov.br/governanca/
-Link texto: fundação hemocentro de brasília
-Link href: https://www.fhb.df.gov.br
-Página das atas: https://www.fhb.df.gov.br/governanca/
-Não é nenhum dos dois: https://www.hemocentro.df.gov.br/wp-content/uploads/2019/11/governanca-ata-reuniao-2021-06-25.pdf
-Página das atas: https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/
-Portal CIG: https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/
-Portal CIG com atas acessíveis
-Página das atas: https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/
-Portal CIG: https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/
-Portal CIG com atas acessíveis
-Portal CIG: https://www.universidade.df.gov.br/comite-interno-cigp/
-Portal CIG com atas acessíveis
-Falha ao carregar o site: https://egov.df.gov.br/wp-content/uploads/2023/07/Apresentacao-%25E2%2580%2593-Governanca-Publica-%25E2%2580%2593-modelo-aplicado-ao-GDF.pdf
-Falha ao carregar o site: https://egov.df.gov.br/wp-content/uploads/2023/07/Apresentacao-%25E2%2580%2593-Governanca-Publica-%25E2%2580%2593-modelo-aplicado-ao-GDF.pdf
-Não é nenhum dos dois: https://egov.df.gov.br/wp-content/uploads/2023/07/Apresentacao-%25E2%2580%2593-Governanca-Publica-%25E2%2580%2593-modelo-aplicado-ao-GDF.pdf
+Este ogão não está na planilha: SEDET
+Orgão links: ['/url?q=https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/']
+
+Este ogão não está na planilha: SETUR
+Orgão links: ['/url?q=http://regionalizacao.turismo.gov.br/images/roteiros_brasil/institucionalizacao_da_instancia_de_governanca_regional.pdf']
+
+Este ogão não está na planilha: SEAPE
+Orgão links: ['/url?q=https://seape.df.gov.br/comite-interno-de-governanca-publica/']
+
+Este ogão não está na planilha: SEPD
+Orgão links: ['/url?q=https://seape.df.gov.br/comite-interno-de-governanca-publica/', '/url?q=https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', '/url?q=https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', '/url?q=https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', '/url?q=https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', '/url?q=https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/']
+
+Este ogão não está na planilha: PGDF
+Orgão links: ['/url?q=https://www.pg.df.gov.br/comite-interno-de-governanca-publica-da-procuradoria-geral-do-distrito-federal-cig-pgdf/']
+
+Este ogão não está na planilha: PMDF
+Orgão links: ['/url?q=https://www.pmdf.df.gov.br/estrategia-governanca-gestao/']
+
+Este ogão não está na planilha: INAS
+Orgão links: ['/url?q=https://inas.df.gov.br/governanca/', '/url?q=https://inas.df.gov.br/governanca-e-gestao-estrategica/', '/url?q=https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude']
+
+Este ogão não está na planilha: CAESB
+Orgão links: ['/url?q=https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+
+Este ogão não está na planilha: NOVACAP
+Orgão links: ['/url?q=https://www.novacap.df.gov.br/governanca/', '/url?q=https://novacap.df.gov.br/category/governanca/%3Fpage%3D2']
+
+Este ogão não está na planilha: BRB
+Orgão links: ['/url?q=https://ri.brb.com.br/upload/files/2760_Politica-de-Governanca-Corporativa.pdf']
+
+Este ogão não está na planilha: UNDF
+Orgão links: ['/url?q=https://www.universidade.df.gov.br/comite-interno-cigp/']

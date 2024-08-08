@@ -1,3 +1,5 @@
+*.txt
+teste*
 # Ignore all pycache
 __pycache__
 

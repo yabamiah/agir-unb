@@ -1,13 +1,18 @@
+###################################################################
+## LARA - Levantador Automático de Recursos Administrativos
+##################################################################
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
 from unidecode import unidecode
+from core.utils.orgao import Orgao
 
 class Lara:
     def __init__(self) -> None:
         pass
-    
+
     def read_excel_data(self, filename: str) -> dict[str, bool] | None:
         """Reads data from an Excel file and returns a dictionary with the CIG minutes status for each organization.
 
@@ -46,13 +51,12 @@ class Lara:
 
         return dados
 
-
-    def compare_maps(self, data_map: dict, links_map: dict) -> tuple[dict[str, bool], int, int]:
+    def compare_maps(self, data_map: dict[str, bool], links_map: dict[str, list[str]]) -> tuple[dict[str, bool], int, int]:
         """Compares two maps (dictionaries) of data and links to verify the presence of minutes.
 
         Args:
-            data_map (dict): Dictionary with the data of the organizations and presence of minutes.
-            links_map (dict): Dictionary with the links found for the organizations.
+            data_map (dict[str, bool]): Dictionary with the data of the organizations and presence of minutes.
+            links_map (dict[str, list[str]]): Dictionary with the links found for the organizations.
 
         Returns:
             tuple[dict[str, bool], int, int]: Tuple containing a dictionary with the comparison results,
@@ -76,7 +80,6 @@ class Lara:
 
         return results, matches, total
 
-
     def check_keywords(self, link: str, keywords: str) -> bool:
         """Checks if a link contains any of the specified keywords.
 
@@ -98,7 +101,6 @@ class Lara:
             if pattern.search(link):
                 return True
         return False
-
 
     def company_acronym(self, company_name: str) -> str:
         """Returns the acronym of the company/organization from the full name.
@@ -184,7 +186,6 @@ class Lara:
         else:
             return f"Not found: {company_name}"
 
-
     def load_orgaos_name(self, adm_direta: list, mista_publica: list) -> int:
         """Loads the names of organizations from a text file into separate lists for direct and mixed public administration.
 
@@ -216,8 +217,7 @@ class Lara:
         file.close()
         return 0
 
-
-    def search_link_cig2(self, acronym: str, org: str, param: str, base_link: str, header: dict, limit: int) -> dict:
+    def search_link_cig(self, acronym: str, org: str, param: str, base_link: str, header: dict, limit: int) -> dict[str, list[str]]:
         """Performs a search for links related to the Internal Governance Committee (CIG) for a specific organization.
 
         Args:
@@ -229,7 +229,7 @@ class Lara:
             limit (int): Limit of links to be returned.
 
         Returns:
-            dict: Dictionary with the acronyms of the organizations as keys and lists of links as values.
+            dict[str, list[str]]: Dictionary with the acronyms of the organizations as keys and lists of links as values.
         """
         org_name_params = [acronym + " df", org]
         org_link_dict = {}
@@ -244,7 +244,6 @@ class Lara:
                     continue
 
                 soup = BeautifulSoup(source.text, 'lxml')
-                links_count = 0
 
                 for g in soup.find_all('div',  {'class': 'Gx5Zad'}):
                     links = g.find_all('a')
@@ -260,7 +259,7 @@ class Lara:
                                     org_link_dict.setdefault(acronym, []).append(
                                         link_addrs.split("&")[0])
                         elif (("gestão" in link_text and "risco" in link_text) or
-                            ("gestão" in link_text and "governança" in link_text)):
+                              ("gestão" in link_text and "governança" in link_text)):
                             if ((acronym.lower() in link_addrs and "df" in link_addrs) or (self.verifica_palavras_chaves(link_addrs, org) and "df" in link_addrs)):
                                 if link_addrs.split("&")[0] not in org_link_dict.get(acronym, []):
                                     org_link_dict.setdefault(acronym, []).append(
@@ -270,14 +269,13 @@ class Lara:
                     break
 
         except requests.RequestException as e:
-            print(f"Erro na requisição HTTP: {e}")
+            print(f"search_link_cig2. Erro na requisição HTTP: {e}")
         except Exception as e:
-            print(f"Erro inesperado: {e}")
+            print(f"search_link_cig2. Erro inesperado: {e}")
 
         return org_link_dict
 
-
-    def filter_webpage_type1(self, url: str) -> tuple[bool, None] | tuple[bool, str]:
+    def filter_cig_minutes_webpage(self, url: str) -> tuple[bool, None] | tuple[bool, str]:
         """Filters web pages to check for the presence of meeting minutes and updates.
 
         Args:
@@ -301,7 +299,10 @@ class Lara:
                 re.compile(r'ata da \d+ª reunião', re.IGNORECASE),
                 re.compile(r'ata \d+ª reunião', re.IGNORECASE),
                 re.compile(r'\d+ª reunião', re.IGNORECASE),
-                re.compile(r'ata da reunião extraordinária Nº \d', re.IGNORECASE),
+                re.compile(
+                    r'ata da reunião extraordinária Nº \d{1,2}', re.IGNORECASE),
+                re.compile(r'ata reunião ordinária Nº \d{1,2}', re.IGNORECASE),
+                re.compile(r'Ata de reunião \d{1,2}', re.IGNORECASE),
                 re.compile(r'atas das reuniões cig', re.IGNORECASE)
             ]
 
@@ -318,11 +319,12 @@ class Lara:
                 link_href = str(link.get('href')).lower()
 
                 if (any(pattern.search(link_text) for pattern in meeting_minutes_patterns)):
-                    if match:
-                        return True, match.group()
-                    return True, None
+                    if ("reuniao" in link_href and "cig" in link_href and ".pdf" in link_href):
+                        if match:
+                            return True, match.group()
+                        return True, None
                 elif (data_pattern.search(link_text)):
-                    if (("ata" in link_href or "cig" in link_href) and
+                    if (("ata" in link_href and "cig" in link_href) and
                             ".pdf" in link_href):
                         if match:
                             return True, match.group()
@@ -336,15 +338,14 @@ class Lara:
                 return False, None
 
         except requests.RequestException as e:
-            print(f"Erro na requisição HTTP: {e}")
+            print(f"filter_cig_minutes_webpage. Erro na requisição HTTP: {e}")
             return False, None
 
         except Exception as e:
-            print(f"Erro inesperado: {e}")
+            print(f"filter_cig_minutes_webpage. Erro inesperado: {e}")
             return False, None
 
-
-    def filter_webpage_type2(self, url: str) -> tuple[bool, bool, None] | tuple[bool, bool, str]:
+    def filter_portal_webpage(self, url: str) -> tuple[bool, bool, None] | tuple[bool, bool, str]:
         """Filters web pages to check for the presence of meeting minutes and updates.
 
         Args:
@@ -365,43 +366,114 @@ class Lara:
 
                 data_pattern = re.compile(r'\d{1,2}/\d{1,2}/\d{2,4}')
                 year_pattern = re.compile(r'\d{4}')
+
                 update_site_pattern = re.compile(
                     r'Atualizado em \d{1,2}/\d{1,2}/\d{2,4} às ([01]?[0-9]|2[0-3])h[0-5][0-9]', re.IGNORECASE)
-                target_text1 = "decreto n° 39.736, de 28 de março de 2019".lower()
-                target_text2 = "comitê interno de governança".lower()
-                target_text3 = "atas das reuniões".lower()
+                decreto_pattern1 = re.compile(
+                    r"decreto\s+n[°º]\s*39\.736(?:,?\s*de\s*28\s*de\s*março\s*de\s*2019)?|decreto\s+n[°º]\s*39\.736/?2019", re.IGNORECASE)
+                decreto_pattern2 = re.compile(
+                    r"decreto\s+n[°º]\s*37\.297(?:,?\s*de\s*29\s*de\s*abril\s*de\s*2016)?|decreto\s+n[°º]\s*37\.297/?2016", re.IGNORECASE)
+
+                target_text1 = "comitê interno de governança".lower()
+                target_text1_1 = "comitê de governança e estratégia".lower()
+                target_text2 = "atas das reuniões".lower()
+                target_text2_1 = "atas de memórias de reuniões".lower()
+                target_text2_2 = "atas".lower()
+                target_text3 = "portaria".lower()
 
                 page_text = soup.get_text().lower()
                 match = update_site_pattern.search(page_text)
 
-                if ((target_text1 in page_text) and
-                        ((target_text2 in page_text) or (target_text3 in page_text))):
+                if (((decreto_pattern1.search(page_text) or decreto_pattern2.search(page_text)) and
+                         (target_text1 in page_text) or (target_text1_1 in page_text) or
+                        ((target_text3 in page_text) and (target_text1 in page_text)) or
+                        ((target_text3 in page_text) and (target_text1_1 in page_text)) or
+                        (target_text2 in page_text))):
+
                     links = soup.find_all('a')
 
                     for link in links:
-                        if (target_text3 in link.get_text().lower() or data_pattern.search(str(link))):
+                        link_text = link.get_text().lower()
+                        link_href = str(link.get('href')).lower()
+
+                        if (target_text2 in link_text or target_text2_2 in link_text or data_pattern.search(str(link_text))):
                             if match:
                                 return True, True, match.group()
 
                             return True, True, None
-                        elif (year_pattern.search(str(link)) and
-                            ("atas" in str(link.get('href')).lower()) or
-                            ("cig" in str(link.get('href')).lower())):
+                        elif (year_pattern.search(str(link_text)) and 
+                              ("atas" in str(link_href) or "cig" in str(link_href))):
                             if match:
                                 return True, True, match.group()
                             return True, True, None
                     if match:
                         return True, False, match.group()
                     return True, False, None
-                else:
-                    return False, False, None
-            else:
+                elif ((target_text1 in page_text and target_text2 in page_text) or (target_text1_1 in page_text and target_text2 in page_text) or
+                        (target_text1 in page_text and target_text2_1) or (target_text1_1 in page_text and target_text2_1) or
+                        (target_text1 in page_text and target_text2_2) or (target_text1_1 in page_text and target_text2_2)):
+                    
+                    links = soup.find_all_next('a')
+                    
+                    for link in links:
+                        link_text = link.get_text().lower()
+                        link_href = str(link.get('href')).lower()
+                        
+                        is_ata_cig = (self.check_keywords(link_href, "comite") and self.check_keywords(
+                            link_href, "interno") and self.check_keywords(link_href, "governanca"))
+                        
+                        if (year_pattern.search(str(link_text)) and is_ata_cig) or (year_pattern.search(str(link_text)) and "cig" in link_text):
+                            if match:
+                                return True, True, match.group()
+
+                            return True, True, None
+                    
+                        elif (data_pattern.search(str(link_text)) and is_ata_cig) or (data_pattern.search(str(link_text)) and "cig" in link_text):
+                            if match:
+                                return True, True, match.group()
+
+                            return True, True, None 
+                    
+                    if match:
+                        return True, False, match.group()
+                    return True, False, None
+            else:   
                 print("Falha ao carregar o site.")
                 return False, None
 
         except requests.RequestException as e:
-            print(f"Erro na requisção: {e}")
+            print(f"filter_portal_webpage. Erro na requisção: {e}")        
             return False, None
         except Exception as e:
-            print(f"Erro inesperado: {e}")
+            print(f"filter_portal_webpage. Erro inesperado: {e}")
             return False, None
+
+    def filter_dict_orgaos(self, dict_orgao_links: dict[str, list[str]]) -> list[Orgao]:
+        """_summary_
+
+        Args:
+            dict_orgao_links (dict[str, list[str]]): Dictionary with the name of the organizations as keys and lists of links as values.
+
+        Returns:
+            list[Orgao]: A list with Orgao object containing informations about organizations links filtered.
+        """        
+        list_ogaos = []
+        for orgao_name, links in dict_orgao_links.items():
+            orgao = Orgao(orgao_name, links, transparency_active=False)
+            for link in links:            
+                is_cig_page, last_page_updt = self.filter_cig_minutes_webpage(link)
+                if is_cig_page:
+                    orgao.add_link_cig(link, last_page_updt)
+                    orgao.add_transparency_active = True
+                
+                is_portal_page, has_minutes, last_page_updt = self.filter_portal_webpage(link)
+                if is_portal_page:
+                    orgao.add_link_portal(link, last_page_updt)
+                    orgao.add_transparency_active = False
+                    if has_minutes:
+                        orgao.add_portalPage_has_minutes(True)
+                        orgao.add_transparency_active = True
+                        
+            list_ogaos.append(orgao)
+            
+        return list_ogaos
