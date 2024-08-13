@@ -1,13 +1,13 @@
 ###################################################################
 ## LARA - Levantador Automático de Recursos Administrativos
 ##################################################################
-
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
 from unidecode import unidecode
 from core.utils.orgao import Orgao
+import time
 
 class Lara:
     def __init__(self) -> None:
@@ -15,7 +15,7 @@ class Lara:
 
     def read_excel_data(self, filename: str) -> dict[str, bool] | None:
         """Reads data from an Excel file and returns a dictionary with the CIG minutes status for each organization.
-
+filter_cig_minutes_webpage
         Args:
             filename (str): Name of the Excel file.
 
@@ -51,7 +51,7 @@ class Lara:
 
         return dados
 
-    def compare_maps(self, data_map: dict[str, bool], links_map: dict[str, list[str]]) -> tuple[dict[str, bool], int, int]:
+    def compare_maps(self, data_map: dict[str, bool], links_map: dict[str, list[str]]) -> tuple[dict[str, bool], int, int, int]:
         """Compares two maps (dictionaries) of data and links to verify the presence of minutes.
 
         Args:
@@ -64,21 +64,36 @@ class Lara:
         """
 
         results = {}
-        total = 0
+        total_with_minutes = 0
+        total_without_minutes = 0
         matches = 0
 
         for org, has_minutes in data_map.items():
             if has_minutes:
-                total += 1
+                total_with_minutes += 1
                 if org in links_map and len(links_map[org]) > 0:
+                    # print(f"Orgoa: {org}, link: {links_map[org]}")
                     results[org] = True
                     matches += 1
                 else:
                     results[org] = False
             else:
+                total_without_minutes += 1
                 results[org] = None
+                
+            
+        # for org, has_minutes in data_map.items():
+        #     if has_minutes:
+        #         total += 1
+        #         if org in links_map and len(links_map[org]) > 0:
+        #             results[org] = True
+        #             matches += 1
+        #         else:
+        #             results[org] = False
+        #     else:
+        #         results[org] = None
 
-        return results, matches, total
+        return results, matches, total_with_minutes, total_without_minutes
 
     def check_keywords(self, link: str, keywords: str) -> bool:
         """Checks if a link contains any of the specified keywords.
@@ -198,7 +213,7 @@ class Lara:
         """
 
         try:
-            file = open("list_orgaos_name.txt", 'r')
+            file = open("./data/lara/docs/list_orgaos_name.txt", 'r')
         except Exception as e:
             print(e)
             return 1
@@ -254,24 +269,24 @@ class Lara:
                         link_text = link.get_text().lower()
 
                         if (("comitê interno de governança" in link_text) or ("governança" in link_text) or (("atas" in link_text) and "cig" in link_text)):
-                            if (acronym.lower() in link_addrs and "df" in link_addrs) or ((self.verifica_palavras_chaves(link_addrs, org) and "df" in link_addrs)):
-                                if link_addrs.split("&")[0] not in org_link_dict.get(acronym, []):
+                            if (acronym.lower() in link_addrs and "df" in link_addrs) or ((self.check_keywords(link_addrs, org) and "df" in link_addrs)):
+                                if link_addrs.split("=")[1] not in org_link_dict.get(acronym, []):
                                     org_link_dict.setdefault(acronym, []).append(
-                                        link_addrs.split("&")[0])
+                                        link_addrs.split("=")[1])
                         elif (("gestão" in link_text and "risco" in link_text) or
                               ("gestão" in link_text and "governança" in link_text)):
-                            if ((acronym.lower() in link_addrs and "df" in link_addrs) or (self.verifica_palavras_chaves(link_addrs, org) and "df" in link_addrs)):
-                                if link_addrs.split("&")[0] not in org_link_dict.get(acronym, []):
+                            if ((acronym.lower() in link_addrs and "df" in link_addrs) or (self.check_keywords(link_addrs, org) and "df" in link_addrs)):
+                                if link_addrs.split("=")[1] not in org_link_dict.get(acronym, []):
                                     org_link_dict.setdefault(acronym, []).append(
-                                        link_addrs.split("&")[0])
+                                        link_addrs.split("=")[1])
 
                 if org_link_dict.get(acronym) != None:
                     break
 
         except requests.RequestException as e:
-            print(f"search_link_cig2. Erro na requisição HTTP: {e}")
+            print(f"search_link_cig. Erro na requisição HTTP: {e}")
         except Exception as e:
-            print(f"search_link_cig2. Erro inesperado: {e}")
+            print(f"search_link_cig. Erro inesperado: {e}")
 
         return org_link_dict
 
@@ -290,6 +305,7 @@ class Lara:
             header = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
             response = requests.get(url, headers=header, verify=False)
+            print(response)
 
             data_pattern = re.compile(r'(\d{1,2}/\d{1,2}/\d{2,4})|(\d{4})')
             update_site_pattern = re.compile(
@@ -314,27 +330,26 @@ class Lara:
 
                 links = soup.find_all('a')
 
-            for link in links:
-                link_text = link.get_text().lower()
-                link_href = str(link.get('href')).lower()
+                for link in links:
+                    link_text = link.get_text().lower()
+                    link_href = str(link.get('href')).lower()
 
-                if (any(pattern.search(link_text) for pattern in meeting_minutes_patterns)):
-                    if ("reuniao" in link_href and "cig" in link_href and ".pdf" in link_href):
-                        if match:
-                            return True, match.group()
-                        return True, None
-                elif (data_pattern.search(link_text)):
-                    if (("ata" in link_href and "cig" in link_href) and
-                            ".pdf" in link_href):
-                        if match:
-                            return True, match.group()
-                        return False, None
-
+                    if (any(pattern.search(link_text) for pattern in meeting_minutes_patterns)):
+                        if ("reuniao" in link_href and "cig" in link_href and ".pdf" in link_href):
+                            if match:
+                                return True, match.group()
+                            return True, None
+                    elif (data_pattern.search(link_text)):
+                        if (("ata" in link_href and "cig" in link_href) and
+                                ".pdf" in link_href):
+                            if match:
+                                return True, match.group()
+                            return False, None
                 if match:
                     return False, match.group()
                 return False, None
             else:
-                print("Falha ao carregar o site.")
+                print(f"filter_cig_minutes_webpage. Falha ao carregar o site: {url}")
                 return False, None
 
         except requests.RequestException as e:
@@ -360,7 +375,8 @@ class Lara:
             header = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
             response = requests.get(url, headers=header, verify=False)
-
+            print(response)
+            
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -437,16 +453,18 @@ class Lara:
                     if match:
                         return True, False, match.group()
                     return True, False, None
+                else:
+                    return False, False, None
             else:   
-                print("Falha ao carregar o site.")
-                return False, None
+                print(f"filter_portal_webpage. Falha ao carregar o site: {url}")
+                return False, False, None
 
         except requests.RequestException as e:
             print(f"filter_portal_webpage. Erro na requisção: {e}")        
-            return False, None
+            return False, False, None
         except Exception as e:
             print(f"filter_portal_webpage. Erro inesperado: {e}")
-            return False, None
+            return False, False, None
 
     def filter_dict_orgaos(self, dict_orgao_links: dict[str, list[str]]) -> list[Orgao]:
         """_summary_
@@ -462,11 +480,13 @@ class Lara:
             orgao = Orgao(orgao_name, links, transparency_active=False)
             for link in links:            
                 is_cig_page, last_page_updt = self.filter_cig_minutes_webpage(link)
+                time.sleep(7)
                 if is_cig_page:
                     orgao.add_link_cig(link, last_page_updt)
                     orgao.add_transparency_active = True
                 
                 is_portal_page, has_minutes, last_page_updt = self.filter_portal_webpage(link)
+                time.sleep(7)
                 if is_portal_page:
                     orgao.add_link_portal(link, last_page_updt)
                     orgao.add_transparency_active = False
@@ -477,3 +497,40 @@ class Lara:
             list_ogaos.append(orgao)
             
         return list_ogaos
+    
+    def generate_report(self) -> None:
+        # Gerar relatório da pesquisa da LARA
+        url_google = "https://google.com/search?q="
+        header = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
+        param = " atas comitê interno de governança"
+        
+        excel = "FAPDF-Segmentoseitensintegridade(versão20.04.Completo)_corrigido(1).xlsx"
+        dados = self.read_excel_data(excel)
+        if dados == None:
+            print(f"Erro ao ler o arquivo: {excel}")
+            
+        adm_direta = []
+        mista_publica = []
+        if self.load_orgaos_name(adm_direta, mista_publica) == 1:
+            print("Erro ao carregar os nomes dos órgões")    
+
+        dict_general = {}
+        for orgao in adm_direta:
+            dict_general.update(self.search_link_cig(self.company_acronym(orgao), orgao,
+                        param, url_google, header, 6))
+        time.sleep(7)
+        
+        resul, acertos, total_com_ata, total_sem_ata = self.compare_maps(dados, dict_general)
+        list_orgaos = self.filter_dict_orgaos(dict_general)
+        
+        # print("Quantidade de órgãos total: ", dados.keys())
+        # print("Total com ata: " + str(total_com_ata))
+        # print("Total sem ata: " + str(total_sem_ata))
+        # print("Quantidade de Acertos: " + str(acertos))
+        # print("Porcentagem de Acertos: " + str((acertos/total_com_ata)*100))
+        # for orgoao, tem_atas in resul.items():
+        #     print(f"{orgoao}: {tem_atas}")
+            
+        for orgao in list_orgaos:
+            print(orgao)

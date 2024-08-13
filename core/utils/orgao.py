@@ -1,13 +1,9 @@
 class Orgao:
     
-    def __init__(self, name: str, links: list[str], transparency_active: bool, link_cig: str, cig_last_upt: str, link_portal: str, portal_last_upt: str) -> None:
+    def __init__(self, name: str, links: list[str], transparency_active: bool) -> None:
         self._name = name
         self._links = links
         self._transparency_active = transparency_active
-        self._link_cig = link_cig
-        self._cig_last_update = cig_last_upt
-        self._link_portal = link_portal
-        self._portal_last_update = portal_last_upt
         
     # def __init__(self, name: str, links: list[str]) -> None:
     #     self._name = name
@@ -26,4 +22,9 @@ class Orgao:
         
     def add_portalPage_has_minutes(self, has_minutes: bool = False) -> None:
         self._portalPage_has_minutes = has_minutes
-    
+        
+    def __repr__(self) -> str:
+        if self._transparency_active:
+            return f"Nome: {self._name}\nTransparência ativa: {self._transparency_active}\nLinks: {self._links}"
+        else:
+            return f"Nome: {self._name}\nTransparência ativa: {self._transparency_active}"
