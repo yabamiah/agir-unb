@@ -1,179 +1,164 @@
-Orgoa: SEJUS, link: ['https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/&sa', 'https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf&sa']
-Orgoa: SEMA, link: ['https://www.sema.df.gov.br/comite-interno-de-governanca/&sa', 'https://www.sema.df.gov.br/wp-conteudo/uploads/2020/07/ATA_1_Reuniao_20_02_11_CIG__Comite_Interno_de_Governanc_amp__807_a.pdf&sa', 'https://sema.df.gov.br/governanca-local/&sa']
-Orgoa: SMDF, link: ['https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/&sa', 'https://www.mulher.df.gov.br/wp-conteudo/uploads/2022/09/Portaria-6-de-29_05_2019-Comite-Interno-de-Governanca-Publica.pdf&sa']
-Orgoa: SODF, link: ['https://www.so.df.gov.br/secretaria-e-referencia-em-evento-sobre-governanca/&sa']
-Orgoa: SEJUV, link: ['https://familiaejuventude.df.gov.br/comite-interno-de-governanca/&sa']
-Orgoa: PCDF, link: ['https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca&sa', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_04_10_22.pdf&sa', 'https://www.pcdf.df.gov.br/institucional/gestao-estrategica/tag/Comit%25C3%25AA%2520Interno%2520de%2520Governan%25C3%25A7a%2520%2520CIG&sa', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_14.05.24.pdf&sa', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca&sa', 'https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Ata_CIG_20.11.pdf&sa', 'https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Ata_CIG_16.2.pdf&sa', 'https://www.pcdf.df.gov.br/images/conteudo/institucional/GOVERNAN%25C3%2587A/Portaria_49_de_27_05_2019.pdf&sa']
-Orgoa: DETRAN-DF, link: ['https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/&sa']
-Orgoa: ARPDF, link: ['https://www.arquivopublico.df.gov.br/audio/teste/&sa']
-Orgoa: SLU, link: ['https://www.slu.df.gov.br/comite-interno-de-governanca/&sa', 'https://www.slu.df.gov.br/wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf&sa']
-Orgoa: FAP, link: ['https://www.fap.df.gov.br/atas-cig-2023/&sa', 'https://www.fap.df.gov.br/2024-2/&sa', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/&sa', 'https://fap.df.gov.br/atas-cig-2022/&sa', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1&sa', 'https://www.fap.df.gov.br/atas-cig-2021/&sa']
-Orgoa: FHB, link: ['https://www.fhb.df.gov.br/governanca/&sa', 'https://www.hemocentro.df.gov.br/wp-content/uploads/2019/11/governanca-ata-reuniao-2019-09-26.pdf&sa', 'https://www.hemocentro.df.gov.br/wp-content/uploads/2019/11/governanca-ata-reuniao-2021-06-25.pdf&sa']
-Orgoa: IPREV, link: ['https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/&sa', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/&sa']
-Orgoa: IBRAM, link: ['http://www.ibram.df.gov.br/comite-interno-de-governanca/&sa', 'https://ibram.df.gov.br/atas-de-reunioes-de-2023-comite-interno-de-governanca/&sa', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/&sa', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2021-comite-interno-de-governanca/&sa', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/&sa', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/&sa', 'https://www.ibram.df.gov.br/wp-content/uploads/2020/12/5a-Ata-de-reuniao-Comite-Interno-Governanca.pdf&sa']
-Orgoa: SEAGRI, link: ['https://agricultura.df.gov.br/seagri-realiza-reuniao-do-comite-interno-de-governanca-2/&sa']
-Orgoa: SECTI, link: ['https://secti.df.gov.br/comite-interno-de-governanca/&sa', 'https://secti.df.gov.br/category/institucional/governanca/&sa']
-Orgoa: SEDES, link: ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/&sa', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/&sa']
-Orgoa: SEE, link: ['https://www.educacao.df.gov.br/governanca-apresentacao/&sa']
-Orgoa: SELDF, link: ['https://esporte.df.gov.br/comite-interno-de-governanca/&sa']
-Orgoa: SEDUH, link: ['https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/&sa', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/&sa', 'https://www.seduh.df.gov.br/governanca-e-gestao-estrategica/&sa']
-Orgoa: IPEDF, link: ['https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/&sa']
-Orgoa: SSP, link: ['https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/&sa', 'https://www.ssp.df.gov.br/wp-conteudo/uploads/2023/06/CIGESP_113744189.pdf&sa', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/&sa', 'https://www.ssp.df.gov.br/governanca-e-estrategia/&sa']
-Orgoa: JBB, link: ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/&sa']
-Orgoa: CBM, link: ['https://www.cbm.df.gov.br/governanca/&sa', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/&sa', 'https://www.cbm.df.gov.br/governanca-e-gestao/&sa', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf&sa', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/&sa', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/&sa', 'https://www.cbm.df.gov.br/5a-reuniao-do-comite-interno-de-governanca-do-cbmdf/&sa']
-Orgoa: SEEC, link: ['https://www.economia.df.gov.br/comite-interno-de-governanca/&sa']
-Orgoa: SEAPE, link: ['https://seape.df.gov.br/comite-interno-de-governanca-publica/&sa']
-Orgoa: INAS, link: ['https://inas.df.gov.br/governanca/&sa', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude&sa']
-Orgoa: UNDF, link: ['https://www.universidade.df.gov.br/comite-interno-cigp/&sa']
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Falha ao carregar o site.
-Nome: SEAGRI
-Transparência ativa: False
-Nome: CM
-Transparência ativa: False
-Nome: SECOM
-Transparência ativa: False
-Nome: SECEC
-Transparência ativa: False
-Nome: SECTI
-Transparência ativa: False
-Nome: SEDES
-Transparência ativa: False
-Nome: SEE
-Transparência ativa: False
-Nome: SELDF
-Transparência ativa: False
-Nome: SEEC
-Transparência ativa: False
-Nome: SEDUH
-Transparência ativa: False
-Nome: SEJUS
-Transparência ativa: False
-Nome: SEMA
-Transparência ativa: False
-Nome: SMDF
-Transparência ativa: False
-Nome: SODF
-Transparência ativa: False
-Nome: SEJUV
-Transparência ativa: False
-Nome: SES
-Transparência ativa: False
-Nome: SSP
-Transparência ativa: False
-Nome: SEDET
-Transparência ativa: False
-Nome: SETUR
-Transparência ativa: False
-Nome: SEAPE
-Transparência ativa: False
-Nome: SEPD
-Transparência ativa: False
-Nome: PCDF
-Transparência ativa: False
-Nome: PMDF
-Transparência ativa: False
-Nome: CBM
-Transparência ativa: False
-Nome: ARPDF
-Transparência ativa: False
-Nome: ADASA
-Transparência ativa: False
-Nome: DER
-Transparência ativa: False
-Nome: DETRAN-DF
-Transparência ativa: False
-Nome: INAS
-Transparência ativa: False
-Nome: IPREV
-Transparência ativa: False
-Nome: IBRAM
-Transparência ativa: False
-Nome: SLU
-Transparência ativa: False
-Nome: TERRACAP
-Transparência ativa: False
-Nome: IPEDF
-Transparência ativa: False
-Nome: CAESB
-Transparência ativa: False
-Nome: NOVACAP
-Transparência ativa: False
-Nome: EMATER
-Transparência ativa: False
-Nome: TCB
-Transparência ativa: False
-Nome: BRB
-Transparência ativa: False
-Nome: CEB
-Transparência ativa: False
-Nome: FAP
-Transparência ativa: False
-Nome: FHB
-Transparência ativa: False
-Nome: FJZB
-Transparência ativa: False
-Nome: JBB
-Transparência ativa: False
-Nome: UNDF
-Transparência ativa: False
+filter_cig_minutes_webpage. Erro na requisição HTTP: HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Max retries exceeded with url: /estrategia-governanca-gestao/ (Caused by ReadTimeoutError("HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Read timed out. (read timeout=10)"))
+filter_portal_webpage. Falha ao carregar o site: https://www.pmdf.df.gov.br/estrategia-governanca-gestao/
+filter_cig_minutes_webpage. Erro na requisição HTTP: 404 Client Error: Not Found for url: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
+filter_portal_webpage. Falha ao carregar o site: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='agricultura.df.gov.br', port=443): Max retries exceeded with url: /seagri-realiza-reuniao-do-comite-interno-de-governanca-2/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='agricultura.df.gov.br', port=443): Max retries exceeded with url: /seagri-realiza-reuniao-do-comite-interno-de-governanca-2/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  1ª reunião
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='familiaejuventude.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='familiaejuventude.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  ata da 9ª reunião ordinária
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 8ª reunião ordinária 
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 9ª reunião ordinária
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 9ª reunião ordinária
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 8ª reunião ordinária 
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da reunião extraordinária n°2
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica-da-procuradoria-geral-do-distrito-federal-cig-pgdf/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Max retries exceeded with url: /estrategia-governanca-gestao/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  8ª reunião do comitê de gestão de riscos do cbmdf – ata publicada no anexo xi bg-186-01out2021.
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião do comitê interno de governança – ata publicada no anexo-i_bg-095-21mai2020
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião_gr_ata_sei_27855798_00053-00075835_2019-71.pdf
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  8ª reunião do comitê de gestão de riscos do cbmdf – ata publicada no anexo xi bg-186-01out2021.
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião do comitê interno de governança – ata publicada no anexo-i_bg-095-21mai2020
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião do comitê interno de governança – ata publicada no anexo-i_bg-095-21mai2020
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião_gr_ata_sei_27855798_00053-00075835_2019-71.pdf
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião cig
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  1ª reunião cig
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  1ª reunião cig
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.ipedf.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica/ (Caused by SSLError(CertificateError("hostname 'www.ipedf.df.gov.br' doesn't match either of 'ipe.df.gov.br', 'www.ipe.df.gov.br'")))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.ipedf.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica/ (Caused by SSLError(CertificateError("hostname 'www.ipedf.df.gov.br' doesn't match either of 'ipe.df.gov.br', 'www.ipe.df.gov.br'")))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='tcb.df.gov.br', port=443): Max retries exceeded with url: /wp-content/uploads/2020/09/Carta-Anual-de-Governan%25C3%25A7a.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='tcb.df.gov.br', port=443): Max retries exceeded with url: /carta-anual-de-politicas-publicas-e-governanca-corporativa/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+####
+match:  ata da 21ª reunião ordinária do comitê interno de governança
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 3ª reunião ordinária do comitê interno de governança – 29/08/2024
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 21ª reunião ordinária do comitê interno de governança
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 3ª reunião ordinária do comitê interno de governança – 29/08/2024
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 3ª reunião ordinária do comitê interno de governança – 29/08/2024
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+####
+match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
+get_pdf_links. Erro inesperado: 'NoneType' object is not callable

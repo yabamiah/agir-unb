@@ -6,7 +6,10 @@ from core.models.lara import Lara
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 lara = Lara()
+# print(lara.filter_cig_minutes_webpage('https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/'))
+# print(lara.filter_portal_webpage('https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/'))
 lara.generate_report()
+# lara.get_pdf_links('https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/')
 
 # excel = "FAPDF-Segmentoseitensintegridade(versão20.04.Completo)_corrigido(1).xlsx"
 # dados = lara.read_excel_data(excel)
