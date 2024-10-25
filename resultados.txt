@@ -1,164 +1,875 @@
-filter_cig_minutes_webpage. Erro na requisição HTTP: HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Max retries exceeded with url: /estrategia-governanca-gestao/ (Caused by ReadTimeoutError("HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Read timed out. (read timeout=10)"))
+filter_cig_minutes_webpage. Erro na requisição HTTP: 404 Client Error: Not Found for url: https://www.pmdf.df.gov.br/estrategia-governanca-gestao/
 filter_portal_webpage. Falha ao carregar o site: https://www.pmdf.df.gov.br/estrategia-governanca-gestao/
+filter_cig_minutes_webpage. Erro na requisição HTTP: 404 Client Error:  for url: https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/
+filter_portal_webpage. Falha ao carregar o site: https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/
 filter_cig_minutes_webpage. Erro na requisição HTTP: 404 Client Error: Not Found for url: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
 filter_portal_webpage. Falha ao carregar o site: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
-get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='agricultura.df.gov.br', port=443): Max retries exceeded with url: /seagri-realiza-reuniao-do-comite-interno-de-governanca-2/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
-get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='agricultura.df.gov.br', port=443): Max retries exceeded with url: /seagri-realiza-reuniao-do-comite-interno-de-governanca-2/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
+##################3
+Download_minutes ['https://agricultura.df.gov.br/seagri-realiza-reuniao-do-comite-interno-de-governanca-2/', 'https://agricultura.df.gov.br/seagri-realiza-reuniao-do-comite-interno-de-governanca-2/']
+Nome: SEAGRI
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.casacivil.df.gov.br/conselho-de-governanca/', 'https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf', 'https://www.casacivil.df.gov.br/conselho-de-governanca/']
+Nome: CACI
+Transparência ativa: True
+Links: ['https://www.casacivil.df.gov.br/conselho-de-governanca/', 'https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf', 'https://www.casacivil.df.gov.br/conselho-de-governanca/']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.gov.br/casacivil/pt-br/assuntos/downloads/ata-cig.pdf/view']
+Nome: CM
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.comunicacao.df.gov.br/category/governanca/', 'https://www.comunicacao.df.gov.br/category/governanca/']
+Nome: SECOM
+Transparência ativa: True
+Links: ['https://www.comunicacao.df.gov.br/category/governanca/', 'https://www.comunicacao.df.gov.br/category/governanca/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
+Nome: SECEC
+Transparência ativa: True
+Links: ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+minutes: None
+##################3
+Download_minutes ['https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/']
+Nome: SECTI
+Transparência ativa: True
+Links: ['https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/']
+Nome: SEDES
+Transparência ativa: True
+Links: ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: None
+##################3
+Download_minutes ['https://www.educacao.df.gov.br/governanca-apresentacao/', 'https://www.educacao.df.gov.br/governanca-apresentacao/']
+Nome: SEE
+Transparência ativa: True
+Links: ['https://www.educacao.df.gov.br/governanca-apresentacao/', 'https://www.educacao.df.gov.br/governanca-apresentacao/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+Nome: SELDF
+Transparência ativa: True
+Links: ['https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
+Nome: SEEC
+Transparência ativa: True
+Links: ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  1ª reunião
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='familiaejuventude.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
-get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='familiaejuventude.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: SEDUH
+Transparência ativa: True
+Links: ['https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/']
+minutes: ['https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-1%C2%AA-Reuni%C3%A3o.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/SEI_GDF-92454498-Ata.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/6-reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/Reuniao-CIG_7a-ata.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: ['https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-1%C2%AA-Reuni%C3%A3o.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/SEI_GDF-92454498-Ata.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/6-reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/Reuniao-CIG_7a-ata.pdf']
+minutes: ['https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-1%C2%AA-Reuni%C3%A3o.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/SEI_GDF-92454498-Ata.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/6-reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/Reuniao-CIG_7a-ata.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+##################3
+Download_minutes ['https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/', 'https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf', 'https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/']
+Nome: SEJUS
+Transparência ativa: True
+Links: ['https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/', 'https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf', 'https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://www.sema.df.gov.br/wp-conteudo/uploads/2020/07/ATA_1_Reuniao_20_02_11_CIG__Comite_Interno_de_Governanc_amp__807_a.pdf', 'https://sema.df.gov.br/governanca-local/', 'https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://sema.df.gov.br/governanca-local/']
+Nome: SEMA
+Transparência ativa: True
+Links: ['https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://www.sema.df.gov.br/wp-conteudo/uploads/2020/07/ATA_1_Reuniao_20_02_11_CIG__Comite_Interno_de_Governanc_amp__807_a.pdf', 'https://sema.df.gov.br/governanca-local/', 'https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://sema.df.gov.br/governanca-local/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/wp-conteudo/uploads/2022/09/Portaria-6-de-29_05_2019-Comite-Interno-de-Governanca-Publica.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: SMDF
+Transparência ativa: True
+Links: ['https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/wp-conteudo/uploads/2022/09/Portaria-6-de-29_05_2019-Comite-Interno-de-Governanca-Publica.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.so.df.gov.br/secretaria-e-referencia-em-evento-sobre-governanca/']
+Nome: SODF
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://familiaejuventude.df.gov.br/comite-interno-de-governanca/', 'https://familiaejuventude.df.gov.br/comite-interno-de-governanca/']
+Nome: SEJUV
+Transparência ativa: False
+minutes: ['http://familiaejuventude.df.gov.br/wp-conteudo/uploads/2023/08/SEI_04036_00000292_2023_92-2.pdf']
+minutes: ['http://familiaejuventude.df.gov.br/wp-conteudo/uploads/2023/08/SEI_04036_00000292_2023_92-2.pdf']
+##################3
+Download_minutes ['https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude', 'https://www.saude.df.gov.br/documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173', 'https://www.saude.df.gov.br/documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude']
+Nome: SES
+Transparência ativa: False
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  ata da 9ª reunião ordinária
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 8ª reunião ordinária 
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 9ª reunião ordinária
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 9ª reunião ordinária
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 8ª reunião ordinária 
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+minutes: None
+##################3
+Download_minutes ['https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/wp-conteudo/uploads/2023/06/CIGESP_113744189.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.cg.df.gov.br/wp-conteudo/uploads/2024/04/Guia-Comite-Interno-de-Governanca-Publica-CGDF-nv.pdf', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/']
+Nome: SSP
+Transparência ativa: True
+Links: ['https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/wp-conteudo/uploads/2023/06/CIGESP_113744189.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.cg.df.gov.br/wp-conteudo/uploads/2024/04/Guia-Comite-Interno-de-Governanca-Publica-CGDF-nv.pdf', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/']
+minutes: ['/wp-conteudo/uploads/2024/01/9a-REUNIAO-ORDINARIA-DO-COMITE-INTERNO-DE-GOVERNANCA-PUBLICA-E-GESTAO-ESTRATEGIA-–-CIGESP.pdf', 'http://www.ssp.df.gov.br/wp-conteudo/uploads/2023/10/8_Ata_CIGESP.pdf']
+minutes: None
+minutes: None
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/Ata-8-Reuniao-CGTIC.pdf', '/wp-conteudo/uploads/2023/11/7a-REUNIAO-ORDINARIA-DO-CGTIC.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/9a-REUNIAO-ORDINARIA-DO-COMITE-INTERNO-DE-GOVERNANCA-PUBLICA-E-GESTAO-ESTRATEGIA-–-CIGESP.pdf', 'http://www.ssp.df.gov.br/wp-conteudo/uploads/2023/10/8_Ata_CIGESP.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/9a-REUNIAO-ORDINARIA-DO-COMITE-INTERNO-DE-GOVERNANCA-PUBLICA-E-GESTAO-ESTRATEGIA-–-CIGESP.pdf', 'http://www.ssp.df.gov.br/wp-conteudo/uploads/2023/10/8_Ata_CIGESP.pdf']
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/Ata-8-Reuniao-CGTIC.pdf', '/wp-conteudo/uploads/2023/11/7a-REUNIAO-ORDINARIA-DO-CGTIC.pdf']
+##################3
+Download_minutes ['https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/', 'https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/']
+Nome: SEDET
+Transparência ativa: True
+Links: ['https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/', 'https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['http://regionalizacao.turismo.gov.br/images/roteiros_brasil/institucionalizacao_da_instancia_de_governanca_regional.pdf']
+Nome: SETUR
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: SEAPE
+Transparência ativa: True
+Links: ['https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+Nome: SEPD
+Transparência ativa: True
+Links: ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da reunião extraordinária n°2
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+minutes: None
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: None
+minutes: None
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 4ª reunião do comitê interno de governança pública da secretaria de estado de desenvolvimento urbano e habitação do distrito federal – seduh
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+minutes: None
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.pg.df.gov.br/comite-interno-de-governanca-publica-da-procuradoria-geral-do-distrito-federal-cig-pgdf/', 'https://pg.df.gov.br/comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/', 'https://pg.df.gov.br/comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/']
+Nome: PGDF
+Transparência ativa: False
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica-da-procuradoria-geral-do-distrito-federal-cig-pgdf/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Max retries exceeded with url: /estrategia-governanca-gestao/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  8ª reunião do comitê de gestão de riscos do cbmdf – ata publicada no anexo xi bg-186-01out2021.
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião do comitê interno de governança – ata publicada no anexo-i_bg-095-21mai2020
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião_gr_ata_sei_27855798_00053-00075835_2019-71.pdf
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  8ª reunião do comitê de gestão de riscos do cbmdf – ata publicada no anexo xi bg-186-01out2021.
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião do comitê interno de governança – ata publicada no anexo-i_bg-095-21mai2020
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião do comitê interno de governança – ata publicada no anexo-i_bg-095-21mai2020
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião_gr_ata_sei_27855798_00053-00075835_2019-71.pdf
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião cig
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+minutes: None
+##################3
+Download_minutes ['https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_04_10_22.pdf', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_08.24.pdf', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_14.05.24.pdf', 'https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca']
+Nome: PCDF
+Transparência ativa: True
+Links: ['https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_04_10_22.pdf', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_08.24.pdf', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_14.05.24.pdf', 'https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.pmdf.df.gov.br/estrategia-governanca-gestao/']
+Nome: PMDF
+Transparência ativa: False
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Max retries exceeded with url: /estrategia-governanca-gestao/ (Caused by SSLError(CertificateError("hostname 'www.pmdf.df.gov.br' doesn't match either of '*.pm.df.gov.br', 'pm.df.gov.br'")))
+minutes: None
+##################3
+Download_minutes ['https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf', 'https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/']
+Nome: CBM
+Transparência ativa: True
+Links: ['https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf', 'https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/']
+minutes: ['https://www.cbm.df.gov.br/download/8o_reunia%cc%83o_gr_ata_bg-186_01out2021-pdf/', 'https://www.cbm.df.gov.br/download/10a-reuniao-gr-ata-bg-046_09mar2022-pdf/', 'https://www.cbm.df.gov.br/download/11a-reuniao-gr-ata-bg-094-20mai2022-pdf/']
+minutes: ['https://gesint.cbm.df.gov.br/rycymimp/2023/02/1aREUNIAO_CIG_ATA_ANEXO-I_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CIG_ATA_ANEXO-II_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-231-11dez2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CIG_ATA_ANEXO-I_BG-224-02DEZ2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-240-24dez2021-1.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-I_BG-042-04MAR2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-IV_BG-002-03jan2023.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/5aREUNIAO_CIG_ATA_ANEXO-II_BG-081-30abr2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/7aREUNIAO_CIG_ATA_BG-212-12nov2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/8aREUNIAO_CIG_ATA_BG-040-25fev2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/9aREUNIAO_CIG_ATA_BG-093-19mai2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/10aREUNIAO_CIG_ATA_BG-167-05set2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf']
+minutes: ['https://www.cbm.df.gov.br/download/1a_reuniao_gr_ata_sei_27855798_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/2a-reuniao_gr_ata_sei_31783085_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/3a-reuniao_gr_ata_anexo-i_bg-095-21mai2020-pdf/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: ['https://www.cbm.df.gov.br/download/8o_reunia%cc%83o_gr_ata_bg-186_01out2021-pdf/', 'https://www.cbm.df.gov.br/download/10a-reuniao-gr-ata-bg-046_09mar2022-pdf/', 'https://www.cbm.df.gov.br/download/11a-reuniao-gr-ata-bg-094-20mai2022-pdf/']
+minutes: ['https://gesint.cbm.df.gov.br/rycymimp/2023/02/1aREUNIAO_CIG_ATA_ANEXO-I_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CIG_ATA_ANEXO-II_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-231-11dez2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CIG_ATA_ANEXO-I_BG-224-02DEZ2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-240-24dez2021-1.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-I_BG-042-04MAR2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-IV_BG-002-03jan2023.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/5aREUNIAO_CIG_ATA_ANEXO-II_BG-081-30abr2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/7aREUNIAO_CIG_ATA_BG-212-12nov2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/8aREUNIAO_CIG_ATA_BG-040-25fev2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/9aREUNIAO_CIG_ATA_BG-093-19mai2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/10aREUNIAO_CIG_ATA_BG-167-05set2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf']
+minutes: ['https://gesint.cbm.df.gov.br/rycymimp/2023/02/1aREUNIAO_CIG_ATA_ANEXO-I_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CIG_ATA_ANEXO-II_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-231-11dez2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CIG_ATA_ANEXO-I_BG-224-02DEZ2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-240-24dez2021-1.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-I_BG-042-04MAR2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-IV_BG-002-03jan2023.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/5aREUNIAO_CIG_ATA_ANEXO-II_BG-081-30abr2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/7aREUNIAO_CIG_ATA_BG-212-12nov2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/8aREUNIAO_CIG_ATA_BG-040-25fev2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/9aREUNIAO_CIG_ATA_BG-093-19mai2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/10aREUNIAO_CIG_ATA_BG-167-05set2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf']
+minutes: ['https://www.cbm.df.gov.br/download/1a_reuniao_gr_ata_sei_27855798_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/2a-reuniao_gr_ata_sei_31783085_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/3a-reuniao_gr_ata_anexo-i_bg-095-21mai2020-pdf/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.arquivopublico.df.gov.br/audio/teste/', 'https://www.arquivopublico.df.gov.br/audio/teste/']
+Nome: ARPDF
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.adasa.df.gov.br/images/storage/governanca/atas_reunioes/Pauta1_Reuniao_CIG_01_04_2024_1_Geral.pdf']
+Nome: ADASA
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/']
+Nome: DETRAN-DF
+Transparência ativa: True
+Links: ['https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude']
+Nome: INAS
+Transparência ativa: True
+Links: ['https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude']
+minutes: ['http://inas.df.gov.br/wp-content/uploads/2022/11/ATA1.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/ata-da-2o-reuniao-do-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-130321829-Ata-3-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-133467793-Ata-5-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2024/08/SEI_GDF-142620733-Ata-6aReuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-147649292-Ata-7-Reuniao-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-151223741-Ata-8-Reuniao-CIG.pdf']
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  1ª reunião cig
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  1ª reunião cig
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+minutes: None
+minutes: ['http://inas.df.gov.br/wp-content/uploads/2022/11/ATA1.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/ata-da-2o-reuniao-do-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-130321829-Ata-3-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-133467793-Ata-5-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2024/08/SEI_GDF-142620733-Ata-6aReuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-147649292-Ata-7-Reuniao-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-151223741-Ata-8-Reuniao-CIG.pdf']
+minutes: ['http://inas.df.gov.br/wp-content/uploads/2022/11/ATA1.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/ata-da-2o-reuniao-do-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-130321829-Ata-3-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-133467793-Ata-5-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2024/08/SEI_GDF-142620733-Ata-6aReuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-147649292-Ata-7-Reuniao-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-151223741-Ata-8-Reuniao-CIG.pdf']
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/']
+Nome: IPREV
+Transparência ativa: True
+Links: ['https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-gestao-de-governanca-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /atas-das-reunioes-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /atas-das-reunioes-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /atas-das-reunioes-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/wp-content/uploads/2020/12/5a-Ata-de-reuniao-Comite-Interno-Governanca.pdf', 'https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/']
+Nome: IBRAM
+Transparência ativa: True
+Links: ['https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/wp-content/uploads/2020/12/5a-Ata-de-reuniao-Comite-Interno-Governanca.pdf', 'https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf', 'https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/comite-interno-de-governanca/']
+Nome: SLU
+Transparência ativa: True
+Links: ['https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf', 'https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/comite-interno-de-governanca/']
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148']
+Nome: TERRACAP
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: IPEDF
+Transparência ativa: True
+Links: ['https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/']
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.ipedf.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica/ (Caused by SSLError(CertificateError("hostname 'www.ipedf.df.gov.br' doesn't match either of 'ipe.df.gov.br', 'www.ipe.df.gov.br'")))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.ipedf.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica/ (Caused by SSLError(CertificateError("hostname 'www.ipedf.df.gov.br' doesn't match either of 'ipe.df.gov.br', 'www.ipe.df.gov.br'")))
+minutes: None
+##################3
+Download_minutes ['https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: CAESB
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.novacap.df.gov.br/governanca/']
+Nome: NOVACAP
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.emater.df.gov.br/governanca-corporativa/']
+Nome: EMATER
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://tcb.df.gov.br/wp-content/uploads/2020/09/Carta-Anual-de-Governan%25C3%25A7a.pdf', 'https://tcb.df.gov.br/carta-anual-de-politicas-publicas-e-governanca-corporativa/']
+Nome: TCB
+Transparência ativa: False
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='tcb.df.gov.br', port=443): Max retries exceeded with url: /wp-content/uploads/2020/09/Carta-Anual-de-Governan%25C3%25A7a.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
 get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='tcb.df.gov.br', port=443): Max retries exceeded with url: /carta-anual-de-politicas-publicas-e-governanca-corporativa/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
-####
-match:  ata da 21ª reunião ordinária do comitê interno de governança
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 3ª reunião ordinária do comitê interno de governança – 29/08/2024
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 21ª reunião ordinária do comitê interno de governança
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 3ª reunião ordinária do comitê interno de governança – 29/08/2024
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 3ª reunião ordinária do comitê interno de governança – 29/08/2024
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
-####
-match:  ata da 15ª reunião do comitê interno de governança pública do jardim botânico de brasília
-get_pdf_links. Erro inesperado: 'NoneType' object is not callable
+minutes: None
+##################3
+Download_minutes ['https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: BRB
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: CEB
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1', 'https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1']
+Nome: FAP
+Transparência ativa: True
+Links: ['https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1', 'https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-110814498-Ata.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-111253880-Ata.pdf']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2024/09/SEI_GDF-149838031-Ata-da-3a-Reuniao-Ordinaria-do-Comite-Interno-de-Governanca-CIG-FAPDF.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/08/Ata-da-2a-reuniao-do-CIG.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/03/SEI_GDF-136044322-Ata.pdf']
+minutes: None
+minutes: None
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-110814498-Ata.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-111253880-Ata.pdf']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2024/09/SEI_GDF-149838031-Ata-da-3a-Reuniao-Ordinaria-do-Comite-Interno-de-Governanca-CIG-FAPDF.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/08/Ata-da-2a-reuniao-do-CIG.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/03/SEI_GDF-136044322-Ata.pdf']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2024/09/SEI_GDF-149838031-Ata-da-3a-Reuniao-Ordinaria-do-Comite-Interno-de-Governanca-CIG-FAPDF.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/08/Ata-da-2a-reuniao-do-CIG.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/03/SEI_GDF-136044322-Ata.pdf']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.fhb.df.gov.br/governanca/', 'https://www.hemocentro.df.gov.br/wp-content/uploads/2019/11/governanca-ata-reuniao-2019-09-26.pdf', 'https://www.fhb.df.gov.br/governanca/', 'https://www.fhb.df.gov.br/governanca/']
+Nome: FHB
+Transparência ativa: True
+Links: ['https://www.fhb.df.gov.br/governanca/', 'https://www.hemocentro.df.gov.br/wp-content/uploads/2019/11/governanca-ata-reuniao-2019-09-26.pdf', 'https://www.fhb.df.gov.br/governanca/', 'https://www.fhb.df.gov.br/governanca/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: FJZB
+Transparência ativa: True
+Links: ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: None
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: None
+##################3
+Download_minutes ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/']
+Nome: JBB
+Transparência ativa: True
+Links: ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+##################3
+Download_minutes ['https://www.universidade.df.gov.br/comite-interno-cigp/', 'https://www.universidade.df.gov.br/comite-interno-cigp/']
+Nome: UNDF
+Transparência ativa: True
+Links: ['https://www.universidade.df.gov.br/comite-interno-cigp/', 'https://www.universidade.df.gov.br/comite-interno-cigp/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://egov.df.gov.br/wp-content/uploads/2023/07/Apresentacao-%25E2%2580%2593-Governanca-Publica-%25E2%2580%2593-modelo-aplicado-ao-GDF.pdf']
+Nome: EGOV
+Transparência ativa: False
+minutes: None
+filter_cig_minutes_webpage. Erro na requisição HTTP: 404 Client Error: Not Found for url: https://www.pmdf.df.gov.br/estrategia-governanca-gestao/
+filter_portal_webpage. Falha ao carregar o site: https://www.pmdf.df.gov.br/estrategia-governanca-gestao/
+filter_cig_minutes_webpage. Erro na requisição HTTP: 404 Client Error:  for url: https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/
+filter_portal_webpage. Falha ao carregar o site: https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/
+filter_cig_minutes_webpage. Erro na requisição HTTP: 404 Client Error: Not Found for url: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
+filter_portal_webpage. Falha ao carregar o site: https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148
+##################3
+Download_minutes ['https://agricultura.df.gov.br/seagri-realiza-reuniao-do-comite-interno-de-governanca-2/', 'https://agricultura.df.gov.br/seagri-realiza-reuniao-do-comite-interno-de-governanca-2/']
+Nome: SEAGRI
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.casacivil.df.gov.br/conselho-de-governanca/', 'https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf', 'https://www.casacivil.df.gov.br/conselho-de-governanca/']
+Nome: CACI
+Transparência ativa: True
+Links: ['https://www.casacivil.df.gov.br/conselho-de-governanca/', 'https://www.casacivil.df.gov.br/wp-conteudo/uploads/2019/12/Pauta-CIG-1%25C2%25AA-Reunia%25CC%2583o.pdf', 'https://www.casacivil.df.gov.br/conselho-de-governanca/']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.gov.br/casacivil/pt-br/assuntos/downloads/ata-cig.pdf/view']
+Nome: CM
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.comunicacao.df.gov.br/category/governanca/', 'https://www.comunicacao.df.gov.br/category/governanca/']
+Nome: SECOM
+Transparência ativa: True
+Links: ['https://www.comunicacao.df.gov.br/category/governanca/', 'https://www.comunicacao.df.gov.br/category/governanca/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
+Nome: SECEC
+Transparência ativa: True
+Links: ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/']
+Nome: SECTI
+Transparência ativa: True
+Links: ['https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/comite-interno-de-governanca/', 'https://secti.df.gov.br/category/institucional/governanca/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/']
+Nome: SEDES
+Transparência ativa: True
+Links: ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/sedes-inicia-a-reestruturacao-do-comite-interno-de-governanca-publica/']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: None
+##################3
+Download_minutes ['https://www.educacao.df.gov.br/governanca-apresentacao/', 'https://www.educacao.df.gov.br/governanca-apresentacao/']
+Nome: SEE
+Transparência ativa: True
+Links: ['https://www.educacao.df.gov.br/governanca-apresentacao/', 'https://www.educacao.df.gov.br/governanca-apresentacao/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+Nome: SELDF
+Transparência ativa: True
+Links: ['https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
+Nome: SEEC
+Transparência ativa: True
+Links: ['https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: SEDUH
+Transparência ativa: True
+Links: ['https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/']
+minutes: ['https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-1%C2%AA-Reuni%C3%A3o.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/SEI_GDF-92454498-Ata.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/6-reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/Reuniao-CIG_7a-ata.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: ['https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-1%C2%AA-Reuni%C3%A3o.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/SEI_GDF-92454498-Ata.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/6-reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/Reuniao-CIG_7a-ata.pdf']
+minutes: ['https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-1%C2%AA-Reuni%C3%A3o.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/SEI_GDF-92454498-Ata.pdf', 'https://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/6-reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2022/06/Reuniao-CIG_7a-ata.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+Download_pdf_by_link
+donwload_pdf_by_link. Erro ao acessar link: http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf
+Download_pdf_by_link
+donwload_pdf_by_link. Erro ao acessar link: http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf
+Download_pdf_by_link
+donwload_pdf_by_link. Erro ao acessar link: http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf
+##################3
+Download_minutes ['https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/', 'https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf', 'https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/']
+Nome: SEJUS
+Transparência ativa: True
+Links: ['https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/', 'https://www.sejus.df.gov.br/wp-conteudo/uploads/2021/01/ATA-DA-1a-REUNIAO-DO-COMITE-INTERNO-DE-GOVERNANCA-%25E2%2580%2593-CIG-SEJUS-2019.pdf', 'https://www.sejus.df.gov.br/comite-interno-de-governanca-publica-2/']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://www.sema.df.gov.br/wp-conteudo/uploads/2020/07/ATA_1_Reuniao_20_02_11_CIG__Comite_Interno_de_Governanc_amp__807_a.pdf', 'https://sema.df.gov.br/governanca-local/', 'https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://sema.df.gov.br/governanca-local/']
+Nome: SEMA
+Transparência ativa: True
+Links: ['https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://www.sema.df.gov.br/wp-conteudo/uploads/2020/07/ATA_1_Reuniao_20_02_11_CIG__Comite_Interno_de_Governanc_amp__807_a.pdf', 'https://sema.df.gov.br/governanca-local/', 'https://www.sema.df.gov.br/comite-interno-de-governanca/', 'https://sema.df.gov.br/governanca-local/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/wp-conteudo/uploads/2022/09/Portaria-6-de-29_05_2019-Comite-Interno-de-Governanca-Publica.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: SMDF
+Transparência ativa: True
+Links: ['https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/wp-conteudo/uploads/2022/09/Portaria-6-de-29_05_2019-Comite-Interno-de-Governanca-Publica.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.so.df.gov.br/secretaria-e-referencia-em-evento-sobre-governanca/']
+Nome: SODF
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://familiaejuventude.df.gov.br/comite-interno-de-governanca/', 'https://familiaejuventude.df.gov.br/comite-interno-de-governanca/']
+Nome: SEJUV
+Transparência ativa: False
+minutes: ['http://familiaejuventude.df.gov.br/wp-conteudo/uploads/2023/08/SEI_04036_00000292_2023_92-2.pdf']
+minutes: ['http://familiaejuventude.df.gov.br/wp-conteudo/uploads/2023/08/SEI_04036_00000292_2023_92-2.pdf']
+Download_pdf_by_link
+donwload_pdf_by_link. Erro ao acessar link: http://familiaejuventude.df.gov.br/wp-conteudo/uploads/2023/08/SEI_04036_00000292_2023_92-2.pdf
+##################3
+Download_minutes ['https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude', 'https://www.saude.df.gov.br/documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173', 'https://www.saude.df.gov.br/documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude']
+Nome: SES
+Transparência ativa: False
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /documents/37101/0/Ata%2B4%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B.pdf/e69cc059-6438-7fce-788c-314001118e19%3Ft%3D1709662028173 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /documents/37101/0/Ata%2B5%25C2%25AA%2BREUNI%25C3%2583O%2BORDINARIA%2B%2B%25281%2529.pdf/7fe6a128-859b-8d93-9b25-9381d655cf81%3Ft%3D1709662045150 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/wp-conteudo/uploads/2023/06/CIGESP_113744189.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.cg.df.gov.br/wp-conteudo/uploads/2024/04/Guia-Comite-Interno-de-Governanca-Publica-CGDF-nv.pdf', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/']
+Nome: SSP
+Transparência ativa: True
+Links: ['https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/wp-conteudo/uploads/2023/06/CIGESP_113744189.pdf', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.cg.df.gov.br/wp-conteudo/uploads/2024/04/Guia-Comite-Interno-de-Governanca-Publica-CGDF-nv.pdf', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.ssp.df.gov.br/comite-interno-de-governanca-publica-e-gestao-estrategica-cigesp/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.ssp.df.gov.br/comite-de-governanca-e-gestao-de-tecnologia-da-informacao-e-de-comunicacao-cgtic/']
+minutes: ['/wp-conteudo/uploads/2024/01/9a-REUNIAO-ORDINARIA-DO-COMITE-INTERNO-DE-GOVERNANCA-PUBLICA-E-GESTAO-ESTRATEGIA-–-CIGESP.pdf', 'http://www.ssp.df.gov.br/wp-conteudo/uploads/2023/10/8_Ata_CIGESP.pdf']
+minutes: None
+minutes: None
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/Ata-8-Reuniao-CGTIC.pdf', '/wp-conteudo/uploads/2023/11/7a-REUNIAO-ORDINARIA-DO-CGTIC.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/9a-REUNIAO-ORDINARIA-DO-COMITE-INTERNO-DE-GOVERNANCA-PUBLICA-E-GESTAO-ESTRATEGIA-–-CIGESP.pdf', 'http://www.ssp.df.gov.br/wp-conteudo/uploads/2023/10/8_Ata_CIGESP.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/9a-REUNIAO-ORDINARIA-DO-COMITE-INTERNO-DE-GOVERNANCA-PUBLICA-E-GESTAO-ESTRATEGIA-–-CIGESP.pdf', 'http://www.ssp.df.gov.br/wp-conteudo/uploads/2023/10/8_Ata_CIGESP.pdf']
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['/wp-conteudo/uploads/2024/01/Ata-8-Reuniao-CGTIC.pdf', '/wp-conteudo/uploads/2023/11/7a-REUNIAO-ORDINARIA-DO-CGTIC.pdf']
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo/uploads/2024/01/Ata-8-Reuniao-CGTIC.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo/uploads/2024/01/Ata-8-Reuniao-CGTIC.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo/uploads/2023/11/7a-REUNIAO-ORDINARIA-DO-CGTIC.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo/uploads/2023/11/7a-REUNIAO-ORDINARIA-DO-CGTIC.pdf?
+##################3
+Download_minutes ['https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/', 'https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/']
+Nome: SEDET
+Transparência ativa: True
+Links: ['https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/', 'https://sedet.df.gov.br/category/comite-interno-de-governanca-publica/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['http://regionalizacao.turismo.gov.br/images/roteiros_brasil/institucionalizacao_da_instancia_de_governanca_regional.pdf']
+Nome: SETUR
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: SEAPE
+Transparência ativa: True
+Links: ['https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+Nome: SEPD
+Transparência ativa: True
+Links: ['https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.sedes.df.gov.br/comite-interno-de-governanca-publica-cigp/', 'https://www.economia.df.gov.br/comite-interno-de-governanca/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.seduh.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.mulher.df.gov.br/comite-interno-de-governanca-publica/', 'https://seape.df.gov.br/comite-interno-de-governanca-publica/', 'https://esporte.df.gov.br/comite-interno-de-governanca/']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: None
+minutes: None
+minutes: None
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+minutes: ['http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___138160182___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___137364952___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___133447046___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___132335836___Ata.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___140346043___Ata-3.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___143151930___Ata-4.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___145658729___Ata-5.pdf', 'http://sedes.df.gov.br/wp-conteudo/uploads/2023/05/SEI_GDF___147303818___Ata-3-PONTO-ELETRONICO.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2024/04/SEI_GDF___129412332___Ata.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Extraordinari.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-6a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/5a-Reuniao-Extraordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-5a-Reuniao-Ordinaria.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-4a-Reuniao-Extraordinaria-1.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_04.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.O_03.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/08/R.E_02.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Ordinaria-No-2-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata-da-Reuniao-Extraordinaria-No-1-CIGP.pdf', 'http://www.sedes.df.gov.br/wp-conteudo/uploads/2023/05/Ata_da_Reuniao_Ordinaria_N__1___CIGP.pdf']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.economia.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: ['http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/ATA-4a-Reuniao-CIG.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-3-reuniao.pdf', 'http://www.seduh.df.gov.br/wp-conteudo/uploads/2019/08/Ata-da-2-reuniao.pdf']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.pg.df.gov.br/comite-interno-de-governanca-publica-da-procuradoria-geral-do-distrito-federal-cig-pgdf/', 'https://pg.df.gov.br/comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/', 'https://pg.df.gov.br/comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/']
+Nome: PGDF
+Transparência ativa: False
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica-da-procuradoria-geral-do-distrito-federal-cig-pgdf/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='pg.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-da-pgdf-realiza-a-3a-reuniao-de-avaliacao-da-estrategia/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_04_10_22.pdf', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_08.24.pdf', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_14.05.24.pdf', 'https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca']
+Nome: PCDF
+Transparência ativa: True
+Links: ['https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_04_10_22.pdf', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_08.24.pdf', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca', 'https://www.pcdf.df.gov.br/images/conteudo/gci/DIPLANE/ATAS/Ata_CIG_14.05.24.pdf', 'https://www.pcdf.df.gov.br/institucional/gestao-estrategica/8833/governanca', 'https://www.pcdf.df.gov.br/unidades-policiais/escola-superior/museu-de-drogas/contato/8833/governanca']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.pmdf.df.gov.br/estrategia-governanca-gestao/']
+Nome: PMDF
+Transparência ativa: False
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.pmdf.df.gov.br', port=443): Max retries exceeded with url: /estrategia-governanca-gestao/ (Caused by SSLError(CertificateError("hostname 'www.pmdf.df.gov.br' doesn't match either of '*.pm.df.gov.br', 'pm.df.gov.br'")))
+minutes: None
+##################3
+Download_minutes ['https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf', 'https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/']
+Nome: CBM
+Transparência ativa: True
+Links: ['https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/', 'https://gesint.cbm.df.gov.br/wp-content/uploads/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf', 'https://www.cbm.df.gov.br/governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/atas-das-reunioes-de-governanca/', 'https://www.cbm.df.gov.br/governanca-e-gestao/', 'https://gesint.cbm.df.gov.br/governanca-e-gestao/governanca/', 'https://www.cbm.df.gov.br/6a-reuniao-do-comite-interno-de-governanca-do-cbmdf/']
+minutes: ['https://www.cbm.df.gov.br/download/8o_reunia%cc%83o_gr_ata_bg-186_01out2021-pdf/', 'https://www.cbm.df.gov.br/download/10a-reuniao-gr-ata-bg-046_09mar2022-pdf/', 'https://www.cbm.df.gov.br/download/11a-reuniao-gr-ata-bg-094-20mai2022-pdf/']
+minutes: ['https://gesint.cbm.df.gov.br/rycymimp/2023/02/1aREUNIAO_CIG_ATA_ANEXO-I_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CIG_ATA_ANEXO-II_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-231-11dez2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CIG_ATA_ANEXO-I_BG-224-02DEZ2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-240-24dez2021-1.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-I_BG-042-04MAR2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-IV_BG-002-03jan2023.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/5aREUNIAO_CIG_ATA_ANEXO-II_BG-081-30abr2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/7aREUNIAO_CIG_ATA_BG-212-12nov2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/8aREUNIAO_CIG_ATA_BG-040-25fev2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/9aREUNIAO_CIG_ATA_BG-093-19mai2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/10aREUNIAO_CIG_ATA_BG-167-05set2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf']
+minutes: ['https://www.cbm.df.gov.br/download/1a_reuniao_gr_ata_sei_27855798_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/2a-reuniao_gr_ata_sei_31783085_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/3a-reuniao_gr_ata_anexo-i_bg-095-21mai2020-pdf/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: ['https://www.cbm.df.gov.br/download/8o_reunia%cc%83o_gr_ata_bg-186_01out2021-pdf/', 'https://www.cbm.df.gov.br/download/10a-reuniao-gr-ata-bg-046_09mar2022-pdf/', 'https://www.cbm.df.gov.br/download/11a-reuniao-gr-ata-bg-094-20mai2022-pdf/']
+minutes: ['https://gesint.cbm.df.gov.br/rycymimp/2023/02/1aREUNIAO_CIG_ATA_ANEXO-I_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CIG_ATA_ANEXO-II_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-231-11dez2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CIG_ATA_ANEXO-I_BG-224-02DEZ2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-240-24dez2021-1.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-I_BG-042-04MAR2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-IV_BG-002-03jan2023.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/5aREUNIAO_CIG_ATA_ANEXO-II_BG-081-30abr2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/7aREUNIAO_CIG_ATA_BG-212-12nov2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/8aREUNIAO_CIG_ATA_BG-040-25fev2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/9aREUNIAO_CIG_ATA_BG-093-19mai2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/10aREUNIAO_CIG_ATA_BG-167-05set2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf']
+minutes: ['https://gesint.cbm.df.gov.br/rycymimp/2023/02/1aREUNIAO_CIG_ATA_ANEXO-I_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CIG_ATA_ANEXO-II_BG-095-21mai2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/2aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-231-11dez2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CIG_ATA_ANEXO-I_BG-224-02DEZ2020.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/3aREUNIAO_CONJUNTA_CIG_GR_ATA_ANEXO-III_BG-240-24dez2021-1.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-I_BG-042-04MAR2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/4aREUNIAO_CIG_ATA_ANEXO-IV_BG-002-03jan2023.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/5aREUNIAO_CIG_ATA_ANEXO-II_BG-081-30abr2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/6aREUNIAO_CIG_ATA_BG-143-30jul2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/7aREUNIAO_CIG_ATA_BG-212-12nov2021.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/8aREUNIAO_CIG_ATA_BG-040-25fev2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/9aREUNIAO_CIG_ATA_BG-093-19mai2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/10aREUNIAO_CIG_ATA_BG-167-05set2022.pdf', 'https://gesint.cbm.df.gov.br/rycymimp/2023/02/11aREUNIAO_CIG_ATA_BG-212-17nov2022.pdf']
+minutes: ['https://www.cbm.df.gov.br/download/1a_reuniao_gr_ata_sei_27855798_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/2a-reuniao_gr_ata_sei_31783085_00053-00075835_2019-71-pdf/', 'https://www.cbm.df.gov.br/download/3a-reuniao_gr_ata_anexo-i_bg-095-21mai2020-pdf/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.arquivopublico.df.gov.br/audio/teste/', 'https://www.arquivopublico.df.gov.br/audio/teste/']
+Nome: ARPDF
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.adasa.df.gov.br/images/storage/governanca/atas_reunioes/Pauta1_Reuniao_CIG_01_04_2024_1_Geral.pdf']
+Nome: ADASA
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/']
+Nome: DETRAN-DF
+Transparência ativa: True
+Links: ['https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/', 'https://www.detran.df.gov.br/atas-e-agendas-do-comite-interno-de-governanca-publica-do-detran-df/']
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude']
+Nome: INAS
+Transparência ativa: True
+Links: ['https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca/', 'https://inas.df.gov.br/governanca-e-gestao-estrategica/', 'https://www.saude.df.gov.br/governanca-publica-de-sistemas-e-servicos-de-saude']
+minutes: ['http://inas.df.gov.br/wp-content/uploads/2022/11/ATA1.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/ata-da-2o-reuniao-do-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-130321829-Ata-3-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-133467793-Ata-5-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2024/08/SEI_GDF-142620733-Ata-6aReuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-147649292-Ata-7-Reuniao-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-151223741-Ata-8-Reuniao-CIG.pdf']
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+minutes: ['http://inas.df.gov.br/wp-content/uploads/2022/11/ATA1.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/ata-da-2o-reuniao-do-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-130321829-Ata-3-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-133467793-Ata-5-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2024/08/SEI_GDF-142620733-Ata-6aReuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-147649292-Ata-7-Reuniao-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-151223741-Ata-8-Reuniao-CIG.pdf']
+minutes: ['http://inas.df.gov.br/wp-content/uploads/2022/11/ATA1.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/ata-da-2o-reuniao-do-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-130321829-Ata-3-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-133467793-Ata-5-reuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2024/08/SEI_GDF-142620733-Ata-6aReuniao.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-147649292-Ata-7-Reuniao-CIG.pdf', 'http://inas.df.gov.br/wp-content/uploads/2022/09/SEI_GDF-151223741-Ata-8-Reuniao-CIG.pdf']
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.saude.df.gov.br', port=443): Max retries exceeded with url: /governanca-publica-de-sistemas-e-servicos-de-saude (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/']
+Nome: IPREV
+Transparência ativa: True
+Links: ['https://www.iprev.df.gov.br/comite-interno-de-gestao-de-governanca-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/', 'https://www.iprev.df.gov.br/atas-das-reunioes-cig/']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-gestao-de-governanca-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /atas-das-reunioes-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /atas-das-reunioes-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.iprev.df.gov.br', port=443): Max retries exceeded with url: /atas-das-reunioes-cig/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/wp-content/uploads/2020/12/5a-Ata-de-reuniao-Comite-Interno-Governanca.pdf', 'https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/']
+Nome: IBRAM
+Transparência ativa: True
+Links: ['https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/wp-content/uploads/2020/12/5a-Ata-de-reuniao-Comite-Interno-Governanca.pdf', 'https://www.ibram.df.gov.br/comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2022-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.ibram.df.gov.br/atas-de-reunioes-de-2019-comite-interno-de-governanca/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf', 'https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/comite-interno-de-governanca/']
+Nome: SLU
+Transparência ativa: True
+Links: ['https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf', 'https://www.slu.df.gov.br/comite-interno-de-governanca/', 'https://www.slu.df.gov.br/comite-interno-de-governanca/']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /wp-content/uploads/2022/06/SEI_GDF-87432257-Ata-de-Reuniao-CGI-03-2022.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.slu.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://www.terracap.df.gov.br/index.php/component/attached/%3Ftask%3Ddownload%26id%3D13148']
+Nome: TERRACAP
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/']
+Nome: IPEDF
+Transparência ativa: True
+Links: ['https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/', 'https://www.ipedf.df.gov.br/comite-interno-de-governanca-publica/']
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.ipedf.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica/ (Caused by SSLError(CertificateError("hostname 'www.ipedf.df.gov.br' doesn't match either of 'ipe.df.gov.br', 'www.ipe.df.gov.br'")))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='www.ipedf.df.gov.br', port=443): Max retries exceeded with url: /comite-interno-de-governanca-publica/ (Caused by SSLError(CertificateError("hostname 'www.ipedf.df.gov.br' doesn't match either of 'ipe.df.gov.br', 'www.ipe.df.gov.br'")))
+minutes: None
+##################3
+Download_minutes ['https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: CAESB
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.novacap.df.gov.br/governanca/']
+Nome: NOVACAP
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://www.emater.df.gov.br/governanca-corporativa/']
+Nome: EMATER
+Transparência ativa: False
+minutes: None
+##################3
+Download_minutes ['https://tcb.df.gov.br/wp-content/uploads/2020/09/Carta-Anual-de-Governan%25C3%25A7a.pdf', 'https://tcb.df.gov.br/carta-anual-de-politicas-publicas-e-governanca-corporativa/']
+Nome: TCB
+Transparência ativa: False
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='tcb.df.gov.br', port=443): Max retries exceeded with url: /wp-content/uploads/2020/09/Carta-Anual-de-Governan%25C3%25A7a.pdf (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+get_pdf_links. Erro na requisição: HTTPSConnectionPool(host='tcb.df.gov.br', port=443): Max retries exceeded with url: /carta-anual-de-politicas-publicas-e-governanca-corporativa/ (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)')))
+minutes: None
+##################3
+Download_minutes ['https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: BRB
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: CEB
+Transparência ativa: False
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1', 'https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1']
+Nome: FAP
+Transparência ativa: True
+Links: ['https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1', 'https://www.fap.df.gov.br/atas-cig-2023/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/2024-2/', 'https://www.fap.df.gov.br/comite-interno-de-governanca-cig/', 'https://www.fap.df.gov.br/category/governanca/%3Fpage%3D1']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-110814498-Ata.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-111253880-Ata.pdf']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2024/09/SEI_GDF-149838031-Ata-da-3a-Reuniao-Ordinaria-do-Comite-Interno-de-Governanca-CIG-FAPDF.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/08/Ata-da-2a-reuniao-do-CIG.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/03/SEI_GDF-136044322-Ata.pdf']
+minutes: None
+minutes: None
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-110814498-Ata.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2023/09/SEI_GDF-111253880-Ata.pdf']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2024/09/SEI_GDF-149838031-Ata-da-3a-Reuniao-Ordinaria-do-Comite-Interno-de-Governanca-CIG-FAPDF.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/08/Ata-da-2a-reuniao-do-CIG.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/03/SEI_GDF-136044322-Ata.pdf']
+minutes: ['http://www.fap.df.gov.br/wp-content/uploads/2024/09/SEI_GDF-149838031-Ata-da-3a-Reuniao-Ordinaria-do-Comite-Interno-de-Governanca-CIG-FAPDF.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/08/Ata-da-2a-reuniao-do-CIG.pdf', 'http://www.fap.df.gov.br/wp-content/uploads/2024/03/SEI_GDF-136044322-Ata.pdf']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.fhb.df.gov.br/governanca/', 'https://www.hemocentro.df.gov.br/wp-content/uploads/2019/11/governanca-ata-reuniao-2019-09-26.pdf', 'https://www.fhb.df.gov.br/governanca/', 'https://www.fhb.df.gov.br/governanca/']
+Nome: FHB
+Transparência ativa: True
+Links: ['https://www.fhb.df.gov.br/governanca/', 'https://www.hemocentro.df.gov.br/wp-content/uploads/2019/11/governanca-ata-reuniao-2019-09-26.pdf', 'https://www.fhb.df.gov.br/governanca/', 'https://www.fhb.df.gov.br/governanca/']
+minutes: None
+minutes: None
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+Nome: FJZB
+Transparência ativa: True
+Links: ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://brasiliaambiental.df.gov.br/atas-de-reunioes-de-2024-comite-interno-de-governanca/']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: None
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: None
+##################3
+Download_minutes ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/']
+Nome: JBB
+Transparência ativa: True
+Links: ['https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/', 'https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+minutes: ['/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf', '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf', '/wp-conteudo//uploads/2024/07/13ataCIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf', '/wp-conteudo//uploads/2024/06/Ata-11.pdf', '/wp-conteudo//uploads/2024/04/ata10.pdf', '/wp-conteudo//uploads/2024/04/Ata09.pdf', '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf', '/wp-conteudo//uploads/2024/02/Ata-7.pdf', '/wp-conteudo//uploads/2024/01/ata6.pdf', '/wp-conteudo//uploads/2023/12/Ata5.pdf', '/wp-conteudo//uploads/2023/12/Ata4.pdf', '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf', '/wp-conteudo//uploads/2023/12/Ata2.pdf', '/wp-conteudo//uploads/2023/12/Ata1.pdf']
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/09/ata-15.CIG_.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/09/ata_14.CIG_.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/07/13ataCIG.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/07/13ataCIG.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/06/Ata-12-CIG.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/06/Ata-11.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/06/Ata-11.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/04/ata10.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/04/ata10.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/04/Ata09.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/04/Ata09.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/02/SEI_GDF-132757704-Ata.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/02/Ata-7.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/02/Ata-7.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2024/01/ata6.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2024/01/ata6.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2023/12/Ata5.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2023/12/Ata5.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2023/12/Ata4.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2023/12/Ata4.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2021/09/SEI_GDF-120973478-Ata-3-reuniao-CIG.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2023/12/Ata2.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2023/12/Ata2.pdf?
+donwload_pdf_by_link. Erro na requisção: Invalid URL '/wp-conteudo//uploads/2023/12/Ata1.pdf': No scheme supplied. Perhaps you meant https:///wp-conteudo//uploads/2023/12/Ata1.pdf?
+##################3
+Download_minutes ['https://www.universidade.df.gov.br/comite-interno-cigp/', 'https://www.universidade.df.gov.br/comite-interno-cigp/']
+Nome: UNDF
+Transparência ativa: True
+Links: ['https://www.universidade.df.gov.br/comite-interno-cigp/', 'https://www.universidade.df.gov.br/comite-interno-cigp/']
+minutes: None
+minutes: None
+##################3
+Download_minutes ['https://egov.df.gov.br/wp-content/uploads/2023/07/Apresentacao-%25E2%2580%2593-Governanca-Publica-%25E2%2580%2593-modelo-aplicado-ao-GDF.pdf']
+Nome: EGOV
+Transparência ativa: False
+minutes: None

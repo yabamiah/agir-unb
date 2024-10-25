@@ -579,21 +579,6 @@ filter_cig_minutes_webpage
             response = requests.get(url.split('&')[0])
             links_list = []
             
-            # meeting_minutes_patterns = [
-            #     re.compile(r'ata da \d+ª reunião', re.IGNORECASE),
-            #     re.compile(r'ata \d+ª reunião', re.IGNORECASE),
-            #     re.compile(r'\d+ª reunião', re.IGNORECASE),
-            #     re.compile(r'ata da reunião extraordinária Nº \d{1,2}', re.IGNORECASE),
-            #     re.compile(r'ata da reunião extraordinária Nº\d{1,2}', re.IGNORECASE),
-            #     re.compile(r'ata da reunião extraordinária nº \d{1,2}', re.IGNORECASE),
-            #     re.compile(r'ata da reunião extraordinária nº\d{1,2}', re.IGNORECASE),
-            #     re.compile(r'ata da reunião ordinária Nº\d{1,2}', re.IGNORECASE),
-            #     re.compile(r'ata da reunião ordinária Nº \d{1,2}', re.IGNORECASE),
-            #     re.compile(r'ata da reunião ordinária nº\d{1,2}', re.IGNORECASE),
-            #     re.compile(r'ata da reunião ordinária Nº\d{1,2}', re.IGNORECASE),
-            #     re.compile(r'Ata de reunião \d{1,2}', re.IGNORECASE),
-            #     re.compile(r'atas das reuniões cig', re.IGNORECASE)
-            # ]
             meeting_minutes_patterns = [
                 re.compile(r'ata(?:s)? da (?:\d+ª )?reunião (?:ordinária|extraordinária)?(?: nº? \d{1,2})?', re.IGNORECASE),
                 re.compile(r'ata \d+ª reunião', re.IGNORECASE),
@@ -602,25 +587,21 @@ filter_cig_minutes_webpage
                 re.compile(r'atas das reuniões cig', re.IGNORECASE)
             ]
 
-
-            if (response.status_code == 200):
+            if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 links = soup.find_all('a')
                 
                 for link in links:
                     link_url = link.get('href')
                     link_text = link.get_text().lower()
-                    # print(f"link url: {link_url}")
-                    # print(f"link url: {link_text}")
-                    if link_url != None:
+
+                    if link_url:
                         for pattern in meeting_minutes_patterns:
                             if pattern.match(link_text):
-                                print("####")
-                                print("match: ", link_text)
-                                href = link.get('href')
-                                if href:  # Verifica se href não é None
-                                    links_list.append(href.split('&')[0])
-                                links_list.append(link.split('&')[0])
+                                href = link_url.split('&')[0]  # Usar link_url em vez de href
+                                links_list.append(href)
+
+            return links_list if links_list else None
         
         except requests.RequestException as e:
             print(f"get_pdf_links. Erro na requisição: {e}")
@@ -628,24 +609,22 @@ filter_cig_minutes_webpage
         except Exception as e:
             print(f"get_pdf_links. Erro inesperado: {e}")
             return None
-                            
-        return links_list
-        
-                        
+
     def donwload_minutes(self, orgao: Orgao ) -> None:
         links = orgao.get_links()
-        # print("Download_minutes", links)
-        # print(orgao)
+        print("##################3")
+        print("Download_minutes", links)
+        print(orgao)
         if links != None:
             for link in links:
                 minutes_links = self.get_pdf_links(link)    
-                # print("minutes:", minutes_links)
+                print("minutes:", minutes_links)
 
-            # i = 0        
-            # if minutes_links != None:
-            #     for link in minutes_links:
-            #         self.donwload_pdf_by_link(link, f'data/lara/docs/{orgao._name}_ata{i}.pdf')
-            #         i +=  1
+            i = 0        
+            if minutes_links != None:
+                for link in minutes_links:
+                    self.donwload_pdf_by_link(link, f'data/lara/docs/{orgao}/{orgao._name}_ata{i}.pdf')
+                    i +=  1
 
     def donwload_pdf_by_link(self, url: str, file_name: str) -> bool:
         try:
