@@ -1,25 +1,37 @@
-###################################################################
-## LARA - Levantador Automático de Recursos Administrativos
-##################################################################
+##############################################################
+## LARA - Levantador Automático de Recursos Administrativos ##
+##############################################################
+
+from core.utils.orgao import Orgao
+
+from services.document_service import DocumentService
+
+import time
+import subprocess, os, platform
+from os import makedirs, rmdir
+from os.path import getsize, exists
+import re
+
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+
 from bs4 import BeautifulSoup
 import pandas as pd
-import re
 from unidecode import unidecode
-from core.utils.orgao import Orgao
-import time
-from os.path import getsize
 import json
 
 class Lara:
     def __init__(self) -> None:
+        self.header = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
+        self.path_docx_report = ""
+        self.path_pdf_report = ""
         pass
 
     def read_excel_data(self, filename: str) -> dict[str, bool] | None:
         """Reads data from an Excel file and returns a dictionary with the CIG minutes status for each organization.
-filter_cig_minutes_webpage
+        
         Args:
             filename (str): Name of the Excel file.
 
@@ -76,7 +88,6 @@ filter_cig_minutes_webpage
             if has_minutes:
                 total_with_minutes += 1
                 if org in links_map and len(links_map[org]) > 0:
-                    # print(f"Orgoa: {org}, link: {links_map[org]}")
                     results[org] = True
                     matches += 1
                 else:
@@ -98,14 +109,13 @@ filter_cig_minutes_webpage
             bool: True if the link contains any of the keywords, False otherwise.
         """
 
-        keywords = keywords.split()
+        keywords = set(keywords.split())
 
         for keyword in keywords:
             if len(keyword) <= 2:
                 continue
             keyword = unidecode(keyword)
-            pattern = re.compile(keyword, re.IGNORECASE)
-            if pattern.search(link):
+            if re.search(keyword, link, re.IGNORECASE):
                 return True
         return False
 
@@ -212,11 +222,11 @@ filter_cig_minutes_webpage
 
         is_mista = 0
         for line in file:
-            if ("---" in line):
+            if "---" in line:
                 is_mista = 1
                 continue
 
-            if (not is_mista):
+            if not is_mista:
                 adm_direta.append(line.strip())
             else:
                 mista_publica.append(line.strip())
@@ -224,7 +234,7 @@ filter_cig_minutes_webpage
         file.close()
         return 0
 
-    def search_link_cig(self, acronym: str, org: str, param: str, base_link: str, header: dict, limit: int) -> dict[str, list[str]]:
+    def search_link_cig(self, acronym: str, org: str, param: str, base_link: str, limit: int) -> dict[str, list[str]]:
         """Performs a search for links related to the Internal Governance Committee (CIG) for a specific organization.
 
         Args:
@@ -238,42 +248,26 @@ filter_cig_minutes_webpage
         Returns:
             dict[str, list[str]]: Dictionary with the acronyms of the organizations as keys and lists of links as values.
         """
+        
         org_name_params = [acronym + " df", org]
         org_link_dict = {}
 
         try:
             for org_name_param in org_name_params:
                 search_param = f"{base_link}{org_name_param}{param}"
-                source = requests.get(search_param, header, verify=False)
+                source = requests.get(search_param, self.header, verify=False)
 
                 if source.status_code != 200:
                     print("Erro ao acessar a página")
                     continue
 
                 soup = BeautifulSoup(source.text, 'lxml')
-
-                for g in soup.find_all('div',  {'class': 'Gx5Zad'}):
-                    links = g.find_all('a')
-                    links = links[:limit]
-
-                    for link in links:
-                        link_addrs = str(link['href'])
-                        link_text = link.get_text().lower()
-
-                        if (("comitê interno de governança" in link_text) or ("governança" in link_text) or (("atas" in link_text) and "cig" in link_text)):
-                            if (acronym.lower() in link_addrs and "df" in link_addrs) or ((self.check_keywords(link_addrs, org) and "df" in link_addrs)):
-                                if link_addrs.split("=")[1] not in org_link_dict.get(acronym, []):
-                                    org_link_dict.setdefault(acronym, []).append(
-                                        link_addrs.split("=")[1].split('&')[0])
-                        elif (("gestão" in link_text and "risco" in link_text) or
-                              ("gestão" in link_text and "governança" in link_text)):
-                            if ((acronym.lower() in link_addrs and "df" in link_addrs) or (self.check_keywords(link_addrs, org) and "df" in link_addrs)):
-                                if link_addrs.split("=")[1] not in org_link_dict.get(acronym, []):
-                                    org_link_dict.setdefault(acronym, []).append(
-                                        link_addrs.split("=")[1].split('&')[0])
-
-                if org_link_dict.get(acronym) != None:
-                    break
+                links = self.extract_links(soup, acronym, org, limit)
+                
+                for link in links:
+                    link_addrs = link['href']
+                    if link_addrs not in org_link_dict.get(acronym, []):
+                        org_link_dict.setdefault(acronym, []).append(link_addrs.split("=")[1].split('&')[0])
 
         except requests.RequestException as e:
             print(f"search_link_cig. Erro na requisição HTTP: {e}")
@@ -282,14 +276,59 @@ filter_cig_minutes_webpage
 
         return org_link_dict
     
+    def extract_links(self, soup: BeautifulSoup, acronym: str, org: str, limit: int):
+        """
+        Extracts relevant links from a web page based on specific keywords in the link text and URL.
+
+        Args:
+            soup (BeautifulSoup): BeautifulSoup object representing the parsed HTML page.
+            acronym (str): Acronym of the organization used to filter links by checking the acronym in the URL.
+            org (str): Name of the organization, used for filtering based on relevant keywords in the link.
+            limit (int): Maximum number of links to extract from each section of the page.
+
+        Returns:
+            list: A list of link elements (`<a>`), containing the `href` and associated text, that match the search criteria.
+        """
     
-    def save_links_to_json(self, links_dict: dict[str, list[str]], filename: str):
-        """Saves the processed links to a JSON file."""
+        links = []
+        for g in soup.find_all('div',  {'class': 'Gx5Zad'}):
+            found_links = g.find_all('a')[:limit]
+            for link in found_links:
+                link_text = link.get_text().lower()
+                link_href = str(link['href'])
+                
+                if ("comitê interno de governança" in link_text or 
+                    "atas" in link_text and "cig" in link_text or
+                    "gestão" in link_text and "risco" in link_text):
+                    if acronym.lower() in link_href and "df" in link_href or self.check_keywords(link_href, org):
+                        links.append(link)
+                        
+        return links
+    
+    def save_links_to_json(self, links_dict: dict[str, list[str]], filename: str) -> None:
+        """Saves the processed links to a JSON file.
+        
+        Args:
+            links_dict (dict[str, list[str]]): Dictionare of links by organizatoin.
+            filename (str): Name of the file.
+            
+        Return:
+            None.
+        """
+        
         with open(filename, 'w') as json_file:
             json.dump(links_dict, json_file, indent=4)
 
     def load_links_from_json(self, filename: str) -> dict[str, list[str]]:
-        """Loads the processed links from a JSON file."""
+        """Loads the processed links from a JSON file.
+        
+        Args:
+            filename (str): Name of the file.
+            
+        Return:
+            None.
+        """
+        
         try:
             with open(filename, 'r') as json_file:
                 return json.load(json_file)
@@ -306,6 +345,21 @@ filter_cig_minutes_webpage
             tuple[bool, None] | tuple[bool, str]: Tuple indicating if the minutes are present and the update date,
             or None in case of failure.
         """
+        
+        data_pattern = re.compile(r'(\d{1,2}/\d{1,2}/\d{2,4})|(\d{4})')
+        update_site_pattern = re.compile(
+            r'Atualizado em \d{1,2}/\d{1,2}/\d{2,4} às ([01]?[0-9]|2[0-3])h[0-5][0-9]', re.IGNORECASE)
+        meeting_minutes_patterns = [
+            re.compile(r'ata da \d+ª reunião', re.IGNORECASE),
+            re.compile(r'ata \d+ª reunião', re.IGNORECASE),
+            re.compile(r'\d+ª reunião', re.IGNORECASE),
+            re.compile(
+                r'ata da reunião extraordinária Nº \d{1,2}', re.IGNORECASE),
+            re.compile(r'ata reunião ordinária Nº \d{1,2}', re.IGNORECASE),
+            re.compile(r'Ata de reunião \d{1,2}', re.IGNORECASE),
+            re.compile(r'atas das reuniões cig', re.IGNORECASE)
+        ]
+            
         if ".pdf" in url:
             return False, None
         
@@ -319,25 +373,8 @@ filter_cig_minutes_webpage
         session.mount('http://', adapter)
         session.mount('https://', adapter)
         try:
-            header = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
-            response = session.get(url, headers=header, verify=False, timeout=10)
+            response = session.get(url, headers=self.header, verify=False, timeout=10)
             response.raise_for_status()
-
-            data_pattern = re.compile(r'(\d{1,2}/\d{1,2}/\d{2,4})|(\d{4})')
-            update_site_pattern = re.compile(
-                r'Atualizado em \d{1,2}/\d{1,2}/\d{2,4} às ([01]?[0-9]|2[0-3])h[0-5][0-9]', re.IGNORECASE)
-
-            meeting_minutes_patterns = [
-                re.compile(r'ata da \d+ª reunião', re.IGNORECASE),
-                re.compile(r'ata \d+ª reunião', re.IGNORECASE),
-                re.compile(r'\d+ª reunião', re.IGNORECASE),
-                re.compile(
-                    r'ata da reunião extraordinária Nº \d{1,2}', re.IGNORECASE),
-                re.compile(r'ata reunião ordinária Nº \d{1,2}', re.IGNORECASE),
-                re.compile(r'Ata de reunião \d{1,2}', re.IGNORECASE),
-                re.compile(r'atas das reuniões cig', re.IGNORECASE)
-            ]
 
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
@@ -387,13 +424,12 @@ filter_cig_minutes_webpage
             tuple[bool, bool, None] | tuple[bool, bool, str]: Tuple indicating if the minutes are present and the update date,
             or None in case of failure.
         """
+        
         if ".pdf" in url:
             return False, False, None
 
         try:
-            header = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
-            response = requests.get(url, headers=header, verify=False)
+            response = requests.get(url, headers=self.header, verify=False)
             
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
@@ -404,9 +440,9 @@ filter_cig_minutes_webpage
                 update_site_pattern = re.compile(
                     r'Atualizado em \d{1,2}/\d{1,2}/\d{2,4} às ([01]?[0-9]|2[0-3])h[0-5][0-9]', re.IGNORECASE)
                 decreto_pattern1 = re.compile(
-                    r"decreto\s+n[°º]\s*39\.736(?:,?\s*de\s*28\s*de\s*março\s*de\s*2019)?|decreto\s+n[°º]\s*39\.736/?2019", re.IGNORECASE)
+                    r'decreto\s+n[°º]\s*39\.736(?:,?\s*de\s*28\s*de\s*março\s*de\s*2019)?|decreto\s+n[°º]\s*39\.736/?2019', re.IGNORECASE)
                 decreto_pattern2 = re.compile(
-                    r"decreto\s+n[°º]\s*37\.297(?:,?\s*de\s*29\s*de\s*abril\s*de\s*2016)?|decreto\s+n[°º]\s*37\.297/?2016", re.IGNORECASE)
+                    r'decreto\s+n[°º]\s*37\.297(?:,?\s*de\s*29\s*de\s*abril\s*de\s*2016)?|decreto\s+n[°º]\s*37\.297/?2016', re.IGNORECASE)
 
                 target_text1 = "comitê interno de governança".lower()
                 target_text1_1 = "comitê de governança e estratégia".lower()
@@ -485,14 +521,15 @@ filter_cig_minutes_webpage
             return False, False, None
 
     def filter_dict_orgaos(self, dict_orgao_links: dict[str, list[str]]) -> list[Orgao]:
-        """_summary_
+        """Filter links to catch CIG sites.
 
         Args:
             dict_orgao_links (dict[str, list[str]]): Dictionary with the name of the organizations as keys and lists of links as values.
 
         Returns:
             list[Orgao]: A list with Orgao object containing informations about organizations links filtered.
-        """        
+        """       
+         
         list_ogaos = []
         for orgao_name, links in dict_orgao_links.items():
             orgao = Orgao(orgao_name, links, transparency_active=False)
@@ -507,16 +544,14 @@ filter_cig_minutes_webpage
                 processed_links.add(base_link)
                 
                 is_cig_page, last_page_updt = self.filter_cig_minutes_webpage(base_link)
-                # print(f"Orgão: {orgao}, is_cig_page: {is_cig_page}")
                 time.sleep(3)
                 if is_cig_page:
                     orgao.add_link_cig(base_link, last_page_updt)
                     orgao.add_transparency_active(True)
                 
                 is_portal_page, has_minutes, last_page_updt = self.filter_portal_webpage(base_link)
-                # print(f"Orgão: {orgao}, is_cig_page: {is_portal_page}")
                 time.sleep(3)
-                if is_portal_page:
+                if is_portal_page: 
                     orgao.add_link_portal(base_link, last_page_updt)
                     if has_minutes:
                         orgao.add_portalPage_has_minutes(True)
@@ -526,11 +561,61 @@ filter_cig_minutes_webpage
             
         return list_ogaos
     
-    def generate_report(self) -> None:
-        # Gerar relatório da pesquisa da LARA
+    def generate_docx_report(self, content: str) -> None:
+        """Generate a report with the collected links by organizations and the number os the results.
+    
+        Args:
+            content (str): Content of the report.
+            
+        Return:
+            None.    
+        """       
+        
+        service = DocumentService()
+        self.path_docx_report = service.create_document(
+            title="Relatório de Mineração de Dados - LARA",
+            content=content,
+            footer="LARA - Levantador Automático de Recursos Administrativos",
+            file_name="realtorio_lara.docx"
+        )
+        print(f"Documento criado: {self.path_docx_report}")
+        
+    def generate_pdf_report(self) -> None:
+        """
+        Converts a Word document (.docx) report into a PDF format.
+
+        Behavior:
+            - Utilizes the `convert_docx_to_pdf` method from `DocumentService` 
+            to convert the report specified by `self.path_docx_report` into a PDF.
+
+        Precondition:
+            - The `self.path_docx_report` attribute must contain a valid path 
+            to the existing Word document (.docx) report.
+
+        Postcondition:
+            - A PDF version of the report is generated in the same directory or 
+            specified by the `convert_docx_to_pdf` implementation.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+
+        DocumentService.convert_docx_to_pdf(input=self.path_docx_report)
+            
+    def execute(self) -> None:
+        """Execute Lara bot.
+    
+        Args:
+            None.
+            
+        Return:
+            None.    
+        """       
+        
         url_google = "https://google.com/search?q="
-        header = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
         param = " atas comitê interno de governança"
         
         excel = "FAPDF-Segmentoseitensintegridade(versão20.04.Completo)_corrigido(1).xlsx"
@@ -546,42 +631,66 @@ filter_cig_minutes_webpage
         dict_general = {}
         links_json = self.load_links_from_json('data/lara/json_map_links.json')
         
-        if not links_json: # Se tiver vazio
+        if not links_json:
             for orgao in adm_direta:
                 dict_general.update(self.search_link_cig(self.company_acronym(orgao), orgao,
-                            param, url_google, header, 6))
+                            param, url_google, 6))
                 time.sleep(3)
                 
             self.save_links_to_json(dict_general, 'data/lara/json_map_links.json')
         else:
             dict_general = links_json    
         
-        # print(dict_general)
         resul, acertos, total_com_ata, total_sem_ata = self.compare_maps(dados, dict_general)
-        list_orgaos = self.filter_dict_orgaos(dict_general)
+                
+        report_content = (
+            f"Quantidade de órgãos do Distrito Federal minerados: {len(dados.keys())}\n"
+            f"Total de órgãos que possuem atas: {total_com_ata}\n"
+            f"Total de órgãos que não possuem atas: {total_sem_ata}\n"
+            f"Quantidade de acertos da Lara: {acertos}\n"
+            f"Porcentagem de acertos da Lara: {((acertos / total_com_ata) * 100):.2f}%\n\n"
+            "Detalhamento por órgão:\n"
+        )
+                           
+        orgao_details = "\n".join(f"{orgao}: {'Sim' if tem_atas else 'Não'}" for orgao, tem_atas in resul.items())
+        report_content += orgao_details
         
-        # print("Quantidade de órgãos total: ", dados.keys())
-        # print("Total com ata: " + str(total_com_ata))
-        # print("Total sem ata: " + str(total_sem_ata))
-        # print("Quantidade de Acertos: " + str(acertos))
-        # print("Porcentagem de Acertos: " + str((acertos/total_com_ata)*100))
-        # for orgoao, tem_atas in resul.items():
-        #     print(f"{orgoao}: {tem_atas}")
+        list_orgaos = self.filter_dict_orgaos(dict_general)
             
         for orgao in list_orgaos:
-            # print(orgao)
             time.sleep(3)
             self.donwload_minutes(orgao)
             
+        self.generate_docx_report(report_content)
             
     def get_pdf_links(self, url: str) -> list[str] | None:
+        """
+        Extracts a list of PDF links related to meeting minutes from a given URL.
+
+        Args:
+            url (str): The URL of the webpage to scrape for PDF links.
+
+        Returns:
+            list[str] | None: A list of URLs corresponding to the PDF meeting minutes or None if no valid links are found.
+
+        Exceptions:
+            - Prints an error message if the request fails or an unexpected error occurs.
+
+        Details:
+            - Uses a set of regular expressions to match text patterns associated with meeting minutes.
+            - Extracts the `href` attribute from `<a>` tags on the page.
+            - Filters links based on text content and predefined patterns.
+            """
+            
         try:
-            response = requests.get(url.split('&')[0])
+            response = requests.get(url.split('&')[0], headers=self.header, verify=False)
             links_list = []
             
             meeting_minutes_patterns = [
                 re.compile(r'ata(?:s)? da (?:\d+ª )?reunião (?:ordinária|extraordinária)?(?: nº? \d{1,2})?', re.IGNORECASE),
                 re.compile(r'ata \d+ª reunião', re.IGNORECASE),
+                re.compile(r'ata \d+ª reunião', re.IGNORECASE),
+                re.compile(r'https?://[\w\-\.]+/[\w\-\.]+/[\w\-\.]+/[\w\-\.]+/.*(ATA|Ata|ata)[\w\-_]*(_Reuniao|_reuniao|_REUNIAO)?[\w\-_]*\.pdf'),
                 re.compile(r'\d+ª reunião', re.IGNORECASE),
                 re.compile(r'Ata de reunião \d{1,2}', re.IGNORECASE),
                 re.compile(r'atas das reuniões cig', re.IGNORECASE)
@@ -598,10 +707,13 @@ filter_cig_minutes_webpage
                     if link_url:
                         for pattern in meeting_minutes_patterns:
                             if pattern.match(link_text):
-                                href = link_url.split('&')[0]  # Usar link_url em vez de href
+                                href = link_url.split('&')[0]
                                 links_list.append(href)
 
-            return links_list if links_list else None
+                return links_list
+            else:
+                print(f"donwload_pdf_by_link. Erro ao acessar link: {url}. status: {response.status_code} - {response.reason}.")
+                return None
         
         except requests.RequestException as e:
             print(f"get_pdf_links. Erro na requisição: {e}")
@@ -611,41 +723,91 @@ filter_cig_minutes_webpage
             return None
 
     def donwload_minutes(self, orgao: Orgao ) -> None:
-        links = orgao.get_links()
-        print("##################3")
-        print("Download_minutes", links)
-        print(orgao)
-        if links != None:
+        """
+        Downloads all meeting minutes PDF files related to a specific organization.
+
+        Args:
+            orgao (Orgao): An object representing the organization, which contains its name and links.
+
+        Returns:
+            None
+
+        Exceptions:
+            - Prints an error message if the PDF links or downloads fail.
+
+        Details:
+            - Calls `get_pdf_links` to retrieve PDF links for each URL associated with the organization.
+            - Creates a directory for the organization's documents if it doesn't already exist.
+            - Iteratively downloads PDFs and saves them with a sequential naming pattern in the directory.
+        """ 
+
+        try:
+            links = orgao.get_links()      
+            if not links:
+                return
+            
+            diretorio = f'data/lara/docs/{orgao._name}'
+            if not exists(diretorio):
+                makedirs(diretorio)
+                
+            file_counter = 0
             for link in links:
                 minutes_links = self.get_pdf_links(link)    
-                print("minutes:", minutes_links)
-
-            i = 0        
-            if minutes_links != None:
-                for link in minutes_links:
-                    self.donwload_pdf_by_link(link, f'data/lara/docs/{orgao}/{orgao._name}_ata{i}.pdf')
-                    i +=  1
+                
+                if not minutes_links:
+                    continue
+                
+                for pdf_link in minutes_links:
+                    file_name = diretorio + f"/{orgao._name}_ata{file_counter}.pdf"
+                    success = self.donwload_pdf_by_link(pdf_link, file_name)
+                    
+                    if success:
+                        print(f"Downloaded: {file_name}")
+                        file_counter += 1
+                    else:
+                        print(f"Failed to download: {pdf_link}")
+        except Exception as e:
+            print(f"Um erro inesperado ocorreu: {e}")
+            
 
     def donwload_pdf_by_link(self, url: str, file_name: str) -> bool:
+        """
+        Downloads a PDF file from a given URL and saves it to a specified file name.
+
+        Args:
+            url (str): The URL of the PDF file to download.
+            file_name (str): The name and path where the downloaded file will be saved.
+
+        Returns:
+            bool: True if the file is successfully downloaded and valid, False otherwise.
+
+        Exceptions:
+            - Prints an error message if the download fails or an unexpected error occurs.
+
+        Details:
+            - Performs a streaming download to avoid memory issues with large files.
+            - Checks the file size after download to verify integrity.
+            - Logs success or failure messages.
+        """
+        
         try:
-            response = requests.get(url.split('&')[0], stream=True)
-            print("Download_pdf_by_link")
-            if (response == 200):
-                print("Baixando...")
+            response = requests.get(url, stream=True, headers=self.header, verify=False)
+            
+            if response.status_code == 200:
                 with open(file_name, 'wb') as fd:
-                    fd.write(response.content)
-                    # for chunk in response.iter_content(1024):
-                    #     fd.write(chunk)
+                    for chunk in response.iter_content(chunk_size=8192):
+                        fd.write(chunk)
                     
                 file_size = getsize(file_name)
-                print("É para estar baixado")
-                if (file_size == 0):
-                    raise ValueError('O download do arquivo não foi realizado corretamente.')
-                else:
+                if file_size > 0:
                     print("Download realizado com sucesso")
                     return True
+                else:
+                    print("Download falhou")
+                    rmdir(file_name)
+                    return False
             else:
-                print(f"donwload_pdf_by_link. Erro ao acessar link: {url}")
+                print(f"donwload_pdf_by_link. Erro ao acessar link: {url}. status: {response.status_code} - {response.reason}.")
                 return False
                 
         except requests.RequestException as e:
@@ -654,3 +816,56 @@ filter_cig_minutes_webpage
         except Exception as e:
             print(f"donwload_pdf_by_link. Erro na requisção: {e}") 
             return False
+        
+    def get_docx_report(self):
+        """
+        Opens the generated Word document report (.docx) in the default application 
+        for the current operating system.
+
+        Behavior:
+            - On macOS (Darwin): Uses the 'open' command to launch the file.
+            - On Windows: Uses 'os.startfile' to open the file.
+            - On Linux/Unix: Uses the 'xdg-open' command to open the file.
+
+        Precondition:
+            - The `self.path_docx_report` attribute must contain a valid path to the .docx report.
+
+        Raises:
+            - No specific exceptions are handled in this method, but subprocess errors 
+            or missing files may lead to runtime exceptions.
+        """
+        
+        if self.path_docx_report:
+            if platform.system() == 'Darwin': 
+                subprocess.call(('open', self.path_docx_report))
+            elif platform.system() == 'Windows':
+                os.startfile(self.path_docx_report)
+            else:
+                subprocess.call(('xdg-open', self.path_docx_report))
+                
+    def get_pdf_report(self):
+        """
+        Opens the generated PDF report (.pdf) in the default application 
+        for the current operating system.
+
+        Behavior:
+            - On macOS (Darwin): Uses the 'open' command to launch the file.
+            - On Windows: Uses 'os.startfile' to open the file.
+            - On Linux/Unix: Uses the 'xdg-open' command to open the file.
+
+        Precondition:
+            - The `self.path_pdf_report` attribute must contain a valid path to the .pdf report.
+
+        Raises:
+            - No specific exceptions are handled in this method, but subprocess errors 
+            or missing files may lead to runtime exceptions.
+        """
+        
+        if self.path_pdf_report:
+            if platform.system() == 'Darwin':   
+                subprocess.call(('open', self.path_pdf_report))
+            elif platform.system() == 'Windows':
+                os.startfile(self.path_pdf_report)
+            else:                               
+                subprocess.call(('xdg-open', self.path_pdf_report))
+            
