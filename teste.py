@@ -1,15 +1,20 @@
-import urllib3
 import time
 
 from core.models.lara import Lara
+from core.models.dani import Dani
 from core.services.document_service import DocumentService
 
 # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+#Relatórios de Reuniões de Governança
+#Comitê Interno de Governança -> Pro PCDF
 
-lara = Lara()
+#lara = Lara()
+dani = Dani()
+
 # # print(lara.filter_cig_minutes_webpage('https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/'))
 # # print(lara.filter_portal_webpage('https://www.jardimbotanico.df.gov.br/conheca-a-lei-de-acesso-a-informacao/'))
-lara.generate_report()
+
+#lara.execute()
 
 # generator = DocumentService()
 

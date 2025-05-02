@@ -9,11 +9,7 @@ class Orgao:
         self._link_portal = None
         self._portal_last_update = None
         self._portalPage_has_minutes = None
-        
-    # def __init__(self, name: str, links: list[str]) -> None:
-    #     self._name = name
-    #     self._links = links
-    
+
     def add_transparency_active(self, transparency_active: bool) -> None:
         self._transparency_active = transparency_active
         
@@ -31,7 +27,7 @@ class Orgao:
         self._portalPage_has_minutes = has_minutes
         
     def get_links(self) -> list[str] | None:
-        if self._links == None:
+        if self._links is None:
             return None
         
         return self._links
@@ -41,3 +37,7 @@ class Orgao:
             return f"Nome: {self._name}\nTransparência ativa: {self._transparency_active}\nLinks: {self._links}"
         else:
             return f"Nome: {self._name}\nTransparência ativa: {self._transparency_active}"
+
+    @property
+    def name(self):
+        return self._name

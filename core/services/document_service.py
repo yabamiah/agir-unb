@@ -6,6 +6,27 @@ from pathlib import Path
 
 import pypandoc
 
+
+def add_table(doc: Document, data: list[list[str]]) -> None:
+    """
+    Adds a table to the given Word document.
+
+    Args:
+        doc (Document): An existing Word document object.
+        data (list[list[str]]): Data for the table. Each inner list represents a row.
+    """
+
+    if not data:
+        raise ValueError("No data provided for the table.")
+
+    table = doc.add_table(rows=len(data), cols=len(data[0]))
+    table.style = 'Table Grid'
+
+    for i, row in enumerate(data):
+        for j, cell_data in enumerate(row):
+            table.cell(i, j).text = cell_data
+
+
 class DocumentService:
     """
     A service to generate personalized Word documents.
@@ -20,6 +41,7 @@ class DocumentService:
         """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
+
 
     def create_document(
         self,
@@ -42,44 +64,31 @@ class DocumentService:
         """
         document = Document()
 
+        # Adiciona o título formatado
         title_paragraph = document.add_paragraph()
         title_run = title_paragraph.add_run(title)
         title_run.bold = True
         title_run.font.size = Pt(16)
         title_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
+        # Adiciona os parágrafos do conteúdo, removendo espaços extras e forçando o estilo normal
         for paragraph in content:
-            document.add_paragraph(paragraph)
+            clean_paragraph = paragraph.strip()  # Remove espaços e quebras de linha extras
+            if clean_paragraph:  # Evita adicionar parágrafos vazios
+                document.add_paragraph(clean_paragraph, style="Normal")
 
+        # Adiciona o rodapé, se existir
         if footer:
             footer_section = document.sections[-1]
             footer_paragraph = footer_section.footer.paragraphs[0]
             footer_paragraph.text = footer
             footer_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-        output_path = self.output_dir / file_name
+        # Salva o documento
+        output_path = f"{self.output_dir}/{file_name}"
         document.save(output_path)
 
         return str(output_path)
-    
-    def add_table(self, doc: Document, data: list[list[str]]) -> None:
-        """
-        Adds a table to the given Word document.
-
-        Args:
-            doc (Document): An existing Word document object.
-            data (list[list[str]]): Data for the table. Each inner list represents a row.
-        """
-        
-        if not data:
-            raise ValueError("No data provided for the table.")
-        
-        table = doc.add_table(rows=len(data), cols=len(data[0]))
-        table.style = 'Table Grid'
-        
-        for i, row in enumerate(data):
-            for j, cell_data in enumerate(row):
-                table.cell(i, j).text = cell_data
 
     def create_document_with_table(self, title: str, data: list[list[str]], filename: str) -> str:
         """

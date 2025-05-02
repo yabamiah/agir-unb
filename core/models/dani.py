@@ -2,8 +2,10 @@
 ## DANI - Desenvolvedor e Apresentador de Números e Indicadores ##
 ##################################################################
 
+import os
 from os import listdir
-# from os import system
+import sys
+import io
 from os.path import isfile, isdir, join
 
 from unidecode import unidecode
@@ -14,8 +16,11 @@ import re
 
 from core.utils.pdf_handler import PdfReader
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 class Dani:
-    __docs_path = "dani/docs/input/"
+    __docs_path = "/home/yaba/agir-unb/data/dani/docs/input"
     __is_silga = False
     __all_orgaos = ""
     __orgao_name = ""
@@ -25,10 +30,13 @@ class Dani:
     __keywords = {}
     __snippets = []
     __output_path = "dani/docs/output/resultados.txt"
-    __docx_path = "dani/docs/output/"
+    __docx_path = "/home/yaba/agir-unb/data/dani/docs/output/"
 
     def __init__(self) -> None:
-        self.docx_files = {}  # Para armazenar documentos abertos por palavra-chave
+        self.__total_words_read = 0
+        self.__keywords = {}
+        self.__saved_snippets = []
+        self.docx_files = {}
         self.catch_param()
 
         if (self.__all_orgaos == 's'):
@@ -36,7 +44,9 @@ class Dani:
         else:
             self.read_docs()
 
-        self.save_and_close_docs()
+        # Não precisamos mais chamar save_and_close_docs aqui, pois já salvamos após cada leitura
+        # Fechamos os documentos que ainda podem estar abertos
+        self.close_all_docs()
         self.display_results()
 
         exit(0)
@@ -45,29 +55,36 @@ class Dani:
         self.__all_orgaos = input("Você deseja fazer uma pesquisa geral (s/n): ")
 
         if (self.__all_orgaos == 'n'):
-            self.__orgao_name = input("Insira o nome do orgão: ")#.title()
+            self.__orgao_name = input("Insira o nome do orgão: ")  # .title()
             acronym = company_acronym(self.__orgao_name.upper())
             if not acronym == "":
-                self.__orgao_name = acronym.lower()
+                self.__orgao_name = acronym.upper()
             else:
-                self.__orgao_name = self.__orgao_name.lower()
+                self.__orgao_name = self.__orgao_name.upper()
 
             self.__read_ratio = int(input("Insira a quantidade de documentos que serão lidos: "))
 
-        tratar___keywords = input("Insira as palavras-chaves(separadas por vírgula): ")
-        __keywords = tratar___keywords.split(",")
+        sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
+        tratar___keywords = input("Insira as palavras-chaves(separadas por vírgula): ").strip()
+        __keywords = [k.strip() for k in tratar___keywords.split(",") if k.strip()]
+
         for keyword in __keywords:
             self.__keywords.setdefault(keyword.lower(), 0)
 
     def read_docs(self) -> None:
-        self.__docs_path = f"{self.__docs_path}{self.__orgao_name}"
+        self.__docs_path = f"{self.__docs_path}/{self.__orgao_name}"
         if (self.__read_ratio == 0):
             self.__read_ratio = len(listdir(self.__docs_path))
 
         pdfs_read = 0
         for file in listdir(self.__docs_path):
             if isfile(join(self.__docs_path, file)):
-                self.read_pdf_file(f"{self.__docs_path}/{file}", self.__orgao_name)
+                # O nome do órgão é obtido diretamente do nome do diretório
+                orgao_name = os.path.basename(self.__docs_path)
+
+                self.read_pdf_file(f"{self.__docs_path}/{file}", orgao_name)
+                # Salva o resultado após cada leitura
+                self.save_docs_for_current_orgao(orgao_name)
 
                 self.__name_docs_read.append(file)
                 pdfs_read += 1
@@ -77,29 +94,46 @@ class Dani:
 
     def read_all_docs(self) -> None:
         all_dir = [join(self.__docs_path, d) for d in listdir(self.__docs_path) if isdir(join(self.__docs_path, d))]
-        self.__orgao_name = [d for d in listdir(self.__docs_path) if isdir(join(self.__docs_path, d))]
+        self.__orgao_name = [os.path.basename(d) for d in all_dir]  # Usa o nome do diretório como nome do órgão
 
         file_atas_dict = {}
 
         all_files = []
 
         for dir in all_dir:
+            orgao_atual = os.path.basename(dir)  # Obtém o nome do órgão do diretório de entrada
             for file in listdir(dir):
-                self.__name_docs_read.append(file)
-                all_files.append(join(dir, file))
-                file_atas_dict.setdefault(dir.split('/')[3], []).append(join(dir, file))
+                if isfile(join(dir, file)):
+                    self.__name_docs_read.append(file)
+                    all_files.append(join(dir, file))
+                    file_atas_dict.setdefault(orgao_atual, []).append(join(dir, file))
 
-        for key, values in file_atas_dict.items():
-            for value in values:
-                self.read_pdf_file(value, key)
+        for orgao, files in file_atas_dict.items():
+            for file in files:
+                self.read_pdf_file(file, orgao)
+                # Salva o resultado após cada leitura
+                self.save_docs_for_current_orgao(orgao)
+
+    def _calculate_similarity(self, text1: str, text2: str) -> float:
+        """Calcula a similaridade entre dois textos (0 a 1)."""
+        vectorizer = TfidfVectorizer()
+        vectors = vectorizer.fit_transform([text1, text2])
+        return cosine_similarity(vectors[0], vectors[1])[0][0]
+
+    def _is_duplicate_snippet(self, new_snippet: str, threshold: float = 0.8) -> bool:
+        """Verifica se o snippet já existe (com base na similaridade)."""
+        for saved_snippet in self.__saved_snippets:
+            similarity = self._calculate_similarity(new_snippet, saved_snippet)
+            if similarity >= threshold:
+                return True
+        return False
 
     def read_pdf_file(self, file_name: str, orgao_name: str) -> None:
         try:
-            pdf_hanlder = PdfReader()
-            pdf_pages_text = pdf_hanlder.pdf_to_string(file_name)
-            self.__total_words_read = pdf_hanlder.get_total_words_pdf()
-
-            snippets = []
+            pdf_handler = PdfReader()
+            pdf_pages_text = pdf_handler.pdf_to_string(file_name)
+            words_read = pdf_handler.get_total_words_pdf()
+            self.__total_words_read += words_read
 
             for page_text in pdf_pages_text:
                 keyword_in_page = self.count_keywords(page_text)
@@ -109,25 +143,28 @@ class Dani:
                             snippets = self.save_text_snippet(page_text, keyword)
                             if snippets is not None:
                                 for snippet in snippets:
-                                    self.write_keyword_docx(snippet, keyword, orgao_name)
-        except OSError as e:
-            print(f"read_pdf_file. Erro inesperado: {e}")
+                                    if not self._is_duplicate_snippet(snippet):
+                                        self.write_keyword_docx(snippet, keyword, orgao_name)
+                                        self.__saved_snippets.append(snippet)  # Adiciona aos salvos
+                                    else:
+                                        print(f"[DEBUG] Snippet duplicado ignorado: {snippet[:50]}...")
         except Exception as e:
-            print(f"read_pdf_file. Erro inesperado: {e}")
+            print(f"Erro ao ler PDF {file_name}: {e}")
 
     def display_results(self) -> None:
         print("Os orgãos que tiveram suas atas do CIG lidos foram:")
         print(self.__orgao_name)
-        
+
         print("Os documentos lidos foram:")
         print(self.__name_docs_read)
-            
+
         print("Quantidade de vezes que cada palavra chave foi encontrada:")
         for keyword in self.__keywords:
             keyword_count = self.__keywords[keyword]
-            print(f"{keyword} foi encontrada: {keyword_count}, que representa {(keyword_count / self.__total_words_read) * 100.0}")
+            percentage = (keyword_count / self.__total_words_read) * 100.0 if self.__total_words_read > 0 else 0
+            print(f"{keyword} foi encontrada: {keyword_count}, que representa {percentage:.2f}%")
 
-        print("No diretório \output você pode verificar o pedaços em que o texto foi encontrado")    
+        print("No diretório \output você pode verificar os pedaços em que o texto foi encontrado")
 
     def save_text_snippet(self, page_text: str, keyword: str, window_size: int = 210) -> list:
         snipppets = []
@@ -150,7 +187,11 @@ class Dani:
         return snipppets
 
     def create_keyword_docx(self, keyword: str, orgao_name: str) -> docx.Document:
-        new___docx_path = join(self.__docx_path, f'output_{orgao_name}_{keyword}.docx')
+        # Garantir que existe o diretório do órgão
+        org_dir = join(self.__docx_path, orgao_name)
+        os.makedirs(org_dir, exist_ok=True)
+
+        new___docx_path = join(org_dir, f'output_{orgao_name}_{keyword}.docx')
         if isfile(new___docx_path):
             doc = docx.Document(new___docx_path)
         else:
@@ -161,10 +202,11 @@ class Dani:
         return doc
 
     def write_keyword_docx(self, snippet: str, keyword: str, orgao_name: str) -> None:
-        if keyword not in self.docx_files:
-            self.docx_files[keyword] = self.create_keyword_docx(keyword, orgao_name)
+        key = (orgao_name, keyword)
+        if key not in self.docx_files:
+            self.docx_files[key] = self.create_keyword_docx(keyword, orgao_name)
 
-        doc = self.docx_files[keyword]
+        doc = self.docx_files[key]
 
         p = doc.add_paragraph()
         p.paragraph_format.line_spacing = 1
@@ -176,21 +218,41 @@ class Dani:
         p.add_run(snippet_fixed)
         p.add_run("\n")
 
+    def save_docs_for_current_orgao(self, orgao_name: str) -> None:
+        """Salva os documentos relacionados a um órgão específico"""
+        # Garante que o diretório do órgão existe
+        org_dir = join(self.__docx_path, orgao_name)
+        os.makedirs(org_dir, exist_ok=True)
+
+        # Filtra apenas os documentos do órgão atual
+        docs_to_save = {k: v for k, v in self.docx_files.items() if k[0] == orgao_name}
+
+        # Salva cada documento docx no diretório do órgão
+        for (org, keyword), doc in docs_to_save.items():
+            file_path = join(org_dir, f'output_{org}_{keyword}.docx')
+            doc.save(file_path)
+            print(f"Arquivo salvo: {file_path}")
+
+    def close_all_docs(self) -> None:
+        """Fecha todos os documentos docx que ainda estejam abertos na memória"""
+        self.docx_files.clear()
+
     def save_and_close_docs(self) -> None:
-        for keyword, doc in self.docx_files.items():
-            new___docx_path = join(self.__docx_path, f'output_{self.__orgao_name}_{keyword}.docx')
-            doc.save(new___docx_path)
+        """Método mantido por compatibilidade, mas que agora apenas fecha os documentos"""
+        self.close_all_docs()
 
     def count_keywords(self, text: str) -> bool:
         verif = False
         for keyword in self.__keywords:
             default = re.compile(r'\b' + re.escape(keyword) + r'\w*\b', re.IGNORECASE)
-            self.__keywords[keyword] += len(default.findall(text))
+            keyword_count = len(default.findall(text))
+            self.__keywords[keyword] += keyword_count
 
-            if len(default.findall(text)) != 0:
+            if keyword_count > 0:
                 verif = True
 
         return verif
+
 
 def company_acronym(company_name: str) -> str:
     acronyms = {
