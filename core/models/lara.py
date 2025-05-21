@@ -486,7 +486,7 @@ class Lara:
                             if match:
                                 return True, True, match.group()
 
-                            return True, True, None
+             # Usando BeautifulSoup para uma análise mais robusta do HTML               return True, True, None
                         elif (year_pattern.search(str(link_text)) and 
                               ("atas" in str(link_href) or "cig" in str(link_href))):
                             if match:

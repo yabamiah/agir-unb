@@ -94,13 +94,17 @@ class Dani:
 
     def read_all_docs(self) -> None:
         all_dir = [join(self.__docs_path, d) for d in listdir(self.__docs_path) if isdir(join(self.__docs_path, d))]
+        read_orgaos = [os.path.basename(d) for d in listdir(self.__docx_path) if isdir(join(self.__docx_path, d))]
+
+        orgaos_to_read = [ orgao for orgao in all_dir if os.path.basename(orgao) not in read_orgaos ]
+
         self.__orgao_name = [os.path.basename(d) for d in all_dir]  # Usa o nome do diretório como nome do órgão
 
         file_atas_dict = {}
 
         all_files = []
 
-        for dir in all_dir:
+        for dir in orgaos_to_read:
             orgao_atual = os.path.basename(dir)  # Obtém o nome do órgão do diretório de entrada
             for file in listdir(dir):
                 if isfile(join(dir, file)):

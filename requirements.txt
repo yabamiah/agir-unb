@@ -183,5 +183,16 @@ xkit==0.0.0
 zipp==1.0.0
 zopfli==0.2.3
 
-playwright~=1.51.0
+playwright>=1.40.0
 pypandoc~=1.15
+pip~=25.1.1
+pyee~=12.1.1
+typing_extensions>=4.8.0
+pytest~=8.3.5
+pluggy~=1.5.0
+iniconfig~=2.1.0
+python-slugify~=8.0.4
+greenlet~=3.1.1
+pytest-playwright~=0.7.0
+scikit-learn~=1.6.1
+loguru>=0.7.2
