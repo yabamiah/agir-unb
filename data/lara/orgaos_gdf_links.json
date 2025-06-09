@@ -1,7 +1,8 @@
 {
+  "pcdf": { "link": "https://www.pcdf.df.gov.br/", "possui_atas": true, "possui_repositorio": true, "link_repo": "https://www.pcdf.df.gov.br/component/k2/8833/governanca" },
+  "iprevdf": { "link": "https://www.iprev.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "metro": { "link": "https://metro.df.gov.br/", "possui_atas": true, "possui_repositorio": true, "link_repo": "https://metro.df.gov.br/?page_id=43964" },
   "df_legal": { "link": "https://www.dflegal.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
-  "iprevdf": { "link": "https://www.iprev.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "adasa": { "link": "https://www.adasa.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "segov": { "link": "https://segov.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "secom": { "link": "https://comunicacao.df.gov.br/", "possui_atas": false, "possui_repositorio": false, "link_repo": "" },
@@ -15,7 +16,6 @@
   "caci": { "link": "https://www.casacivil.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "sodf": { "link": "https://www.so.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "inas": { "link": "https://www.inas.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
-  "pcdf": { "link": "https://www.pcdf.df.gov.br/", "possui_atas": true, "possui_repositorio": true, "link_repo": "https://www.pcdf.df.gov.br/component/k2/8833/governanca" },
   "ipedf": { "link": "https://www.ipe.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "novacap": { "link": "https://www.novacap.df.gov.br/", "possui_atas": false, "possui_repositorio": false, "link_repo": "" },
   "der": { "link": "https://www.der.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
