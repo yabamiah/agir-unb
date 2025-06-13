@@ -18,6 +18,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from loguru import logger
 from typing import List, Dict
 
+from core.services.aws_service import S3Service
+
 class Dani:
     """
     DANI - Desenvolvedor e Apresentador de Números e Indicadores
@@ -30,7 +32,27 @@ class Dani:
 
         base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
+        self.s3_service = S3Service(logger=logger)
         self.docs_path = docs_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'input')
+
+        if not os.path.exists(self.docs_path):
+            os.makedirs(self.docs_path)
+
+        if len(os.listdir(self.docs_path)) == 0:
+            diretorios = self.s3_service.listar_diretorios(bucket='agir-bucket', prefixo='dani-docs/')
+            if not diretorios:
+                logger.warning(f"Não foi encontrar os diretorios na S3 para {self.docs_path}")
+                exit(0)
+
+            for diretorio in diretorios:
+                sucesso = self.s3_service.download_object_by_directory(
+                    bucket='agir-bucket',
+                    directory='dani-docs/',
+                    file_path=os.path.join(self.docs_path, diretorio))
+                if not sucesso:
+                    logger.warning(f"Não foi possível baixar os arquivos do bucket da S3")
+                    exit(0)
+
         self.output_path = output_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'output', 'resultados.txt')
         self.docx_path = docx_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'output')
 
@@ -55,16 +77,19 @@ class Dani:
 
     def run(self):
         """Método principal para execução da análise"""
+
         self.catch_param()
         if self.all_orgaos:
             self.read_all_docs()
         else:
             self.read_docs()
+        self.upload_docx_s3()
         self.close_all_docs()
         self.display_results()
 
     def catch_param(self) -> None:
         """Coleta parâmetros do usuário para a análise"""
+
         all_orgaos_input = input("Você deseja fazer uma pesquisa geral (s/n): ").strip().lower()
         self.all_orgaos = (all_orgaos_input == 's')
 
@@ -82,6 +107,7 @@ class Dani:
 
     def read_docs(self) -> None:
         """Lê documentos de um órgão específico"""
+
         docs_path = os.path.join(self.docs_path, self.orgao_name)
         if self.read_ratio == 0:
             self.read_ratio = len(listdir(docs_path))
@@ -97,6 +123,7 @@ class Dani:
 
     def read_all_docs(self) -> None:
         """Lê documentos de todos os órgãos disponíveis"""
+
         all_dir = [join(self.docs_path, d) for d in listdir(self.docs_path) if isdir(join(self.docs_path, d))]
         read_orgaos = [os.path.basename(d) for d in listdir(self.docx_path) if isdir(join(self.docx_path, d))]
         orgaos_to_read = [orgao for orgao in all_dir if os.path.basename(orgao) not in read_orgaos]
@@ -111,6 +138,7 @@ class Dani:
 
     def read_pdf_file(self, file_name: str, orgao_name: str) -> None:
         """Lê e processa um arquivo PDF"""
+
         try:
             pdf_handler = PdfReader()
             pdf_pages_text = pdf_handler.pdf_to_string(file_name)
@@ -133,6 +161,7 @@ class Dani:
 
     def count_keywords(self, text: str) -> bool:
         """Conta as palavras-chave no texto e atualiza o dicionário de contagem"""
+
         verif = False
         for keyword in self.keywords:
             default = re.compile(r'\b' + re.escape(keyword) + r'\w*\b', re.IGNORECASE)
@@ -144,6 +173,7 @@ class Dani:
 
     def save_text_snippet(self, page_text: str, keyword: str, window_size: int = 210) -> List[str]:
         """Salva trechos do texto ao redor da palavra-chave"""
+
         snippets = []
         index = 0
         while index < len(page_text):
@@ -203,6 +233,40 @@ class Dani:
             file_path = join(org_dir, f'output_{org}_{keyword}.docx')
             doc.save(file_path)
             self.logger.info(f"Arquivo salvo: {file_path}")
+
+    def upload_docx_s3(self):
+        docx_path = self.docx_path
+        logger.debug(f"📂 Caminho de saída: {docx_path}")
+
+        os.makedirs(docx_path, exist_ok=True)
+        if not os.path.exists(docx_path):
+            logger.error("❌ Falha ao enviar docxs para o S3. DOCX não encontrados.")
+            return False
+
+        entries = os.listdir(docx_path)
+        for entry in entries:
+            logger.debug(f"📁 Diretório de órgão encontrado: {entry}")
+            orgao_path = os.path.join(docx_path, entry)
+            if os.path.isdir(orgao_path):
+                docxs = os.listdir(orgao_path)
+                for docx in docxs:
+                    file_path = os.path.join(orgao_path, docx)
+                    object_name = f'dani-docs/{entry}/{docx}'
+
+                    if self.s3_service.object_exists(
+                            bucket='agir-bucket',
+                            object_name=object_name
+                    ):
+                        logger.warning(f"⚠ Arquivo já existe na S3 e será ignorado: {object_name}")
+                        continue
+
+                    logger.debug(f"📄 Enviando DOCX: {docx}")
+                    self.s3_service.upload_object(
+                        bucket='agir-bucket',
+                        object_name=object_name,
+                        file_path=file_path
+                    )
+        return True
 
     def close_all_docs(self) -> None:
         self.docx_files.clear()
