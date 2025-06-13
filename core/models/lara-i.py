@@ -17,6 +17,7 @@ from core.services.aws_service import S3Service
 @dataclass
 class ConfiguracaoLara:
     """Configurações do LARA-I"""
+
     timeout_navegacao: int = 220_000
     timeout_seletor: int = 180_000
     timeout_preenchimento: int = 180_000
@@ -101,6 +102,7 @@ class LaraI:
 
     async def __aenter__(self):
         """Context manager para inicialização do browser"""
+
         self.playwright = await async_playwright().start()
         self.browser = await self.playwright.chromium.launch(
             headless=True,
@@ -112,6 +114,7 @@ class LaraI:
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         """Context manager para limpeza de recursos"""
+
         if self.page:
             await self.page.close()
         if self.context:
@@ -123,6 +126,7 @@ class LaraI:
 
     async def processar_orgaos(self, limit: Optional[int] = None) -> Dict[str, Any]:
         """Processa todos os órgãos e retorna os resultados"""
+
         orgaos = self._carregar_orgaos()
         resultados = {}
         verificacao = {}
@@ -200,6 +204,7 @@ class LaraI:
 
     def _carregar_orgaos(self) -> Dict[str, Dict[str, Any]]:
         """Carrega os dados dos órgãos do arquivo JSON"""
+
         try:
             with open(self.config.arquivo_orgaos, "r", encoding="utf-8") as f:
                 return json.load(f)
@@ -209,6 +214,7 @@ class LaraI:
 
     def _verificar_resultado(self, possui_atas: bool, links: Optional[List[str]], possui_repositorio: bool) -> str:
         """Verifica a consistência dos resultados"""
+
         tem_links = links is not None and len(links) > 0
 
         if possui_repositorio:
@@ -241,7 +247,7 @@ class LaraI:
                         return links_coletados
                     else:
                         return [link_titulo]
-
+  
                 await self.page.goto(url=url, timeout=self.config.timeout_navegacao)
             except Exception as e:
                 logger.error(f"Erro ao processar termo '{termo}': {str(e)}")
@@ -252,6 +258,8 @@ class LaraI:
         return links_coletados if links_coletados else None
 
     async def possui_programa_integridade(self, url: str) -> bool:
+        """Verifica se o órgão possui programa de integridade"""
+
         await self.page.goto(url=url, timeout=self.config.timeout_navegacao)
         links_coletados = []
 
@@ -279,6 +287,8 @@ class LaraI:
         return False
 
     async def _buscar_elementos_por_input(self, input_name: str, termo: str):
+        """Busca links e paragrafos da página e retorna elementos tratados"""
+
         await self.page.fill(f"input[name='{input_name}']", termo, timeout=self.config.timeout_preenchimento)
         await self.page.press(f"input[name='{input_name}']", "Enter", timeout=self.config.timeout_press)
         await self.page.wait_for_load_state('networkidle', timeout=self.config.timeout_load_state)
@@ -301,6 +311,7 @@ class LaraI:
 
     async def _encontrar_input_pesquisa(self) -> Optional[str]:
         """Encontra o input de pesquisa disponível na página"""
+
         for input_name in self.config.inputs_pesquisa:
             if await self.page.query_selector(f"input[name='{input_name}']"):
                 return input_name
@@ -308,6 +319,7 @@ class LaraI:
 
     async def _get_element_data(self, link: ElementHandle, paragrafo: ElementHandle = "") -> dict:
         """Extrai dados de um elemento da página"""
+
         if paragrafo:
             return {
                 'text': (await link.text_content() or "").strip().lower(),
@@ -322,6 +334,7 @@ class LaraI:
 
     async def _verificar_titulos_cig(self, elements: list[dict]) -> Tuple[bool, Optional[str], bool]:
         """Verifica os títulos dos resultados"""
+
         for element in elements:
             link = element['href']
             titulo = element['text']
@@ -346,6 +359,7 @@ class LaraI:
 
     async def _verificar_titulos_pg(self, elements: list[dict]) -> bool:
         """Verifica os títulos dos resultados"""
+
         for element in elements:
             titulo = element['text']
 
@@ -362,6 +376,7 @@ class LaraI:
 
     async def _coletar_links_por_ano(self) -> List[str]:
         """Coleta links organizados por ano"""
+
         links_anos = []
         elementos = await self.page.query_selector_all(
             "li h3 a.title, li h4 a, [class*='title'] a, div.row div.col div.col a"
@@ -378,6 +393,7 @@ class LaraI:
 
     async def extrair_links_cig(self, links_atas: List[str] | str) -> List[Dict[str, str]]:
         """Extrai links de documentos PDF das páginas de atas do CIG"""
+
         if isinstance(links_atas, str):
             links_atas = [links_atas]
             
@@ -402,6 +418,7 @@ class LaraI:
 
     async def _extrair_elementos_pdf(self) -> List[ElementHandle]:
         """Extrai todos os elementos que podem conter links para PDFs"""
+
         elementos = []
 
         seletores = [
@@ -427,6 +444,7 @@ class LaraI:
 
     async def _processar_elemento_pdf(self, elemento: ElementHandle) -> Optional[Dict[str, str]]:
         """Processa um elemento de link e extrai informações do PDF"""
+
         try:
             href = await elemento.get_attribute("href")
             titulo = await elemento.text_content()
@@ -458,6 +476,7 @@ class LaraI:
 
     def _eh_link_pdf(self, url: str) -> bool:
         """Verifica se o link é realmente um PDF"""
+
         url_lower = url.lower()
 
         if url_lower.endswith('.pdf'):
@@ -471,6 +490,8 @@ class LaraI:
         return False
 
     def _eh_link_ata(self, titulo: str) -> [bool, str]:
+        """Verifica link é de uma ata CIG"""
+
         titulo_lower = titulo.lower()
 
         if ("resolução" in titulo_lower) or ("governança" in titulo_lower) or ("portaria" in titulo_lower):
@@ -502,6 +523,7 @@ class LaraI:
 
     def _normalizar_url(self, url: str) -> str:
         """Normaliza URLs relativas e absolutas"""
+
         if not url:
             return url
 
@@ -516,6 +538,7 @@ class LaraI:
 
     def _filtrar_links_duplicados(self, links: List[Dict[str, str]]) -> List[Dict[str, str]]:
         """Remove links duplicados mantendo apenas a primeira ocorrência"""
+
         urls_vistas = set()
         links_unicos = []
         
@@ -530,18 +553,19 @@ class LaraI:
 
     def _baixar_pdfs(self, links: List[Dict[str, str]], sigla: str) -> None:
         """Baixa PDFs dos links"""
+
         for link in links:
             of_tratado = os.path.join(self.output_files, sigla.upper())
             if not os.path.exists(of_tratado):
                 os.makedirs(of_tratado)
-                logger.info(f"Diretório '{of_tratado}' criado.")
+                logger.info(f"📂 Diretório '{of_tratado}' criado.")
 
             url = link['url']
             titulo = link['titulo']
             data = link['data']
 
             if not url:
-                logger.warning(f"URL não encontrada para: {titulo}. Pulando...")
+                logger.warning(f"⚠ URL não encontrada para: {titulo}. Pulando...")
                 continue
 
             try :
@@ -563,18 +587,20 @@ class LaraI:
                 logger.info(f"'{nome_arquivo}' salvo em '{of_tratado}'")
 
             except requests.exceptions.RequestException as e:
-                logger.error(f"Erro ao baixar {url}: {str(e)}")
+                logger.error(f"❌ Erro ao baixar {url}: {str(e)}")
             except Exception as e:
-                logger.error(f"Ocorreu um erro ao processar {titulo}: {str(e)}")
-        logger.info(f"Baixando PDF: {link['url']}")
+                logger.error(f"⚠ Ocorreu um erro ao processar {titulo}: {str(e)}")
+        logger.info(f"📂 Baixando PDF: {link['url']}")
 
     async def upload_pdfs_s3(self):
+        """Envia PDFs para S3"""
+
         pdfs_path = self.output_files
         logger.debug(f"📂 Caminho de saída: {pdfs_path}")
 
         os.makedirs(pdfs_path, exist_ok=True)
         if not os.path.exists(pdfs_path):
-            logger.error("Falha ao enviar pdfs para o S3. PDFs não encontrados.")
+            logger.error("❌ Falha ao enviar pdfs para o S3. PDFs não encontrados.")
             return False
 
         entries = os.listdir(pdfs_path)
@@ -584,17 +610,23 @@ class LaraI:
             if os.path.isdir(orgao_path):
                 pdfs = os.listdir(orgao_path)
                 for pdf in pdfs:
-                    logger.debug(f"📄 Enviando PDF: {pdf}")
                     file_path = os.path.join(orgao_path, pdf)
                     object_name = f'dani-docs/{entry}/{pdf}'
+
+                    if self.config.s3_service.object_exists(
+                        bucket='agir-bucket',
+                        object_name=object_name
+                    ):
+                        logger.warning(f"⚠ Arquivo já existe na S3 e será ignorado: {object_name}")
+                        continue
+
+                    logger.debug(f"📄 Enviando PDF: {pdf}")
                     self.config.s3_service.upload_object(
                         bucket='agir-bucket',
                         object_name=object_name,
                         file_path=file_path
                     )
-
         return True
-
 
 async def main():
     """Função principal para execução do LARA-I"""
