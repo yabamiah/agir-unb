@@ -75,6 +75,58 @@ class Dani:
         self.logger.add("dani_logs.log", rotation="1 MB", retention="7 days", level="INFO", encoding="utf-8")
         self.logger.info("🚀 Iniciando DANI...")
 
+    def _carregar_pelo_terminal(self):
+        """Função interna para carregar keywords digitadas no terminal."""
+        print("-" * 50)
+        tratar_keywords = input("Digite as palavras-chave separadas por vírgula: ").strip()
+
+        return [k.strip() for k in tratar_keywords.split(',') if k.strip()]
+
+    def _carregar_por_arquivo(self):
+        """Função interna para carregar keywords de um arquivo .txt."""
+        print("-" * 50)
+        caminho_do_arquivo = input("Digite o caminho para o arquivo .txt com as palavras-chave: ").strip()
+
+        try:
+            with open(caminho_do_arquivo, 'r', encoding='utf-8') as arquivo:
+                return [linha.strip() for linha in arquivo if linha.strip()]
+        except FileNotFoundError:
+            print(f"🚨 Erro: O arquivo '{caminho_do_arquivo}' não foi encontrado.")
+            return []  # Retorna uma lista vazia em caso de erro
+        except Exception as e:
+            print(f"🚨 Ocorreu um erro inesperado ao ler o arquivo: {e}")
+            return []
+
+    def obter_keywords(self):
+        """
+        Função principal que oferece ao usuário a escolha de como
+        fornecer as palavras-chave.
+        """
+        keywords_carregadas = []
+        while True:
+            print("\nComo você deseja fornecer as palavras-chave?")
+            print("1 - Digitar diretamente no terminal")
+            print("2 - Fornecer um caminho de arquivo (.txt)")
+
+            escolha = input("Digite sua escolha (1 ou 2): ").strip()
+
+            if escolha == '1':
+                keywords_carregadas = self._carregar_pelo_terminal()
+                break
+            elif escolha == '2':
+                keywords_carregadas = self._carregar_por_arquivo()
+                break
+            else:
+                print("🚨 Escolha inválida. Por favor, digite 1 ou 2.")
+
+        if keywords_carregadas:
+            self.keywords = {k.lower(): 0 for k in keywords_carregadas}
+            print("\n✅ Palavras-chave carregadas com sucesso!")
+            print(f"   Keywords: {list(self.keywords.keys())}")
+        else:
+            print("\n⚠️ Nenhuma palavra-chave foi carregada.")
+            self.keywords = {}
+
     def run(self):
         """Método principal para execução da análise"""
 
@@ -100,9 +152,7 @@ class Dani:
             self.read_ratio = int(input("Insira a quantidade de documentos que serão lidos: "))
 
         sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
-        tratar_keywords = input("Insira as palavras-chaves(separadas por vírgula): ").strip()
-        keywords = [k.strip() for k in tratar_keywords.split(",") if k.strip()]
-        self.keywords = {k.lower(): 0 for k in keywords}
+        self.obter_keywords()
         self.logger.info(f"Palavras-chave: {list(self.keywords.keys())}")
 
     def read_docs(self) -> None:
