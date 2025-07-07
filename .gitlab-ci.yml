@@ -33,7 +33,7 @@ test-job:
   stage: unit_test
   image: docker:20.10.16
   script:
-  after_script:
+    - echo "Entrando no estágio de teste unitário"
   coverage: '/TOTAL.*\s+(\d+%)$/'
   dependencies:
     - build
