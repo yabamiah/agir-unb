@@ -1,15 +1,75 @@
+stages:
+  - build
+  - unit_test
+  - lint
+
 workflow:
   rules:
-    #- if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-    #- if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
 
-stages:          # List of stages for jobs, and their order of execution
-  - build
+services:
+  - docker:20.10.16-dind
 
-build-job:       # This job runs in the build stage, which runs first.
+before_script:
+  - apk add --no-cache docker-compose
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+build-job:
   stage: build
+  image: docker:20.10.16
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - docker-compose build
+    - docker-compose config --services
+  artifacts:
+    reports:
+      dotenv: build.env
+  only:
+    - main
+    - develop
+    - merge_requests
 
+test-job:
+  stage: unit_test
+  image: docker:20.10.16
+  script:
+  after_script:
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  dependencies:
+    - build
 
+lint-backend-job:
+  stage: lint
+  image: python:3.9
+  script:
+    - cd backend
+    - pip install flake8 black isort mypy pylint
+    - pip install -r requirements.txt
+    - black --check --diff app/ tests/
+    - isort --check-only --diff app/ tests/
+    - flake8 app/ tests/ --max-line-length=88 --extend-ignore=E203,W503
+    - mypy app/ --ignore-missing-imports
+    - pylint app/ --disable=C0114,C0115,C0116 --fail-under=8.0
+  artifacts:
+    reports:
+      junit: backend/lint-results.xml
+    when: always
+  dependencies:
+    - build
+
+lint-frontend-job:
+  stage: lint
+  image: node:18
+  script:
+    - cd frontend
+    - npm ci
+    - npm run lint -- --format junit --output-file lint-results.xml
+    - npm run format:check
+    - npm run type-check
+    - npm audit --audit-level high
+  artifacts:
+    reports:
+      junit: frontend/lint-results.xml
+    when: always
+  dependencies:
+    - build
