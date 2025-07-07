@@ -36,7 +36,7 @@ test-job:
     - echo "Entrando no estágio de teste unitário"
   coverage: '/TOTAL.*\s+(\d+%)$/'
   dependencies:
-    - build
+    - build-job
 
 lint-backend-job:
   stage: lint
@@ -55,7 +55,7 @@ lint-backend-job:
       junit: backend/lint-results.xml
     when: always
   dependencies:
-    - build
+    - build-job
 
 lint-frontend-job:
   stage: lint
@@ -72,4 +72,4 @@ lint-frontend-job:
       junit: frontend/lint-results.xml
     when: always
   dependencies:
-    - build
+    - build-job
