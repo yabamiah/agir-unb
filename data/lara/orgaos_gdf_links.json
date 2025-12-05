@@ -1,4 +1,5 @@
 {
+  "caci": { "link": "https://www.casacivil.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "https://www.casacivil.df.gov.br/o-comite-interno-de-governanca-cig?p_l_back_url=%2Fbusca%3F_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_templateSearch_formDate%3D1753127959283%26_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_templateSearch_emptySearchEnabled%3Dfalse%26q%3Dcig%26_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_templateSearch_scope%3D&p_l_back_url_title=Busca" },
   "pcdf": { "link": "https://www.pcdf.df.gov.br/", "possui_atas": true, "possui_repositorio": true, "link_repo": "https://www.pcdf.df.gov.br/component/k2/8833/governanca" },
   "iprevdf": { "link": "https://www.iprev.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "metro": { "link": "https://metro.df.gov.br/", "possui_atas": true, "possui_repositorio": true, "link_repo": "https://metro.df.gov.br/?page_id=43964" },
@@ -13,7 +14,6 @@
   "sspdf": { "link": "https://www.ssp.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "seedf": { "link": "https://www.educacao.df.gov.br/", "possui_atas": true, "possui_repositorio": true, "link_repo": "https://www.educacao.df.gov.br/governanca-publica/" },
   "cm": { "link": "https://www.casamilitar.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
-  "caci": { "link": "https://www.casacivil.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "sodf": { "link": "https://www.so.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "inas": { "link": "https://www.inas.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
   "ipedf": { "link": "https://www.ipe.df.gov.br/", "possui_atas": true, "possui_repositorio": false, "link_repo": "" },
