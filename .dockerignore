@@ -1,0 +1,25 @@
+Dockerfile
+docker-compose.yml
+.dockerignore
+.git
+.gitignore
+
+# Ignorar diretórios de dados e logs, pois serão montados como volumes
+data/
+logs/
+
+# Ignorar arquivos de ambiente virtual e cache do Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Ignorar arquivos de documentação e assets que não são necessários para a execução
+README.md
+assets/
+
+# Ignorar arquivos de teste ou temporários
+teste.py
+portal.txt
+resultados.txt
+*.defasado

@@ -61,7 +61,15 @@ class ConfiguracaoLara:
                 "Relatórios de Reuniões de Governança"
             ],
             "pg": [
-                "programa de integridade"
+                "programa de integridade",
+                "programa integridade",
+                "integridade e compliance"
+            ],
+            "compliance": [
+                "plano de compliance",
+                "plano compliance",
+                "compliance",
+                "plano de integridade e compliance"
             ]
         }
 
@@ -82,6 +90,13 @@ class LaraI:
         os.makedirs(self.output_files, exist_ok=True)
         
         self.site_domain = ""
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'application/pdf,application/octet-stream,*/*',
+            'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive'
+        }
 
     def _setup_logger(self):
         """Configura o logger do sistema"""
@@ -132,6 +147,8 @@ class LaraI:
         verificacao = {}
         links_detalhados = {}
         programas_de_integridade = {}
+        planos_compliance = {}
+        programas_integridade_links = {}
 
         async with self:
             for i, (sigla, dados) in enumerate(orgaos.items()):
@@ -165,27 +182,67 @@ class LaraI:
                             self._baixar_pdfs(links_detalhados[sigla], sigla)
 
                         programas_de_integridade[sigla] = await self.possui_programa_integridade(url)
+                        
+                        # Buscar e baixar Programa de Integridade
+                        links_pg = await self.buscar_links_programa_integridade(url)
+                        programas_integridade_links[sigla] = links_pg
+                        if links_pg:
+                            logger.info(f"Extraindo links detalhados de Programa de Integridade para {sigla}...")
+                            links_pg_detalhados = await self.extrair_links_cig(links_pg)
+                            if links_pg_detalhados:
+                                logger.info(f"Baixando PDFs de Programa de Integridade para {sigla}...")
+                                self._baixar_pdfs(links_pg_detalhados, sigla)
+                        
+                        # Buscar e baixar Plano de Compliance
+                        links_compliance = await self.buscar_links_plano_compliance(url)
+                        planos_compliance[sigla] = links_compliance
+                        if links_compliance:
+                            logger.info(f"Extraindo links detalhados de Plano de Compliance para {sigla}...")
+                            links_compliance_detalhados = await self.extrair_links_cig(links_compliance)
+                            if links_compliance_detalhados:
+                                logger.info(f"Baixando PDFs de Plano de Compliance para {sigla}...")
+                                self._baixar_pdfs(links_compliance_detalhados, sigla)
                     else:
                         if not possui_atas:
                             logger.warning(f"⚠️ Órgão {sigla} não possui atas")
                             resultados[sigla] = None
                             links_detalhados[sigla] = None
-                            continue
-
-                        programas_de_integridade[sigla] = await self.possui_programa_integridade(url)
-
-                        links = await self.buscar_links_atas_cig(url)
-                        resultados[sigla] = links
-
-                        if links:
-                            logger.info(f"Extraindo links detalhados para {sigla}...")
-                            links_detalhados[sigla] = await self.extrair_links_cig(links)
-
-                            if links_detalhados[sigla]:
-                                logger.info(f"Baixando PDFs para {sigla}...")
-                                self._baixar_pdfs(links_detalhados[sigla], sigla)
                         else:
-                            links_detalhados[sigla] = None
+                            programas_de_integridade[sigla] = await self.possui_programa_integridade(url)
+
+                            links = await self.buscar_links_atas_cig(url)
+                            resultados[sigla] = links
+
+                            if links:
+                                logger.info(f"Extraindo links detalhados para {sigla}...")
+                                links_detalhados[sigla] = await self.extrair_links_cig(links)
+                                print(links_detalhados[sigla])
+
+                                if links_detalhados[sigla]:
+                                    logger.info(f"Baixando PDFs para {sigla}...")
+                                    self._baixar_pdfs(links_detalhados[sigla], sigla)
+                            else:
+                                links_detalhados[sigla] = None
+                        
+                        # Buscar e baixar Programa de Integridade (sempre tenta, independente de ter atas)
+                        links_pg = await self.buscar_links_programa_integridade(url)
+                        programas_integridade_links[sigla] = links_pg
+                        if links_pg:
+                            logger.info(f"Extraindo links detalhados de Programa de Integridade para {sigla}...")
+                            links_pg_detalhados = await self.extrair_links_cig(links_pg)
+                            if links_pg_detalhados:
+                                logger.info(f"Baixando PDFs de Programa de Integridade para {sigla}...")
+                                self._baixar_pdfs(links_pg_detalhados, sigla)
+                        
+                        # Buscar e baixar Plano de Compliance (sempre tenta, independente de ter atas)
+                        links_compliance = await self.buscar_links_plano_compliance(url)
+                        planos_compliance[sigla] = links_compliance
+                        if links_compliance:
+                            logger.info(f"Extraindo links detalhados de Plano de Compliance para {sigla}...")
+                            links_compliance_detalhados = await self.extrair_links_cig(links_compliance)
+                            if links_compliance_detalhados:
+                                logger.info(f"Baixando PDFs de Plano de Compliance para {sigla}...")
+                                self._baixar_pdfs(links_compliance_detalhados, sigla)
 
                     verificacao[sigla] = self._verificar_resultado(possui_atas, resultados[sigla], possui_repositorio)
                     
@@ -200,6 +257,8 @@ class LaraI:
             "verificacao": verificacao,
             "links_detalhados": links_detalhados,
             "programas_de_integridade": programas_de_integridade,
+            "programas_integridade_links": programas_integridade_links,
+            "planos_compliance": planos_compliance,
         }
 
     def _carregar_orgaos(self) -> Dict[str, Dict[str, Any]]:
@@ -274,7 +333,6 @@ class LaraI:
                 all_elements_links = await self._buscar_elementos_por_input(input_name, termo)
 
                 tem_pg = await self._verificar_titulos_pg(all_elements_links)
-                print("Tem pq:", tem_pg)
 
                 return tem_pg
 
@@ -285,6 +343,72 @@ class LaraI:
         if not links_coletados:
             logger.warning(f"Nenhum link de atas encontrado para URL: {url}")
         return False
+
+    async def buscar_links_programa_integridade(self, url: str) -> Optional[List[str]]:
+        """Busca links de Programa de Integridade em uma URL específica"""
+        await self.page.goto(url=url, timeout=self.config.timeout_navegacao)
+        links_coletados = []
+
+        input_name = await self._encontrar_input_pesquisa()
+        if not input_name:
+            logger.warning(f"Nenhum input de pesquisa encontrado em {url}")
+            return None
+
+        for termo in self.config.termos_pesquisa.get("pg"):
+            logger.info(f"Pesquisando Programa de Integridade por '{termo}'...")
+            try:
+                all_elements_links = await self._buscar_elementos_por_input(input_name, termo)
+
+                link_valido, link_titulo, tem_ano = await self._verificar_titulos_programa_integridade(all_elements_links)
+                if link_valido:
+                    if tem_ano:
+                        links_anos = await self._coletar_links_por_ano()
+                        links_coletados.extend(links_anos)
+                        return links_coletados
+                    else:
+                        return [link_titulo]
+  
+                await self.page.goto(url=url, timeout=self.config.timeout_navegacao)
+            except Exception as e:
+                logger.error(f"Erro ao processar termo '{termo}': {str(e)}")
+                continue
+
+        if not links_coletados:
+            logger.warning(f"Nenhum link de Programa de Integridade encontrado para URL: {url}")
+        return links_coletados if links_coletados else None
+
+    async def buscar_links_plano_compliance(self, url: str) -> Optional[List[str]]:
+        """Busca links de Plano de Compliance em uma URL específica"""
+        await self.page.goto(url=url, timeout=self.config.timeout_navegacao)
+        links_coletados = []
+
+        input_name = await self._encontrar_input_pesquisa()
+        if not input_name:
+            logger.warning(f"Nenhum input de pesquisa encontrado em {url}")
+            return None
+
+        for termo in self.config.termos_pesquisa.get("compliance"):
+            logger.info(f"Pesquisando Plano de Compliance por '{termo}'...")
+            try:
+                all_elements_links = await self._buscar_elementos_por_input(input_name, termo)
+
+                link_valido, link_titulo, tem_ano = await self._verificar_titulos_plano_compliance(all_elements_links)
+                if link_valido:
+                    if tem_ano:
+                        links_anos = await self._coletar_links_por_ano()
+                        links_coletados.extend(links_anos)
+                        return links_coletados
+                    else:
+                        return [link_titulo]
+  
+                await self.page.goto(url=url, timeout=self.config.timeout_navegacao)
+            except Exception as e:
+                logger.error(f"Erro ao processar termo '{termo}': {str(e)}")
+                continue
+
+        if not links_coletados:
+            logger.warning(f"Nenhum link de Plano de Compliance encontrado para URL: {url}")
+        return links_coletados if links_coletados else None
 
     async def _buscar_elementos_por_input(self, input_name: str, termo: str):
         """Busca links e paragrafos da página e retorna elementos tratados"""
@@ -329,6 +453,7 @@ class LaraI:
 
         return {
             'text': (await link.text_content() or "").strip().lower(),
+            'paragraph': "",
             'href': await link.get_attribute('href') or "",
         }
 
@@ -374,6 +499,54 @@ class LaraI:
 
         return False
 
+    async def _verificar_titulos_programa_integridade(self, elements: list[dict]) -> Tuple[bool, Optional[str], bool]:
+        """Verifica os títulos dos resultados de Programa de Integridade"""
+
+        for element in elements:
+            link = element['href']
+            titulo = element['text']
+            paragrafo = element.get('paragraph', '')
+
+            termos_busca = [
+                "programa de integridade",
+                "programa integridade",
+                "integridade e compliance",
+                "integridade",
+                "compliance e integridade"
+            ]
+
+            if (any(termo in titulo.lower() for termo in termos_busca) or
+                any(termo in paragrafo.lower() for termo in termos_busca)):
+                link_valido = link
+                tem_ano = bool(re.search(r'\b(20\d{2})\b', titulo))
+                return True, link_valido, tem_ano
+
+        return False, None, False
+
+    async def _verificar_titulos_plano_compliance(self, elements: list[dict]) -> Tuple[bool, Optional[str], bool]:
+        """Verifica os títulos dos resultados de Plano de Compliance"""
+
+        for element in elements:
+            link = element['href']
+            titulo = element['text']
+            paragrafo = element.get('paragraph', '')
+
+            termos_busca = [
+                "plano de compliance",
+                "plano compliance",
+                "compliance",
+                "plano de integridade e compliance",
+                "plano integridade compliance"
+            ]
+
+            if (any(termo in titulo.lower() for termo in termos_busca) or
+                any(termo in paragrafo.lower() for termo in termos_busca)):
+                link_valido = link
+                tem_ano = bool(re.search(r'\b(20\d{2})\b', titulo))
+                return True, link_valido, tem_ano
+
+        return False, None, False
+
     async def _coletar_links_por_ano(self) -> List[str]:
         """Coleta links organizados por ano"""
 
@@ -404,7 +577,7 @@ class LaraI:
                 await self.page.goto(url, timeout=self.config.timeout_navegacao)
                 await self.page.wait_for_load_state('networkidle', timeout=self.config.timeout_load_state)
 
-                elementos = await self._extrair_elementos_pdf()
+                elementos = await self._extrair_elementos_pdf_avancado()
 
                 for elemento in elementos:
                     if link_info := await self._processar_elemento_pdf(elemento):
@@ -416,6 +589,26 @@ class LaraI:
                 
         return self._filtrar_links_duplicados(links_extraidos)
 
+    async def _extrair_elementos_pdf_avancado(self) -> List[ElementHandle]:
+        """Versão mais robusta que também verifica o conteúdo e contexto dos links"""
+
+        elementos = []
+
+        todos_links = await self.page.query_selector_all("a[href]")
+
+        for link in todos_links:
+            try:
+                href = await link.get_attribute("href")
+                texto = await link.inner_text()
+
+                if self._e_provavel_pdf(href, texto):
+                    elementos.append(link)
+
+            except Exception as e:
+                logger.debug(f"Erro ao verificar link: {str(e)}")
+
+        return elementos
+
     async def _extrair_elementos_pdf(self) -> List[ElementHandle]:
         """Extrai todos os elementos que podem conter links para PDFs"""
 
@@ -424,14 +617,19 @@ class LaraI:
         seletores = [
             "a[href$='.pdf']",
             "a[href*='.pdf']",
-            "a[href*='download']",
+
+            "a[href$='-pdf']",
+
+            "a[href*='/documents/'][href$='-pdf']",
+
+            "a[href*='/documents/d/'][href$='-pdf']",
+
+            "a:contains('PDF')",
+            "a:contains('pdf')",
+
             "a[href*='documento']",
-            "a[href*='arquivo']",
-            "a[href*='publicacao']",
-            "a[href*='publicação']",
             "a[href*='ata']",
             "a[href*='reuniao']",
-            "a[href*='reunião']"
         ]
         
         for seletor in seletores:
@@ -441,6 +639,57 @@ class LaraI:
                 logger.debug(f"Erro ao buscar elementos com seletor {seletor}: {str(e)}")
                 
         return elementos
+
+    def _e_provavel_pdf(self, href: str, texto: str) -> bool:
+        """Determina se um link provavelmente aponta para um PDF"""
+
+        if not href:
+            return False
+
+        href_lower = href.lower()
+        texto_lower = texto.lower()
+
+        criterios_url = [
+            href_lower.endswith('.pdf'),
+            '.pdf' in href_lower,
+            href_lower.endswith('-pdf'),
+            '/documents/' in href_lower,
+            'documento' in href_lower,
+            'ata' in href_lower,
+            'reuniao' in href_lower,
+        ]
+
+        criterios_texto = [
+            'pdf' in texto_lower,
+            'ata' in texto_lower,
+            'reunião' in texto_lower,
+            'relatório' in texto_lower,
+        ]
+
+        contra_criterios_texto = [
+            'diário' in texto_lower,
+            'plano' in texto_lower,
+            'instrução' in texto_lower,
+            'portaria' in texto_lower,
+            'resolução' in texto_lower,
+            'apresentação' in texto_lower,
+            'decreto' in texto_lower,
+            'política' in texto_lower,
+            'certificado' in texto_lower,
+            'retificação' in texto_lower,
+            'plano' in texto_lower,
+            'organograma' in texto_lower,
+            'pesquisa' in texto_lower,
+            'cartilhas' in texto_lower,
+            'guia' in texto_lower,
+            'certidão' in texto_lower,
+            'manual' in texto_lower,
+        ]
+
+        if any(contra_criterios_texto):
+            return False
+
+        return any(criterios_url) or any(criterios_texto)
 
     async def _processar_elemento_pdf(self, elemento: ElementHandle) -> Optional[Dict[str, str]]:
         """Processa um elemento de link e extrai informações do PDF"""
@@ -457,17 +706,17 @@ class LaraI:
             if not self._eh_link_pdf(href):
                 return None
 
-            is_link_ata, portaria = self._eh_link_ata(titulo)
-            if portaria:
-                return None
+            #is_link_ata, portaria = self._eh_link_ata(titulo)
+            #if portaria:
+            #    return None
 
             data = self._extrair_data_documento(titulo)
 
             return {
                 "url": href,
                 "titulo": titulo,
-                "data": data,
-                **({"portaria": portaria} if portaria else {})
+                "data": ""
+                #**({"portaria": portaria} if portaria else {})
             }
 
         except Exception as e:
@@ -476,6 +725,9 @@ class LaraI:
 
     def _eh_link_pdf(self, url: str) -> bool:
         """Verifica se o link é realmente um PDF"""
+
+        if not url:
+            return False
 
         url_lower = url.lower()
 
@@ -486,20 +738,78 @@ class LaraI:
             partes = url_lower.split('.pdf')
             if len(partes) > 1 and not any(c.isalnum() for c in partes[1][:1]):
                 return True
-                
+
+        if url_lower.endswith('-pdf'):
+            return True
+
+        padroes_pdf = [
+            '/documents/',
+            '/documento',
+            '/ata',
+            '/reuniao',
+            '/relatorio',
+            '/arquivo',
+            'pdf-',
+            '_pdf',
+            'download',
+        ]
+
+        if any(padrao in url_lower for padrao in padroes_pdf):
+            terminacoes_documento = ['-pdf', '_pdf', '-doc', '_doc', 'documento', 'ata', 'reuniao', 'relatorio']
+            if any(url_lower.endswith(term) for term in terminacoes_documento):
+                return True
+
         return False
 
-    def _eh_link_ata(self, titulo: str) -> [bool, str]:
-        """Verifica link é de uma ata CIG"""
+    def _eh_link_ata(self, titulo: str) -> tuple[bool, str]:
+        """Verifica se o link é de uma ata CIG"""
+
+        if not titulo:
+            return False, None
 
         titulo_lower = titulo.lower()
 
-        if ("resolução" in titulo_lower) or ("governança" in titulo_lower) or ("portaria" in titulo_lower):
+        palavras_exclusao = [
+            "resolução",
+            "governança",
+            "portaria"
+        ]
+
+        if any(palavra in titulo_lower for palavra in palavras_exclusao):
             return False, None
 
-        if "portaria" in titulo_lower:
-            True, titulo_lower
-        return None, None
+        palavras_ata = [
+            "ata",
+            "reunião",
+            "reuniao",
+            "sessão",
+            "sessao",
+            "encontro",
+            "assembleia",
+            "conselho",
+            "comissão",
+            "comissao",
+            "colegiado",
+            "plenária",
+            "plenaria"
+        ]
+
+        for palavra in palavras_ata:
+            if palavra in titulo_lower:
+                return True, titulo_lower
+
+        padroes_numericos = [
+            "º", "ª",
+            "ordinária", "ordinaria",
+            "extraordinária", "extraordinaria",
+            "especial"
+        ]
+
+        if any(padrao in titulo_lower for padrao in padroes_numericos):
+            if any(char.isdigit() for char in titulo):
+                return True, titulo_lower
+
+        return False, None
 
     def _extrair_data_documento(self, titulo: str) -> Optional[str]:
         """Extrai a data do documento do título ou contexto"""
@@ -569,7 +879,7 @@ class LaraI:
                 continue
 
             try :
-                response = requests.get(url, stream=True)
+                response = requests.get(url, stream=True, verify=False, headers=self.headers)
                 response.raise_for_status()
 
                 nome_arquivo_tratado = "".join(c if c.isalnum() or c in (' ', '.', '_') else '_' for c in titulo)
@@ -585,11 +895,29 @@ class LaraI:
                         f.write(chunk)
 
                 logger.info(f"'{nome_arquivo}' salvo em '{of_tratado}'")
+            except requests.exceptions.Timeout:
+                logger.error(f"⏰ Timeout ao baixar {url}. Continuando com próximo...")
+                continue
+
+            except requests.exceptions.ConnectionError:
+                logger.error(f"🔌 Erro de conexão ao baixar {url}. Continuando com próximo...")
+                continue
+
+            except requests.exceptions.HTTPError as e:
+                logger.error(f"🌐 Erro HTTP ao baixar {url}: {e.response.status_code}. Continuando com próximo...")
+                continue
 
             except requests.exceptions.RequestException as e:
-                logger.error(f"❌ Erro ao baixar {url}: {str(e)}")
+                logger.error(f"🌐 Erro de requisição ao baixar {url}: {str(e)}. Continuando com próximo...")
+                continue
+
+            except OSError as e:
+                logger.error(f"💾 Erro de sistema ao salvar '{titulo}': {str(e)}. Continuando com próximo...")
+                continue
+
             except Exception as e:
-                logger.error(f"⚠ Ocorreu um erro ao processar {titulo}: {str(e)}")
+                logger.error(f"⚠ Erro inesperado ao processar '{titulo}': {str(e)}. Continuando com próximo...")
+                continue
         logger.info(f"📂 Baixando PDF: {link['url']}")
 
     async def upload_pdfs_s3(self):
@@ -635,7 +963,7 @@ async def main():
     lara = LaraI(config)
     
     try:
-        resultados = await lara.processar_orgaos(limit=1)
+        resultados = await lara.processar_orgaos()
         #logger.info("✅ Resultados finais:")
         logger.info(json.dumps(resultados, indent=2, ensure_ascii=False))
 

@@ -64,27 +64,23 @@ class DocumentService:
         """
         document = Document()
 
-        # Adiciona o título formatado
         title_paragraph = document.add_paragraph()
         title_run = title_paragraph.add_run(title)
         title_run.bold = True
         title_run.font.size = Pt(16)
         title_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-        # Adiciona os parágrafos do conteúdo, removendo espaços extras e forçando o estilo normal
         for paragraph in content:
-            clean_paragraph = paragraph.strip()  # Remove espaços e quebras de linha extras
-            if clean_paragraph:  # Evita adicionar parágrafos vazios
+            clean_paragraph = paragraph.strip()
+            if clean_paragraph:
                 document.add_paragraph(clean_paragraph, style="Normal")
 
-        # Adiciona o rodapé, se existir
         if footer:
             footer_section = document.sections[-1]
             footer_paragraph = footer_section.footer.paragraphs[0]
             footer_paragraph.text = footer
             footer_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-        # Salva o documento
         output_path = f"{self.output_dir}/{file_name}"
         document.save(output_path)
 

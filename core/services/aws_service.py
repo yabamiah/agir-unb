@@ -129,15 +129,15 @@ class S3Service:
                 self.logger.error(f"Erro ao checar o objeto: {object_name} no buclet {bucket}: {e}")
                 raise
 
-if __name__ == "__main__":
-    s3 = S3Service()
-
-    sucesso = s3.listar_diretorios(bucket='agir-bucket')
-    print("Listagem diretorios:", sucesso)
-
-    sucesso = s3.listar_objetos(bucket='agir-bucket', prefixo='lara-config/')
-    print(sucesso)
-
+#if __name__ == "__main__":
+#    s3 = S3Service()
+#
+#    sucesso = s3.listar_diretorios(bucket='agir-bucket')
+#    print("Listagem diretorios:", sucesso)
+#
+#    sucesso = s3.listar_objetos(bucket='agir-bucket', prefixo='lara-config/')
+#    print(sucesso)
+#
     #base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
     #docs_path = os.path.join(base_dir, 'data', 'dani', 'docs', 'input')
     #sucesso = s3.download_object_by_directory('agir-bucket', 'lara-config/', docs_path)
