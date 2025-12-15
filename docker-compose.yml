@@ -1,0 +1,42 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  cli:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: agir-unb-cli
+    command: ["python", "-m", "cli.orchestrator"]
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./core:/app/core
+      - ./cli:/app/cli
+    env_file:
+      - .env
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agir-unb-dashboard
+    command: >
+      streamlit run core/dashboard/app.py 
+      --server.port=8501 
+      --server.address=0.0.0.0
+      --server.headless=true
+    volumes:
+      - ./data:/app/data
+      - ./core:/app/core
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"
+    depends_on:
+      - cli
+    restart: unless-stopped

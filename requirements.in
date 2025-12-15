@@ -1,0 +1,16 @@
+playwright
+requests
+loguru
+scikit-learn
+python-docx
+colorama
+boto3
+streamlit
+pandas
+dotenv
+werkzeug
+pdf2image
+pytesseract
+pypandoc
+docx
+psutil

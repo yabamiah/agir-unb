@@ -20,6 +20,68 @@ Para o desenvolvimento da automatização do processo anteriormente descrito, ir
 
 ![agir modelagem](./assets/agir-modelagem.png)
 
+## Instalação e Uso com Docker
+
+### Pré-requisitos
+- Docker
+- Docker Compose
+- Make (opcional, mas recomendado)
+
+### Configuração Inicial
+
+1. **Clone o repositório:**
+```bash
+git clone <repository-url>
+cd agir-unb
+```
+
+2. **Configure as variáveis de ambiente:**
+```bash
+cp env.example .env
+# Edite o arquivo .env com suas configurações
+```
+
+3. **Use o Makefile (recomendado):**
+```bash
+# Ver todos os comandos disponíveis
+make help
+
+# Construir e iniciar os serviços
+make up-build
+
+# Ou manualmente:
+docker-compose up -d --build
+```
+
+### Comandos Principais
+
+| Comando | Descrição |
+|---------|-----------|
+| `make build` | Constrói as imagens Docker |
+| `make up` | Inicia todos os serviços |
+| `make down` | Para e remove os containers |
+| `make logs` | Mostra logs de todos os serviços |
+| `make logs-cli` | Mostra logs do serviço CLI |
+| `make logs-dash` | Mostra logs do dashboard |
+| `make shell-cli` | Abre shell no container CLI |
+| `make run-lara` | Executa trigger para iniciar LARA-I |
+| `make run-dani` | Executa trigger para iniciar DANI |
+| `make status` | Mostra status dos containers |
+| `make clean` | Remove containers, volumes e imagens |
+| `make rebuild` | Reconstrução completa |
+
+### Acessar o Dashboard
+
+Após iniciar os serviços, o dashboard estará disponível em:
+```
+http://localhost:8501
+```
+
+### Documentação de Dependências
+
+Para entender quais dependências do sistema são necessárias e por quê, consulte:
+- [DEPENDENCIES.md](DEPENDENCIES.md) - Documentação detalhada das dependências
+
 ## Coordenadores do projeto
 
 | Membro | Email | 
