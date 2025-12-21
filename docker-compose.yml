@@ -1,8 +1,12 @@
 # docker-compose.yml
+# AGIR - Ambiente de Governança, Integridade e Resultados
 
 version: '3.8'
 
 services:
+  # ============================================
+  # CLI - Orquestrador principal
+  # ============================================
   cli:
     build: 
       context: .
@@ -20,6 +24,9 @@ services:
     stdin_open: true
     restart: unless-stopped
 
+  # ============================================
+  # Dashboard - Interface Web Streamlit
+  # ============================================
   dashboard:
     build:
       context: .
@@ -33,10 +40,33 @@ services:
     volumes:
       - ./data:/app/data
       - ./core:/app/core
+      - ./logs:/app/logs
     env_file:
       - .env
     ports:
       - "8501:8501"
+    depends_on:
+      - cli
+    restart: unless-stopped
+
+  # ============================================
+  # Worker DANI - Processamento em Background
+  # ============================================
+  dani-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agir-unb-dani-worker
+    command: ["python", "-m", "cli.dani_worker"]
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./core:/app/core
+      - ./cli:/app/cli
+    env_file:
+      - .env
+    environment:
+      - KEYWORDS_FILE=/app/data/dani/palavras_chaves.txt
     depends_on:
       - cli
     restart: unless-stopped

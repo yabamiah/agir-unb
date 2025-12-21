@@ -3,9 +3,12 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Instala dependências do sistema
-# Necessárias para conversão de documentos (pypandoc)
+# Necessárias para conversão de documentos (pypandoc, libreoffice)
 RUN apt-get update && apt-get install -y \
     pandoc \
+    # LibreOffice para conversão DOCX → PDF (DANI)
+    libreoffice-common \
+    libreoffice-writer \
     # Para conversão de PDF em imagens (pdf2image)
     poppler-utils \
     # Para OCR (pytesseract)
@@ -29,6 +32,8 @@ RUN apt-get update && apt-get install -y \
     libpango-1.0-0 \
     libcairo2 \
     libatspi2.0-0 \
+    # Bibliotecas para PyMuPDF (PDF otimizado)
+    libmupdf-dev \
     # SSL/certificados
     ca-certificates \
     # Utilitários
@@ -38,7 +43,8 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir pymupdf pdfplumber
 
 # Instala navegadores do Playwright sem dependências do sistema
 RUN playwright install chromium

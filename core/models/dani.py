@@ -1,6 +1,11 @@
 ###################################################################
 ## DANI - Desenvolvedor e Apresentador de Números e Indicadores ##
-##################################################################
+###################################################################
+"""
+DANI - Desenvolvedor e Apresentador de Números e Indicadores
+Módulo principal para análise de documentos e geração de índices.
+"""
+
 import os
 from os import listdir
 from os.path import isfile, isdir, join
@@ -9,245 +14,36 @@ import sys
 import io
 import json
 import gc
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
-from multiprocessing import Manager, cpu_count
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock, Semaphore
-import psutil  # Para monitoramento de recursos
 import hashlib
-from collections import defaultdict, Counter
+from collections import defaultdict
 
 import time
 import traceback
+import subprocess
 from datetime import datetime
 
 from docx import Document
-
-from core.utils.pdf_handler import PdfReader
-
-# Bibliotecas otimizadas para PDF
-try:
-    import pymupdf as fitz  # PyMuPDF - muito mais rápido
-    PYMUPDF_AVAILABLE = True
-except ImportError:
-    PYMUPDF_AVAILABLE = False
-    fitz = None
-
-try:
-    import pdfplumber  # Alternativa rápida para PDFs com texto
-    PDFPLUMBER_AVAILABLE = True
-except ImportError:
-    PDFPLUMBER_AVAILABLE = False
-    pdfplumber = None
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
 from loguru import logger
 from typing import List, Dict, Tuple, Set, Optional
 
+# Módulos internos refatorados
+from core.workers.adaptive_manager import AdaptiveWorkerManager
+from core.processors.pdf_processor import OptimizedPdfProcessor, PYMUPDF_AVAILABLE, PDFPLUMBER_AVAILABLE
+from core.processors.docx_converter import DocxConverter
 from core.services.aws_service import S3Service
 
-import pypandoc
-import subprocess
-import shutil
-from pathlib import Path
+# Motor NLP para planos de integridade
+from core.motor_nlp.classificador_eixos import ClassificadorEixos
+from core.motor_nlp.pontuador_maturidade import PontuadorMaturidadeDANI
+from core.motor_nlp.calculador_imga import CalculadorIMGA
 
-class AdaptiveWorkerManager:
-    """
-    Gerenciador de workers adaptativo que otimiza o paralelismo baseado no tipo de tarefa
-    e recursos disponíveis do sistema
-    """
-    
-    def __init__(self, logger):
-        self.logger = logger
-        self.system_info = self._get_system_info()
-        self.worker_pools = {}
-        self.performance_metrics = {}
-        
-    def _get_system_info(self) -> Dict:
-        """Coleta informações do sistema para otimização"""
-        try:
-            cpu_count_physical = psutil.cpu_count(logical=False)
-            cpu_count_logical = psutil.cpu_count(logical=True)
-            memory_gb = psutil.virtual_memory().total / (1024**3)
-            
-            return {
-                'cpu_physical': cpu_count_physical or 2,
-                'cpu_logical': cpu_count_logical or 4,
-                'memory_gb': memory_gb,
-                'cpu_percent': psutil.cpu_percent(interval=1),
-                'memory_percent': psutil.virtual_memory().percent
-            }
-        except Exception as e:
-            self.logger.warning(f"Erro ao coletar info do sistema: {e}")
-            return {
-                'cpu_physical': 2,
-                'cpu_logical': 4,
-                'memory_gb': 8.0,
-                'cpu_percent': 50.0,
-                'memory_percent': 50.0
-            }
-    
-    def get_optimal_workers(self, task_type: str, task_count: int = 1) -> int:
-        """
-        Calcula o número ótimo de workers baseado no tipo de tarefa e recursos
-        """
-        base_workers = self.system_info['cpu_logical']
-        
-        if task_type == 'pdf_extraction':
-            # PDF extraction é I/O bound - pode usar mais workers
-            if PYMUPDF_AVAILABLE or PDFPLUMBER_AVAILABLE:
-                # Bibliotecas rápidas - usar mais workers
-                optimal = min(base_workers * 2, task_count, 16)
-            else:
-                # OCR é CPU intensive - usar menos workers
-                optimal = min(base_workers, task_count, 8)
-                
-        elif task_type == 'text_processing':
-            # Processamento de texto é CPU bound
-            optimal = min(base_workers, task_count, 12)
-            
-        elif task_type == 'file_io':
-            # I/O bound - pode usar mais workers
-            optimal = min(base_workers * 3, task_count, 20)
-            
-        elif task_type == 'network_io':
-            # Network I/O - limitado por banda
-            optimal = min(base_workers, task_count, 6)
-            
-        else:
-            optimal = min(base_workers, task_count, 8)
-        
-        # Ajustar baseado na carga do sistema
-        if self.system_info['cpu_percent'] > 80:
-            optimal = max(1, optimal // 2)
-        elif self.system_info['memory_percent'] > 85:
-            optimal = max(1, optimal // 2)
-            
-        return max(1, optimal)
-    
-    def get_executor(self, task_type: str, task_count: int = 1, use_processes: bool = False):
-        """
-        Retorna o executor apropriado para o tipo de tarefa
-        """
-        workers = self.get_optimal_workers(task_type, task_count)
-        
-        if use_processes and task_type in ['text_processing', 'pdf_extraction']:
-            # Usar processos para tarefas CPU-intensive
-            return ProcessPoolExecutor(max_workers=min(workers, 4))
-        else:
-            # Usar threads para I/O bound tasks
-            return ThreadPoolExecutor(max_workers=workers)
-    
-    def log_performance(self, task_type: str, duration: float, workers_used: int):
-        """Registra métricas de performance para otimização futura"""
-        if task_type not in self.performance_metrics:
-            self.performance_metrics[task_type] = []
-        
-        self.performance_metrics[task_type].append({
-            'duration': duration,
-            'workers': workers_used,
-            'timestamp': time.time()
-        })
-        
-        # Manter apenas as últimas 100 métricas
-        if len(self.performance_metrics[task_type]) > 100:
-            self.performance_metrics[task_type] = self.performance_metrics[task_type][-100:]
 
-class OptimizedPdfProcessor:
-    """
-    Processador de PDF otimizado com múltiplas estratégias de extração
-    """
-    
-    def __init__(self, logger):
-        self.logger = logger
-        self.cache = {}  # Cache simples para evitar reprocessamento
-        self.fallback_processor = PdfReader()
-        
-    def extract_text_fast(self, file_path: str) -> Tuple[List[str], int]:
-        """
-        Extrai texto usando a estratégia mais rápida disponível
-        Retorna: (lista_de_paginas, total_palavras)
-        """
-        # Verificar cache primeiro
-        file_hash = self._get_file_hash(file_path)
-        if file_hash in self.cache:
-            self.logger.debug(f"Cache hit para {os.path.basename(file_path)}")
-            return self.cache[file_hash]
-        
-        pages_text = []
-        total_words = 0
-        
-        # Estratégia 1: PyMuPDF (mais rápido para PDFs com texto)
-        if PYMUPDF_AVAILABLE:
-            try:
-                pages_text, total_words = self._extract_with_pymupdf(file_path)
-                if pages_text and total_words > 0:
-                    self.logger.debug(f"PyMuPDF extraiu {len(pages_text)} páginas de {os.path.basename(file_path)}")
-                    self.cache[file_hash] = (pages_text, total_words)
-                    return pages_text, total_words
-            except Exception as e:
-                self.logger.warning(f"PyMuPDF falhou para {file_path}: {e}")
-        
-        # Estratégia 2: pdfplumber (boa para PDFs estruturados)
-        if PDFPLUMBER_AVAILABLE:
-            try:
-                pages_text, total_words = self._extract_with_pdfplumber(file_path)
-                if pages_text and total_words > 0:
-                    self.logger.debug(f"pdfplumber extraiu {len(pages_text)} páginas de {os.path.basename(file_path)}")
-                    self.cache[file_hash] = (pages_text, total_words)
-                    return pages_text, total_words
-            except Exception as e:
-                self.logger.warning(f"pdfplumber falhou para {file_path}: {e}")
-        
-        # Estratégia 3: Fallback para OCR (mais lento mas funciona sempre)
-        try:
-            pages_text = self.fallback_processor.pdf_to_string(file_path)
-            total_words = self.fallback_processor.get_total_words_pdf()
-            self.logger.debug(f"OCR extraiu {len(pages_text)} páginas de {os.path.basename(file_path)}")
-            self.cache[file_hash] = (pages_text, total_words)
-            return pages_text, total_words
-        except Exception as e:
-            self.logger.error(f"Todas as estratégias falharam para {file_path}: {e}")
-            return [], 0
-    
-    def _extract_with_pymupdf(self, file_path: str) -> Tuple[List[str], int]:
-        """Extrai texto usando PyMuPDF (muito rápido)"""
-        doc = fitz.open(file_path)
-        pages_text = []
-        total_words = 0
-        
-        for page_num in range(doc.page_count):
-            page = doc[page_num]
-            text = page.get_text()
-            if text.strip():
-                pages_text.append(text.lower())
-                total_words += len(text.split())
-        
-        doc.close()
-        return pages_text, total_words
-    
-    def _extract_with_pdfplumber(self, file_path: str) -> Tuple[List[str], int]:
-        """Extrai texto usando pdfplumber (boa para PDFs estruturados)"""
-        pages_text = []
-        total_words = 0
-        
-        with pdfplumber.open(file_path) as pdf:
-            for page in pdf.pages:
-                text = page.extract_text()
-                if text and text.strip():
-                    pages_text.append(text.lower())
-                    total_words += len(text.split())
-        
-        return pages_text, total_words
-    
-    def _get_file_hash(self, file_path: str) -> str:
-        """Gera hash do arquivo para cache"""
-        try:
-            stat = os.stat(file_path)
-            return f"{os.path.basename(file_path)}_{stat.st_size}_{stat.st_mtime}"
-        except:
-            return os.path.basename(file_path)
+# Removido: AdaptiveWorkerManager (movido para core/workers/adaptive_manager.py)
+# Removido: OptimizedPdfProcessor (movido para core/processors/pdf_processor.py)
+
+
 
 class Dani:
     """
@@ -265,17 +61,23 @@ class Dani:
                  batch_size: int = 50,
                  all_orgaos: bool = None,
                  orgao_name: str = None,
-                 read_ratio: int = None):
+                 read_ratio: int = None,
+                 only_integrity_plans: bool = False,
+                 keywords_file: str = None):
 
         base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
         self.s3_service = S3Service(logger=logger)
-        self.docs_path = docs_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'input')
+        
+        if only_integrity_plans:
+            self.docs_path = os.path.join(base_dir, 'data', 'dani', 'docs', 'integridade')
+        else:
+            self.docs_path = docs_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'input')
 
         if not os.path.exists(self.docs_path):
             os.makedirs(self.docs_path)
 
-        if len(os.listdir(self.docs_path)) == 0:
+        if not only_integrity_plans and len(os.listdir(self.docs_path)) == 0:
             self._download_from_s3()
 
         self.output_path = output_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'output', 'resultados.txt')
@@ -330,6 +132,34 @@ class Dani:
         
         # Processador de PDF otimizado
         self.pdf_processor = OptimizedPdfProcessor(self.logger)
+        
+        # Conversor DOCX para PDF
+        self.docx_converter = DocxConverter(self.logger, self.pdf_workers)
+
+        # NLP Engine Integration
+        if only_integrity_plans:
+            self.classificador = ClassificadorEixos()
+            dicionario_path = os.path.join(base_dir, 'core', 'motor_nlp', 'dicionario.json')
+            try:
+                with open(dicionario_path, 'r', encoding='utf-8') as f:
+                    dicionario = json.load(f)
+                    self.classificador.carregar_dicionario(dicionario)
+            except Exception as e:
+                self.logger.error(f"Erro ao carregar dicionario.json: {e}")
+            
+            self.pontuador = PontuadorMaturidadeDANI()
+            self.calculador = CalculadorIMGA()
+            self.only_integrity_plans = True
+            self.imga_results = {}
+        else:
+            self.only_integrity_plans = False
+            self.classificador = None
+            self.pontuador = None
+            self.calculador = None
+            self.imga_results = None
+        
+        # Caminho para arquivo de keywords (modo não-interativo)
+        self.keywords_file = keywords_file
 
         self._setup_logger()
         self._check_conversion_dependencies()
@@ -802,39 +632,52 @@ class Dani:
         tratar_keywords = input("Digite as palavras-chave separadas por vírgula: ").strip()
         return [k.strip() for k in tratar_keywords.split(',') if k.strip()]
 
-    def _carregar_por_arquivo(self):
-        """Função interna para carregar keywords de um arquivo .txt."""
-        print("-" * 50)
-        caminho_do_arquivo = input("Digite o caminho para o arquivo .txt com as palavras-chave: ").strip()
+    def _carregar_por_arquivo(self, caminho: str = None):
+        """Função interna para carregar keywords de um arquivo .txt.
+        
+        Args:
+            caminho: Caminho opcional para o arquivo. Se não fornecido, pergunta ao usuário.
+        """
+        if caminho is None:
+            print("-" * 50)
+            caminho_do_arquivo = input("Digite o caminho para o arquivo .txt com as palavras-chave: ").strip()
+        else:
+            caminho_do_arquivo = caminho
 
         try:
             with open(caminho_do_arquivo, 'r', encoding='utf-8') as arquivo:
                 return [linha.strip() for linha in arquivo if linha.strip()]
         except FileNotFoundError:
-            print(f"🚨 Erro: O arquivo '{caminho_do_arquivo}' não foi encontrado.")
+            self.logger.error(f"🚨 Erro: O arquivo '{caminho_do_arquivo}' não foi encontrado.")
             return []
         except Exception as e:
-            print(f"🚨 Ocorreu um erro inesperado ao ler o arquivo: {e}")
+            self.logger.error(f"🚨 Ocorreu um erro inesperado ao ler o arquivo: {e}")
             return []
 
     def obter_keywords(self):
-        """Função principal que oferece ao usuário a escolha de como fornecer as palavras-chave."""
+        """Obtém palavras-chave. Se keywords_file foi fornecido, carrega automaticamente."""
         keywords_carregadas = []
-        while True:
-            print("\nComo você deseja fornecer as palavras-chave?")
-            print("1 - Digitar diretamente no terminal")
-            print("2 - Fornecer um caminho de arquivo (.txt)")
+        
+        # Modo não-interativo: carregar de arquivo diretamente
+        if self.keywords_file:
+            keywords_carregadas = self._carregar_por_arquivo(self.keywords_file)
+        else:
+            # Modo interativo: perguntar ao usuário
+            while True:
+                print("\nComo você deseja fornecer as palavras-chave?")
+                print("1 - Digitar diretamente no terminal")
+                print("2 - Fornecer um caminho de arquivo (.txt)")
 
-            escolha = input("Digite sua escolha (1 ou 2): ").strip()
+                escolha = input("Digite sua escolha (1 ou 2): ").strip()
 
-            if escolha == '1':
-                keywords_carregadas = self._carregar_pelo_terminal()
-                break
-            elif escolha == '2':
-                keywords_carregadas = self._carregar_por_arquivo()
-                break
-            else:
-                print("🚨 Escolha inválida. Por favor, digite 1 ou 2.")
+                if escolha == '1':
+                    keywords_carregadas = self._carregar_pelo_terminal()
+                    break
+                elif escolha == '2':
+                    keywords_carregadas = self._carregar_por_arquivo()
+                    break
+                else:
+                    print("🚨 Escolha inválida. Por favor, digite 1 ou 2.")
 
         if keywords_carregadas:
             self.keywords = {k.lower(): 0 for k in keywords_carregadas}
@@ -843,10 +686,16 @@ class Dani:
                     r'\b' + re.escape(keyword) + r'\w*\b',
                     re.IGNORECASE
                 )
-            print("\n✅ Palavras-chave carregadas com sucesso!")
-            print(f"   Keywords: {list(self.keywords.keys())}")
+            if not self.keywords_file:
+                print("\n✅ Palavras-chave carregadas com sucesso!")
+                print(f"   Keywords: {list(self.keywords.keys())}")
+            else:
+                self.logger.info(f"✅ {len(self.keywords)} palavras-chave carregadas de {self.keywords_file}")
         else:
-            print("\n⚠️ Nenhuma palavra-chave foi carregada.")
+            if not self.keywords_file:
+                print("\n⚠️ Nenhuma palavra-chave foi carregada.")
+            else:
+                self.logger.warning(f"⚠️ Nenhuma palavra-chave carregada de {self.keywords_file}")
             self.keywords = {}
 
     def run(self):
@@ -984,8 +833,13 @@ class Dani:
     def read_all_docs_parallel_batched(self) -> None:
         """Lê documentos de todos os órgãos usando paralelismo em lotes"""
         all_dir = [join(self.docs_path, d) for d in listdir(self.docs_path) if isdir(join(self.docs_path, d))]
-        read_orgaos = [os.path.basename(d) for d in listdir(self.docx_path) if isdir(join(self.docx_path, d))]
-        orgaos_to_read = [orgao for orgao in all_dir if os.path.basename(orgao) not in read_orgaos]
+        
+        # Se estiver no modo integridade, não pular órgãos já processados
+        if self.only_integrity_plans:
+            orgaos_to_read = all_dir
+        else:
+            read_orgaos = [os.path.basename(d) for d in listdir(self.docx_path) if isdir(join(self.docx_path, d))]
+            orgaos_to_read = [orgao for orgao in all_dir if os.path.basename(orgao) not in read_orgaos]
 
         self.logger.info(f"Órgãos a serem lidos: {[os.path.basename(o) for o in orgaos_to_read]}")
 
@@ -1143,11 +997,68 @@ class Dani:
             for snippet_info in unique_snippets:
                 self._write_snippet_thread_safe(snippet_info, orgao_name)
 
+
+            # Se a integração NLP estiver ativa, calcular IMGA
+            imga_result = None
+            if self.only_integrity_plans and self.classificador and self.pontuador and self.calculador:
+                total_words_doc = words_read
+                scores_por_eixo = defaultdict(list)
+                evidencias_por_eixo = defaultdict(list)
+                boosters_por_eixo = defaultdict(lambda: {'B1_ACAO': 0, 'B2_PERIODICIDADE': 0, 'B3_RESPONSAVEL': 0, 'B4_ARTEFATO': 0})
+                segmentos_analisados = 0
+                
+                # Iterar sobre as páginas, segmentar e limpar
+                for page_text in pdf_pages_text:
+                    if not page_text: continue
+                    
+                    # Passo 1: Segmentação e Limpeza
+                    segmentos = self._segment_and_clean(page_text)
+                    
+                    for segmento in segmentos:
+                        segmentos_analisados += 1
+                        # Classificar o segmento
+                        sinais_eixos = self.classificador.classificar_texto(segmento)
+                        
+                        # Para cada eixo, verificar pontuação neste segmento
+                        for eixo_id, sinais_config in self.classificador.dicionario_eixos.items():
+                             resultado = self.pontuador.calcular_score_eixo(segmento, eixo_id, sinais_config)
+                             if resultado.score_final > 0:
+                                 scores_por_eixo[eixo_id].append(resultado.score_final)
+                                 evidencias_por_eixo[eixo_id].extend(resultado.evidencias)
+                                 # Contar boosters ativados
+                                 for booster_id, ativado in resultado.detalhe_boosters.items():
+                                     if ativado:
+                                         boosters_por_eixo[eixo_id][booster_id] += 1
+
+                # Consolidar evidências únicas e contagem
+                estatisticas_eixos = {}
+                for eixo_id in self.classificador.dicionario_eixos.keys():
+                    evidencias_unicas = list(set(evidencias_por_eixo.get(eixo_id, [])))
+                    estatisticas_eixos[eixo_id] = {
+                        'termos_encontrados': len(evidencias_unicas),
+                        'termos_lista': evidencias_unicas,  # Todos os termos encontrados
+                        'total_ocorrencias': len(evidencias_por_eixo.get(eixo_id, [])),
+                        'boosters': dict(boosters_por_eixo.get(eixo_id, {}))
+                    }
+
+                imga_result = self.calculador.calcular_imga_entidade(scores_por_eixo, total_words_doc)
+                imga_result['estatisticas_eixos'] = estatisticas_eixos
+                imga_result['metadados']['segmentos_analisados'] = segmentos_analisados
+                
+                # Salvar resultado do IMGA associado ao arquivo
+                with self.snippet_lock:
+                    if self.imga_results is not None:
+                         # Extrair o órgão do nome do arquivo ou usar o atual
+                         # Vamos usar o nome do arquivo para chavear por enquanto
+                         self.imga_results[filename] = imga_result
+                         self.logger.info(f"📊 IMGA calculado para {filename}: Global={imga_result['imga_global']}, Faixa={imga_result['faixa']}")
+
             return {
                 'filename': filename,
                 'words_read': words_read,
                 'keyword_counts': keyword_counts,
-                'snippets_count': len(unique_snippets)
+                'snippets_count': len(unique_snippets),
+                'imga_result': imga_result
             }
 
         except Exception as e:
@@ -1586,6 +1497,32 @@ class Dani:
         
         return "OUTROS"
 
+    def _segment_and_clean(self, text: str) -> List[str]:
+        """
+        Segmenta o texto em unidades de análise (parágrafos) e remove ruídos.
+        Refina o Passo 1 do fluxo IMGA.
+        """
+        # 1. Limpeza de ruídos básicos
+        # Remover números de página isolados (ex: " 12 ", "- 12 -")
+        text = re.sub(r'\n\s*[-–]?\s*\d+\s*[-–]?\s*\n', '\n', text)
+        
+        # 2. Segmentação por parágrafos (quebras de linha duplas ou recuos)
+        # Normalizar quebras de linha
+        text = re.sub(r'\r\n', '\n', text)
+        
+        # Dividir por quebras duplas (parágrafos claros)
+        raw_segments = re.split(r'\n\s*\n', text)
+        
+        cleaned_segments = []
+        for seg in raw_segments:
+            seg = seg.strip()
+            # Ignorar segmentos muito curtos (ruído) ou irrelevantes
+            if len(seg) < 20: 
+                continue
+            cleaned_segments.append(seg)
+            
+        return cleaned_segments
+
     def display_results(self) -> None:
         """Exibe resultados da análise com tratamento de erros e gera summary detalhado"""
         try:
@@ -1597,12 +1534,24 @@ class Dani:
             # Calcular estatísticas por órgão
             orgao_statistics = self._calculate_orgao_statistics()
             
+            # Exibir resultados IMGA se disponíveis
+            if self.only_integrity_plans and self.imga_results:
+                self.logger.info("\n=== RESULTADOS IMGA (Índice de Maturidade da Governança Algorítmica) ===")
+                for filename, result in self.imga_results.items():
+                    self.logger.info(f"\n📄 Documento: {filename}")
+                    self.logger.info(f"   🏆 IMGA Global: {result['imga_global']} ({result['faixa']})")
+                    self.logger.info("   📊 Índices por Eixo:")
+                    for eixo, score in result['indices_eixos'].items():
+                        nome_eixo = self.classificador.obter_info_eixo(eixo) if self.classificador else eixo
+                        self.logger.info(f"      - {eixo} ({nome_eixo}): {score}")
+                self.logger.info("========================================================================\n")
+
             # Estrutura do summary melhorada
             summary = {
                 "metadata": {
                     "data_analise": datetime.now().isoformat(),
                     "versao_dani": "2.0",
-                    "tipo_analise": "geral" if self.all_orgaos else "especifica",
+                    "tipo_analise": "integridade" if self.only_integrity_plans else ("geral" if self.all_orgaos else "especifica"),
                     "orgao_especifico": self.orgao_name if not self.all_orgaos else None
                 },
                 "resumo_geral": {
@@ -1618,6 +1567,7 @@ class Dani:
                 "top_keywords_geral": [],
                 "estatisticas_por_orgao": orgao_statistics,
                 "documentos_lidos": self.name_docs_read,
+                "imga_results": self.imga_results if self.only_integrity_plans and self.imga_results else {},
                 "otimizacoes": {
                     "workers_utilizados": self.max_workers,
                     "batch_size": self.batch_size,

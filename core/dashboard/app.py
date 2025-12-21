@@ -1,11 +1,19 @@
+"""
+Dashboard AGIR - Interface Web para análise de governança e integridade
+"""
+
 import time
 import streamlit as st
 import pandas as pd
 import json
 import os
 import base64
+import shutil
 from datetime import datetime
 
+# ============================================
+# Configuração de Caminhos
+# ============================================
 DATA_DIR = os.getenv("DATA_DIR", "/app/data")
 DANI_DATA_DIR = os.path.join(DATA_DIR, "dani", "docs")
 TRIGGER_DIR = os.path.join(DATA_DIR, "triggers")
@@ -14,14 +22,52 @@ OUTPUT_DIR = os.path.join(DANI_DATA_DIR, "output")
 SUMMARY_FILE = os.path.join(DANI_DATA_DIR, "summary_results.json")
 PDF_DIR = os.path.join(DANI_DATA_DIR, "result_pdf")
 PDF_OUTPUT_DIR = os.path.join(PDF_DIR, "output")
+INTEGRITY_DIR = os.path.join(DANI_DATA_DIR, "integridade")
+KEYWORDS_FILE = os.path.join(DATA_DIR, "dani", "palavras_chaves.txt")
 
+# Triggers
 TRIGGER_LARA = os.path.join(TRIGGER_DIR, "run_lara.trigger")
 TRIGGER_DANI = os.path.join(TRIGGER_DIR, "run_dani.trigger")
+TRIGGER_DANI_INTEGRITY = os.path.join(TRIGGER_DIR, "run_dani_integrity.trigger")
 RUNNING_LARA = os.path.join(TRIGGER_DIR, "running_lara.trigger")
 RUNNING_DANI = os.path.join(TRIGGER_DIR, "running_dani.trigger")
+RUNNING_DANI_INTEGRITY = os.path.join(TRIGGER_DIR, "running_dani_integrity.trigger")
 COMPLETED_LARA = os.path.join(TRIGGER_DIR, "completed_lara.trigger")
 COMPLETED_DANI = os.path.join(TRIGGER_DIR, "completed_dani.trigger")
+COMPLETED_DANI_INTEGRITY = os.path.join(TRIGGER_DIR, "completed_dani_integrity.trigger")
 
+# ============================================
+# Definição dos Eixos IMGA
+# ============================================
+EIXOS_IMGA = {
+    "E1": {"nome": "Estrutura de Governança e Liderança", "peso": 10, "icone": "",
+           "descricao": "Avalia o comprometimento da alta administração e a arquitetura decisória"},
+    "E2": {"nome": "Cultura de Integridade", "peso": 10, "icone": "",
+           "descricao": "Capta o tom normativo, simbólico e cultural atribuído à ética organizacional"},
+    "E3": {"nome": "Ambiente de Compliance", "peso": 15, "icone": "",
+           "descricao": "Verifica a existência e densidade do arcabouço normativo"},
+    "E4": {"nome": "Due Diligence e Terceiros", "peso": 20, "icone": "",
+           "descricao": "Identifica práticas preventivas para mitigação de riscos externos"},
+    "E5": {"nome": "Comunicação, Treinamento e Monitoramento", "peso": 10, "icone": "",
+           "descricao": "Avalia estratégias de difusão e formação em integridade"},
+    "E6": {"nome": "Gestão de Riscos e Controles Internos", "peso": 15, "icone": "",
+           "descricao": "Analisa integração entre governança, riscos e controles"},
+    "E7": {"nome": "Transparência, Accountability e Evidenciação", "peso": 10, "icone": "",
+           "descricao": "Avalia abertura informacional e responsabilização"},
+    "E8": {"nome": "Efetividade e Maturidade do Programa", "peso": 10, "icone": "",
+           "descricao": "Diferencia programas formais de programas efetivamente implementados"},
+}
+
+FAIXAS_MATURIDADE = {
+    "Incipiente": {"cor": "#ef9a9a", "range": "0-25", "descricao": "Programa em fase inicial"},
+    "Básica": {"cor": "#ffe082", "range": "26-50", "descricao": "Estruturas básicas estabelecidas"},
+    "Intermediária": {"cor": "#a5d6a7", "range": "51-75", "descricao": "Programa consolidado"},
+    "Avançada": {"cor": "#81d4fa", "range": "76-100", "descricao": "Excelência em governança"},
+}
+
+# ============================================
+# Funções Auxiliares
+# ============================================
 
 def load_data():
     """Carrega os dados de resumo gerados pelo DANI."""
@@ -31,11 +77,38 @@ def load_data():
     return None
 
 
+def load_keywords():
+    """Carrega palavras-chave do arquivo."""
+    if os.path.exists(KEYWORDS_FILE):
+        with open(KEYWORDS_FILE, 'r', encoding='utf-8') as f:
+            return [line.strip() for line in f if line.strip()]
+    return []
+
+
+def save_keywords(keywords_list):
+    """Salva palavras-chave no arquivo."""
+    os.makedirs(os.path.dirname(KEYWORDS_FILE), exist_ok=True)
+    with open(KEYWORDS_FILE, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(keywords_list))
+
+
+def clear_results():
+    """Limpa os resultados salvos."""
+    files_cleared = []
+    if os.path.exists(SUMMARY_FILE):
+        os.remove(SUMMARY_FILE)
+        files_cleared.append("summary_results.json")
+    if os.path.exists(OUTPUT_DIR):
+        shutil.rmtree(OUTPUT_DIR)
+        os.makedirs(OUTPUT_DIR)
+        files_cleared.append("output/")
+    return files_cleared
+
+
 def get_output_files():
     """Lista os arquivos de relatório .docx gerados."""
     if not os.path.exists(OUTPUT_DIR):
         return []
-
     all_files = []
     for orgao_dir in sorted(os.listdir(OUTPUT_DIR)):
         orgao_path = os.path.join(OUTPUT_DIR, orgao_dir)
@@ -47,10 +120,9 @@ def get_output_files():
 
 
 def get_pdf_CIG():
-    """Lista os PDFs disponíveis por órgão a partir do diretório de input do DANI."""
+    """Lista os PDFs disponíveis por órgão a partir do diretório de input."""
     if not os.path.exists(INPUT_DIR):
         return {}
-
     pdfs_por_orgao = {}
     for orgao in sorted(os.listdir(INPUT_DIR)):
         orgao_path = os.path.join(INPUT_DIR, orgao)
@@ -60,24 +132,11 @@ def get_pdf_CIG():
                 pdfs_por_orgao[orgao] = pdfs
     return pdfs_por_orgao
 
-def get_pdf_DANI():
-    if not os.path.exists(PDF_DIR):
-        return {}
-
-    pdfs_por_orgao = {}
-    for orgao in sorted(os.listdir(PDF_DIR)):
-        orgao_path = os.path.join(PDF_DIR, orgao)
-        if os.path.isdir(orgao_path):
-            pdfs = [f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith('.pdf')]
-            if pdfs:
-                pdfs_por_orgao[orgao] = pdfs
-    return pdfs_por_orgao
 
 def get_pdf_output():
-    """Lista os PDFs disponíveis por órgão a partir do diretório output dentro de result_pdf."""
+    """Lista os PDFs disponíveis por órgão a partir do diretório output."""
     if not os.path.exists(PDF_OUTPUT_DIR):
         return {}
-
     pdfs_por_orgao = {}
     for orgao in sorted(os.listdir(PDF_OUTPUT_DIR)):
         orgao_path = os.path.join(PDF_OUTPUT_DIR, orgao)
@@ -88,221 +147,404 @@ def get_pdf_output():
     return pdfs_por_orgao
 
 
+def get_pdf_integridade():
+    """Lista os PDFs disponíveis por órgão a partir do diretório de integridade."""
+    if not os.path.exists(INTEGRITY_DIR):
+        return {}
+    pdfs_por_orgao = {}
+    for orgao in sorted(os.listdir(INTEGRITY_DIR)):
+        orgao_path = os.path.join(INTEGRITY_DIR, orgao)
+        if os.path.isdir(orgao_path):
+            pdfs = [f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith('.pdf')]
+            if pdfs:
+                pdfs_por_orgao[orgao] = pdfs
+    return pdfs_por_orgao
+
+
+# ============================================
+# Configuração da Página
+# ============================================
 st.set_page_config(
     page_title="Dashboard AGIR",
     page_icon="📊",
     layout="wide"
 )
 
-st.sidebar.title("🤖 Painel de Controle")
-st.sidebar.info("Dispare os processos de coleta e análise de dados.")
+# ============================================
+# Sidebar - Painel de Controle
+# ============================================
+st.sidebar.title("Painel de Controle")
 
-#os.makedirs(TRIGGER_DIR, exist_ok=True)
-
+# Status dos processos
 is_lara_running = os.path.exists(TRIGGER_LARA) or os.path.exists(RUNNING_LARA)
 is_dani_running = os.path.exists(TRIGGER_DANI) or os.path.exists(RUNNING_DANI)
+is_dani_integrity_running = os.path.exists(TRIGGER_DANI_INTEGRITY) or os.path.exists(RUNNING_DANI_INTEGRITY)
 is_lara_completed = os.path.exists(COMPLETED_LARA)
 is_dani_completed = os.path.exists(COMPLETED_DANI)
+is_dani_integrity_completed = os.path.exists(COMPLETED_DANI_INTEGRITY)
+is_process_running = is_lara_running or is_dani_running or is_dani_integrity_running
+is_process_completed = is_lara_completed or is_dani_completed or is_dani_integrity_completed
 
-is_process_running = is_lara_running or is_dani_running
-is_process_completed = is_lara_completed or is_dani_completed
+st.sidebar.subheader("Executar")
 
-if st.sidebar.button("Executar LARA-I (Coleta)", disabled=is_process_running):
+if st.sidebar.button("LARA-I (Coleta)", disabled=is_process_running, use_container_width=True):
+    os.makedirs(TRIGGER_DIR, exist_ok=True)
     with open(TRIGGER_LARA, 'w') as f:
         f.write('start')
-    st.sidebar.success("Sinal para iniciar LARA-I enviado!")
-    st.toast("O processo de coleta foi iniciado em segundo plano.")
+    st.toast("Processo de coleta iniciado!")
     time.sleep(1)
     st.rerun()
 
-if st.sidebar.button("Executar DANI (Análise)", disabled=is_process_running):
+if st.sidebar.button("DANI (Análise Geral)", disabled=is_process_running, use_container_width=True):
+    os.makedirs(TRIGGER_DIR, exist_ok=True)
     with open(TRIGGER_DANI, 'w') as f:
         f.write('start')
-    st.sidebar.success("Sinal para iniciar DANI enviado!")
-    st.toast("O processo de análise foi iniciado em segundo plano.")
+    st.toast("Análise DANI iniciada!")
     time.sleep(1)
     st.rerun()
 
-# Auto-refresh enquanto o processo está rodando ou quando acabou de completar
+if st.sidebar.button("DANI (Integridade/IMGA)", disabled=is_process_running, use_container_width=True, type="primary"):
+    os.makedirs(TRIGGER_DIR, exist_ok=True)
+    with open(TRIGGER_DANI_INTEGRITY, 'w') as f:
+        f.write('start')
+    st.toast("Análise IMGA iniciada!")
+    time.sleep(1)
+    st.rerun()
+
+st.sidebar.divider()
+
+# Gerenciamento de Palavras-chave
+st.sidebar.subheader("Palavras-chave")
+current_keywords = load_keywords()
+
+with st.sidebar.expander("Editar Palavras-chave", expanded=False):
+    keywords_text = st.text_area(
+        "Uma palavra por linha:",
+        value='\n'.join(current_keywords),
+        height=150,
+        key="keywords_input"
+    )
+    
+    if st.button("Salvar", use_container_width=True):
+        new_keywords = [k.strip() for k in keywords_text.split('\n') if k.strip()]
+        save_keywords(new_keywords)
+        st.success(f"{len(new_keywords)} palavras-chave salvas!")
+        time.sleep(1)
+        st.rerun()
+
+st.sidebar.caption(f"{len(current_keywords)} palavras-chave configuradas")
+
+st.sidebar.divider()
+
+# Limpar Resultados
+st.sidebar.subheader("Manutenção")
+if st.sidebar.button("Limpar Resultados", use_container_width=True):
+    cleared = clear_results()
+    if cleared:
+        st.sidebar.success(f"Limpo: {', '.join(cleared)}")
+    else:
+        st.sidebar.info("Nenhum resultado para limpar")
+    time.sleep(1)
+    st.rerun()
+
+# ============================================
+# Banner de Processo em Execução
+# ============================================
 if is_process_running:
-    processo = "LARA-I (Coleta)" if is_lara_running else "DANI (Análise)"
+    if is_dani_integrity_running:
+        processo = "DANI (Integridade/IMGA)"
+    elif is_lara_running:
+        processo = "LARA-I (Coleta)"
+    else:
+        processo = "DANI (Análise)"
     
-    # Banner de status com loader e auto-refresh
-    with st.container():
-        # CSS para animação do loader
-        st.markdown("""
-        <style>
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .spinner-icon {
-            display: inline-block;
-            animation: spin 2s linear infinite;
-        }
-        .loader-banner {
-            padding: 1rem;
-            background-color: #e3f2fd;
-            border-left: 5px solid #2196f3;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class='loader-banner'>
-            <h4 style='margin: 0; color: #1565c0;'>
-                🔄 <span class='spinner-icon'>⚙️</span> 
-                Processo em Execução: {processo}
-            </h4>
-            <p style='margin: 0.5rem 0 0 0; color: #424242;'>
-                ⏱️ O dashboard será atualizado automaticamente quando o processo concluir.<br>
-                📊 Aguarde... Processando dados...
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Aguardar 3 segundos antes de atualizar
+    # Banner Customizado (Mais escuro que st.info)
+    st.markdown(f"""
+    <div style='background-color: #bbdefb; padding: 15px; border-radius: 5px; border-left: 5px solid #1976d2; color: #0d47a1;'>
+        <h4>🔄 Processo em execução: {processo}</h4>
+        <p>Aguarde, a página será atualizada automaticamente...</p>
+    </div>
+    """, unsafe_allow_html=True)
     time.sleep(3)
     st.rerun()
 
-# Detectar quando um processo acabou de completar e fazer refresh final
+# Banner de Conclusão
 if is_process_completed:
-    processos_completos = []
+    processos = []
     if is_lara_completed:
-        processos_completos.append("LARA-I (Coleta)")
+        processos.append("LARA-I")
+        os.remove(COMPLETED_LARA) if os.path.exists(COMPLETED_LARA) else None
     if is_dani_completed:
-        processos_completos.append("DANI (Análise)")
+        processos.append("DANI")
+        os.remove(COMPLETED_DANI) if os.path.exists(COMPLETED_DANI) else None
+    if is_dani_integrity_completed:
+        processos.append("DANI/IMGA")
+        os.remove(COMPLETED_DANI_INTEGRITY) if os.path.exists(COMPLETED_DANI_INTEGRITY) else None
     
-    processo_completo = " e ".join(processos_completos)
-    
-    # Banner de sucesso
-    with st.container():
-        st.markdown("""
-        <style>
-        .success-banner {
-            padding: 1rem;
-            background-color: #e8f5e9;
-            border-left: 5px solid #4caf50;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class='success-banner'>
-            <h4 style='margin: 0; color: #2e7d32;'>
-                ✅ Processo(s) Concluído(s): {processo_completo}
-            </h4>
-            <p style='margin: 0.5rem 0 0 0; color: #424242;'>
-                📊 Atualizando dashboard com os resultados...
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Remove os arquivos de completed após detectar
-    if is_lara_completed and os.path.exists(COMPLETED_LARA):
-        os.remove(COMPLETED_LARA)
-    if is_dani_completed and os.path.exists(COMPLETED_DANI):
-        os.remove(COMPLETED_DANI)
-    
-    # Aguardar 1 segundo e fazer refresh final
+    st.markdown(f"""
+    <div style='background-color: #c8e6c9; padding: 15px; border-radius: 5px; border-left: 5px solid #2e7d32; color: #1b5e20;'>
+        <h4>✅ Concluído: {', '.join(processos)}</h4>
+    </div>
+    """, unsafe_allow_html=True)
     time.sleep(1)
     st.rerun()
 
-st.title("📊 Dashboard de Análise - AGIR")
-st.caption(f"Resultados da última análise. Atualizado em: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+# ============================================
+# Conteúdo Principal
+# ============================================
+st.title("Dashboard AGIR")
+st.caption(f"Ambiente de Governança, Integridade e Resultados | Atualizado: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+
+# Tabs principais
+tab_resultados, tab_eixos, tab_docs = st.tabs([
+    "Resultados", "Eixos Analíticos", "Documentos"
+])
 
 summary_data = load_data()
 
-if not summary_data:
-    st.warning("Nenhum dado de análise encontrado. Execute o DANI primeiro para gerar os resultados.")
-    st.info("Para iniciar, use os botões no 'Painel de Controle' ao lado.")
-else:
-    st.success("Dados da última análise carregados com sucesso!")
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Órgão(s) Analisado(s)", ", ".join(summary_data.get('orgaos_analisados', ['N/A'])))
-    col2.metric("Total de Documentos Lidos", len(summary_data.get('documentos_lidos', [])))
-    col3.metric("Total de Palavras Lidas", f"{summary_data.get('total_palavras_lidas', 0):,}".replace(",", "."))
-
-    st.subheader("Frequência de Palavras-chave")
-    keyword_counts = summary_data.get('contagem_keywords', {})
-
-    if keyword_counts:
-        df_keywords = pd.DataFrame(
-            keyword_counts.items(),
-            columns=['Palavra-chave', 'Ocorrências']
-        ).sort_values(by="Ocorrências", ascending=False)
-
-        st.bar_chart(df_keywords.set_index('Palavra-chave'))
+# ============================================
+# Tab: Resultados (Consolidada)
+# ============================================
+with tab_resultados:
+    if not summary_data:
+        st.warning("Nenhum resultado disponível. Execute uma análise primeiro.")
+        st.info("Use o painel lateral para iniciar DANI ou DANI/IMGA")
     else:
-        st.info("Nenhuma ocorrência de palavra-chave encontrada.")
+        # Métricas resumo
+        metadata = summary_data.get('metadata', {})
+        resumo = summary_data.get('resumo_geral', {})
+        tipo_analise = metadata.get('tipo_analise', 'N/A')
+        
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("Tipo de Análise", tipo_analise.title())
+        col2.metric("Documentos", resumo.get('total_documentos_lidos', 0))
+        col3.metric("Palavras", f"{resumo.get('total_palavras_lidas', 0):,}".replace(",", "."))
+        col4.metric("Ocorrências", resumo.get('total_ocorrencias', 0))
+        
+        st.divider()
+        
+        # Se for análise de integridade, mostrar resultados IMGA
+        imga_results = summary_data.get('imga_results', {})
+        
+        if imga_results:
+            st.subheader("Índice de Maturidade da Governança Algorítmica (IMGA)")
+            
+            # Resumo IMGA
+            docs_count = len(imga_results)
+            avg_imga = sum(r.get('imga_global', 0) for r in imga_results.values()) / docs_count if docs_count else 0
+            
+            col1, col2 = st.columns(2)
+            col1.metric("Documentos Analisados", docs_count)
+            col2.metric("IMGA Médio", f"{avg_imga:.1f}")
+            
+            st.divider()
+            
+            # Resultados por documento
+            for filename, result in imga_results.items():
+                imga_global = result.get('imga_global', 0)
+                faixa = result.get('faixa', 'N/A')
+                faixa_info = FAIXAS_MATURIDADE.get(faixa, {})
+                
+                with st.expander(f"**{filename}** — IMGA: {imga_global} ({faixa})", expanded=True):
+                    col1, col2 = st.columns([1, 2])
+                    
+                    with col1:
+                        # Card de resultado
+                        st.markdown(f"""
+                        <div style='background: {faixa_info.get("cor", "#f5f5f5")}; padding: 1rem; border-radius: 10px; text-align: center;'>
+                            <h1 style='margin: 0; color: #000; font-weight: 800;'>{imga_global}</h1>
+                            <p style='margin: 0.5rem 0 0 0; font-weight: bold; color: #000;'>{faixa}</p>
+                            <small>{faixa_info.get("range", "")}</small>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # Metadados
+                        metadados = result.get('metadados', {})
+                        st.caption(f"{metadados.get('total_palavras', 0):,} palavras".replace(",", "."))
+                        st.caption(f"{metadados.get('segmentos_analisados', 0)} segmentos")
+                    
+                    with col2:
+                        # Índices por eixo com estatísticas
+                        indices = result.get('indices_eixos', {})
+                        estatisticas = result.get('estatisticas_eixos', {})
+                        
+                        if indices:
+                            dados_tabela = []
+                            for k, v in indices.items():
+                                stats = estatisticas.get(k, {})
+                                dados_tabela.append({
+                                    "Eixo": f"{EIXOS_IMGA.get(k, {}).get('icone', '')} {k}",
+                                    "Nome": EIXOS_IMGA.get(k, {}).get('nome', k),
+                                    "Índice": v,
+                                    "Termos": stats.get('termos_encontrados', 0),
+                                    "Ocorr.": stats.get('total_ocorrencias', 0),
+                                })
+                            df = pd.DataFrame(dados_tabela)
+                            st.dataframe(df, use_container_width=True, hide_index=True)
+                    
+                    # Detalhes de termos encontrados
+                    estatisticas_doc = result.get('estatisticas_eixos', {})
+                    if estatisticas_doc:
+                        with st.expander("Detalhes dos Termos Encontrados", expanded=False):
+                            termos_data = []
+                            for eixo_id, stats in estatisticas_doc.items():
+                                if stats.get('termos_encontrados', 0) > 0:
+                                    termos_lista = stats.get('termos_lista', [])
+                                    boosters = stats.get('boosters', {})
+                                    boosters_ativos = [b.replace('B1_', '').replace('B2_', '').replace('B3_', '').replace('B4_', '') 
+                                                       for b, c in boosters.items() if c > 0]
+                                    
+                                    termos_data.append({
+                                        "Eixo": eixo_id,
+                                        "Nome": EIXOS_IMGA.get(eixo_id, {}).get('nome', eixo_id),
+                                        "Qtd. Termos": len(termos_lista),
+                                        "Termos Encontrados": ", ".join(sorted(termos_lista)),
+                                        "Boosters Ativos": ", ".join(boosters_ativos) if boosters_ativos else "-"
+                                    })
+                            
+                            if termos_data:
+                                df_termos = pd.DataFrame(termos_data)
+                                st.dataframe(
+                                    df_termos, 
+                                    use_container_width=True, 
+                                    hide_index=True,
+                                    column_config={
+                                        "Termos Encontrados": st.column_config.TextColumn(
+                                            "Termos Encontrados",
+                                            width="large"
+                                        )
+                                    }
+                                )
+                    
+                    # Auditoria de Cálculo
+                    auditoria = result.get('auditoria', {})
+                    if auditoria:
+                        with st.expander("Auditoria de Cálculo", expanded=False):
+                            st.markdown("**Fórmulas Utilizadas:**")
+                            st.code(auditoria.get('formula', 'N/A'), language=None)
+                            st.code(auditoria.get('formula_imga', 'N/A'), language=None)
+                            st.caption(f"Fator de Normalização: {auditoria.get('fator_normalizacao', 0)} (Total Palavras / 100)")
+                            
+                            st.markdown("**Detalhamento por Eixo:**")
+                            audit_data = []
+                            for eixo_id, dados in auditoria.get('eixos', {}).items():
+                                audit_data.append({
+                                    "Eixo": eixo_id,
+                                    "Soma Bruta": dados.get('soma_bruta', 0),
+                                    "Segmentos": dados.get('num_segmentos_pontuados', 0),
+                                    "Densidade": dados.get('densidade', 0),
+                                    "Índice (pré-cap)": dados.get('indice_pre_cap', 0),
+                                    "Índice Final": dados.get('indice_final', 0),
+                                    "Peso": f"{int(dados.get('peso_metodologia', 0)*100)}%",
+                                    "Contribuição": dados.get('contribuicao_imga', 0)
+                                })
+                            if audit_data:
+                                df_audit = pd.DataFrame(audit_data)
+                                st.dataframe(df_audit, use_container_width=True, hide_index=True)
+                                
+                                # Soma das contribuições = IMGA Global
+                                total_contrib = sum(d.get('contribuicao_imga', 0) for d in auditoria.get('eixos', {}).values())
+                                st.markdown(f"**IMGA Global = Σ Contribuições = {round(total_contrib, 2)}**")
+        
+        else:
+            # Análise normal (keywords)
+            st.subheader("Frequência de Palavras-chave")
+            keyword_counts = summary_data.get('contagem_keywords_geral', {})
+            
+            if keyword_counts:
+                filtered_kw = {k: v for k, v in keyword_counts.items() if v > 0}
+                if filtered_kw:
+                    df = pd.DataFrame(list(filtered_kw.items()), columns=['Palavra', 'Ocorrências'])
+                    df = df.sort_values('Ocorrências', ascending=False).head(20)
+                    st.bar_chart(df.set_index('Palavra'))
+                else:
+                    st.info("Nenhuma ocorrência encontrada com as palavras-chave configuradas")
+            else:
+                st.info("Execute uma análise para ver os resultados")
 
-    st.subheader("Relatórios Gerados (.docx)")
-    output_files = get_output_files()
+# ============================================
+# Tab: Eixos Analíticos
+# ============================================
+with tab_eixos:
+    st.subheader("Taxonomia Analítica IMGA")
+    st.caption("Eixos utilizados na classificação automatizada dos relatórios de integridade")
+    
+    # Exibir eixos em cards
+    for eixo_id, info in EIXOS_IMGA.items():
+        with st.container():
+            col1, col2, col3 = st.columns([1, 4, 1])
+            
+            with col1:
+                st.markdown(f"### {eixo_id}")
+                st.caption(eixo_id)
+            
+            with col2:
+                st.markdown(f"**{info['nome']}**")
+                st.caption(info['descricao'])
+            
+            with col3:
+                st.metric("Peso", f"{info['peso']}%")
+            
+            st.divider()
+    
+    # Faixas de maturidade
+    st.subheader("Faixas de Maturidade")
+    
+    cols = st.columns(4)
+    for i, (faixa, info) in enumerate(FAIXAS_MATURIDADE.items()):
+        with cols[i]:
+            st.markdown(f"""
+            <div style='background: {info["cor"]}; padding: 1rem; border-radius: 8px; text-align: center;'>
+                <strong>{faixa}</strong><br>
+                <small>{info["range"]}</small><br>
+                <small>{info["descricao"]}</small>
+            </div>
+            """, unsafe_allow_html=True)
 
-    if output_files:
-        df_files = pd.DataFrame(output_files, columns=["Órgão", "Arquivo"])
-        st.dataframe(df_files, use_container_width=True)
-        st.info("Para baixar os relatórios, acesse o diretório `data/dani/docs/output` no seu computador.")
+# ============================================
+# Tab: Documentos
+# ============================================
+with tab_docs:
+    st.subheader("Visualizador de Documentos")
+    
+    doc_type = st.selectbox("Selecione o tipo:", [
+        "Atas CIG (Input)", 
+        "Planos de Integridade (Input IMGA)",
+        "Resultados DANI (Output)"
+    ])
+    
+    if doc_type == "Atas CIG (Input)":
+        pdfs = get_pdf_CIG()
+        base_dir = INPUT_DIR
+    elif doc_type == "Planos de Integridade (Input IMGA)":
+        pdfs = get_pdf_integridade()
+        base_dir = INTEGRITY_DIR
     else:
-        st.info("Nenhum relatório .docx foi gerado ainda.")
-
-    with st.expander("📄 Visualizar Atas do Comitê Interno de Governança", expanded=False):
-        pdfs_disponiveis = get_pdf_CIG()
-
-        if not pdfs_disponiveis:
-            st.info("Nenhum arquivo PDF encontrado no diretório de entrada (`data/dani/docs/input`).")
-        else:
-            col_pdf1, col_pdf2 = st.columns(2)
-
-            with col_pdf1:
-                selected_orgao = st.selectbox("Selecione o órgão", list(pdfs_disponiveis.keys()))
-
-            with col_pdf2:
-                selected_pdf = st.selectbox("Selecione o arquivo PDF", pdfs_disponiveis[selected_orgao])
-
-            if selected_orgao and selected_pdf:
-                pdf_path = os.path.join(INPUT_DIR, selected_orgao, selected_pdf)
-
-                try:
-                    with open(pdf_path, "rb") as f:
-                        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-
-                    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
-                    st.markdown(pdf_display, unsafe_allow_html=True)
-                except FileNotFoundError:
-                    st.error(f"Erro: O arquivo '{selected_pdf}' não foi encontrado no caminho esperado.")
-                except Exception as e:
-                    st.error(f"Ocorreu um erro ao tentar exibir o PDF: {e}")
-
-    with st.expander("📄 Visualizar Resultados DANI", expanded=False):
-        pdfs_output = get_pdf_output()
-
-        if not pdfs_output:
-            st.info("Nenhum arquivo PDF encontrado no diretório de saída (`data/dani/docs/result_pdf/output`).")
-        else:
-            col_pdf1, col_pdf2 = st.columns(2)
-
-            with col_pdf1:
-                selected_orgao_output = st.selectbox("Selecione o órgão", list(pdfs_output.keys()), key="orgao_output")
-
-            with col_pdf2:
-                selected_pdf_output = st.selectbox("Selecione o arquivo PDF", pdfs_output[selected_orgao_output], key="pdf_output")
-
-            if selected_orgao_output and selected_pdf_output:
-                pdf_path_output = os.path.join(PDF_OUTPUT_DIR, selected_orgao_output, selected_pdf_output)
-
-                try:
-                    with open(pdf_path_output, "rb") as f:
-                        base64_pdf_output = base64.b64encode(f.read()).decode('utf-8')
-
-                    pdf_display_output = f'<iframe src="data:application/pdf;base64,{base64_pdf_output}" width="100%" height="800" type="application/pdf"></iframe>'
-                    st.markdown(pdf_display_output, unsafe_allow_html=True)
-                except FileNotFoundError:
-                    st.error(f"Erro: O arquivo '{selected_pdf_output}' não foi encontrado no caminho esperado.")
-                except Exception as e:
-                    st.error(f"Ocorreu um erro ao tentar exibir o PDF: {e}")
+        pdfs = get_pdf_output()
+        base_dir = PDF_OUTPUT_DIR
+    
+    if not pdfs:
+        st.info("Nenhum documento disponível nesta categoria")
+    else:
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            orgao = st.selectbox("Órgão:", list(pdfs.keys()))
+        
+        with col2:
+            if orgao:
+                arquivo = st.selectbox("Arquivo:", pdfs[orgao])
+        
+        if orgao and arquivo:
+            pdf_path = os.path.join(base_dir, orgao, arquivo)
+            
+            try:
+                with open(pdf_path, "rb") as f:
+                    pdf_data = base64.b64encode(f.read()).decode('utf-8')
+                
+                st.markdown(
+                    f'<iframe src="data:application/pdf;base64,{pdf_data}" width="100%" height="700" type="application/pdf"></iframe>',
+                    unsafe_allow_html=True
+                )
+            except Exception as e:
+                st.error(f"Erro ao carregar PDF: {e}")

@@ -1,0 +1,221 @@
+[
+    {
+        "axis_id": "E1",
+        "axis_name": "Estrutura de Governança e Liderança",
+        "categories": [
+            {
+                "category_id": "E1.1",
+                "terms": [
+                    "diretoria",
+                    "conselho",
+                    "alta administração",
+                    "instância decisória",
+                    "liderança estratégica"
+                ],
+                "expressions": [
+                    "aprovado pelo conselho",
+                    "deliberação colegiada",
+                    "patrocínio institucional",
+                    "apoio da alta administração",
+                    "comprometimento da alta administração"
+                ],
+                "subsignals": [
+                    "comitê de auditoria",
+                    "comitê de riscos",
+                    "comitê de compliance",
+                    "comitê de integridade",
+                    "conselho fiscal",
+                    "diretoria estatutária"
+                ]
+            }
+        ]
+    },
+    {
+        "axis_id": "E2",
+        "axis_name": "Cultura de Integridade",
+        "categories": [
+            {
+                "category_id": "E2.1",
+                "terms": [
+                    "ética",
+                    "integridade",
+                    "valores",
+                    "conduta",
+                    "comportamento ético"
+                ],
+                "expressions": [
+                    "liderar pelo exemplo",
+                    "tom da alta administração",
+                    "cultura de integridade",
+                    "disseminação de valores",
+                    "fazer a coisa certa"
+                ],
+                "subsignals": [
+                    "semana da integridade",
+                    "ações de aculturamento",
+                    "pacto empresarial pela integridade",
+                    "código de ética e conduta"
+                ]
+            }
+        ]
+    },
+    {
+        "axis_id": "E3",
+        "axis_name": "Ambiente de Compliance",
+        "categories": [
+            {
+                "category_id": "E3.1",
+                "terms": [
+                    "conformidade",
+                    "aderência",
+                    "normativos",
+                    "regulação",
+                    "controles"
+                ],
+                "expressions": [
+                    "conformidade legal",
+                    "aderência normativa",
+                    "controles administrativos",
+                    "procedimentos internos de compliance"
+                ],
+                "subsignals": [
+                    "política de conflito de interesses",
+                    "política de transações com partes relacionadas",
+                    "manual de alçadas",
+                    "compliance officer"
+                ]
+            }
+        ]
+    },
+    {
+        "axis_id": "E4",
+        "axis_name": "Due Diligence e Terceiros",
+        "categories": [
+            {
+                "category_id": "E4.1",
+                "terms": [
+                    "terceiros",
+                    "fornecedores",
+                    "parceiros",
+                    "diligência"
+                ],
+                "expressions": [
+                    "análise de integridade de terceiros",
+                    "avaliação prévia de riscos",
+                    "due diligence de integridade"
+                ],
+                "subsignals": [
+                    "dossiê de compliance",
+                    "parecer de integridade",
+                    "verificação de pessoa politicamente exposta",
+                    "pep"
+                ]
+            }
+        ]
+    },
+    {
+        "axis_id": "E5",
+        "axis_name": "Comunicação, Treinamento e Monitoramento",
+        "categories": [
+            {
+                "category_id": "E5.1",
+                "terms": [
+                    "treinamento",
+                    "capacitação",
+                    "comunicação",
+                    "conscientização",
+                    "divulgação"
+                ],
+                "expressions": [
+                    "campanhas de integridade",
+                    "educação corporativa",
+                    "comunicação institucional"
+                ],
+                "subsignals": [
+                    "universidade corporativa",
+                    "plano de comunicação",
+                    "monitoramento contínuo",
+                    "revisão do programa"
+                ]
+            }
+        ]
+    },
+    {
+        "axis_id": "E6",
+        "axis_name": "Gestão de Riscos e Controles Internos",
+        "categories": [
+            {
+                "category_id": "E6.1",
+                "terms": [
+                    "riscos",
+                    "controles",
+                    "auditoria",
+                    "mapeamento"
+                ],
+                "expressions": [
+                    "matriz de riscos",
+                    "gerenciamento de riscos corporativos",
+                    "sistema de controles internos"
+                ],
+                "subsignals": [
+                    "coso erm",
+                    "três linhas de defesa",
+                    "auditoria interna",
+                    "plano de mitigação"
+                ]
+            }
+        ]
+    },
+    {
+        "axis_id": "E7",
+        "axis_name": "Transparência, Accountability e Evidenciação",
+        "categories": [
+            {
+                "category_id": "E7.1",
+                "terms": [
+                    "transparência",
+                    "prestação de contas",
+                    "divulgação",
+                    "acesso"
+                ],
+                "expressions": [
+                    "divulgação pública",
+                    "acesso à informação",
+                    "evidenciação de resultados"
+                ],
+                "subsignals": [
+                    "relatório de integridade",
+                    "portal da transparência",
+                    "auditoria independente",
+                    "parecer técnico"
+                ]
+            }
+        ]
+    },
+    {
+        "axis_id": "E8",
+        "axis_name": "Efetividade e Maturidade do Programa",
+        "categories": [
+            {
+                "category_id": "E8.1",
+                "terms": [
+                    "efetividade",
+                    "maturidade",
+                    "resultados",
+                    "impacto"
+                ],
+                "expressions": [
+                    "implementação efetiva",
+                    "melhoria contínua",
+                    "fortalecimento da governança"
+                ],
+                "subsignals": [
+                    "índice de maturidade",
+                    "indicadores de desempenho",
+                    "plano de aprimoramento",
+                    "revisão anual"
+                ]
+            }
+        ]
+    }
+]

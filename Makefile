@@ -1,4 +1,4 @@
-.PHONY: help build up down logs restart clean shell cli dash rebuild run-lara run-dani stop-all
+.PHONY: help build up down logs restart clean shell cli dash rebuild run-lara run-dani stop-all run-dani-integrity-docker
 
 # Variáveis
 COMPOSE = docker-compose
@@ -81,6 +81,11 @@ run-dani: ## Executa o trigger para iniciar DANI
 	@touch data/triggers/run_dani.trigger
 	@echo "Trigger DANI criado"
 
+run-dani-integrity-trigger: ## Cria trigger para DANI integridade (via Docker)
+	@mkdir -p data/triggers
+	@touch data/triggers/run_dani_integrity.trigger
+	@echo "📊 Trigger DANI Integridade criado"
+
 status: ## Mostra status dos containers
 	$(COMPOSE) ps
 	@echo "\n--- Logs recentes ---"
@@ -104,6 +109,22 @@ install-deps: ## Instala dependências localmente
 	pip install -r requirements.txt
 	playwright install --with-deps chromium
 
+setup-venv: ## Cria e configura ambiente virtual
+	@echo "🔧 Criando ambiente virtual..."
+	python3 -m venv .venv
+	@echo "📦 Instalando dependências..."
+	.venv/bin/pip install --upgrade pip
+	.venv/bin/pip install -r requirements.txt
+	@echo "✅ Ambiente configurado! Ative com: source .venv/bin/activate"
+
+install-venv-deps: ## Instala dependências no venv existente
+	@echo "📦 Instalando dependências no venv..."
+	.venv/bin/pip install -r requirements.txt
+	@echo "✅ Dependências instaladas!"
+
+install-all: install-venv-deps ## Instala todas as dependências (alias)
+	@echo "✅ Todas as dependências instaladas!"
+
 # Informações do sistema
 info: ## Mostra informações do Docker
 	@echo "=== Docker Info ==="
@@ -115,3 +136,69 @@ info: ## Mostra informações do Docker
 	@echo "\n=== Imagens ==="
 	$(DOCKER) images | grep agir-unb
 
+# ============================================
+# DANI - Execução Local
+# ============================================
+
+run-dani-local: ## Executa DANI localmente (todos os órgãos)
+	@echo "🚀 Iniciando DANI (todos os órgãos)..."
+	.venv/bin/python -c "from core.models.dani import Dani; d = Dani(all_orgaos=True); d.run()"
+
+run-dani-integrity: ## Executa DANI para planos de integridade (modo IMGA)
+	@echo "🚀 Iniciando DANI (planos de integridade - IMGA)..."
+	.venv/bin/python -c "from core.models.dani import Dani; d = Dani(only_integrity_plans=True, all_orgaos=True); d.run()"
+
+run-dani-orgao: ## Executa DANI para órgão específico (ORGAO=nome)
+	@if [ -z "$(ORGAO)" ]; then \
+		echo "❌ Erro: Especifique o órgão com ORGAO=nome"; \
+		echo "   Exemplo: make run-dani-orgao ORGAO=SEMA"; \
+		exit 1; \
+	fi
+	@echo "🚀 Iniciando DANI para órgão: $(ORGAO)..."
+	.venv/bin/python -c "from core.models.dani import Dani; d = Dani(orgao_name='$(ORGAO)'); d.run()"
+
+run-dani-convert-pdf: ## Converte DOCX para PDF (todos os órgãos)
+	@echo "📄 Iniciando conversão DOCX → PDF..."
+	.venv/bin/python -c "from core.models.dani import Dani; d = Dani(); d.run_with_pdf_conversion()"
+
+dani-help: ## Mostra ajuda específica do DANI
+	@echo ""
+	@echo "════════════════════════════════════════════════════"
+	@echo "  DANI - Desenvolvedor e Apresentador de Números"
+	@echo "════════════════════════════════════════════════════"
+	@echo ""
+	@echo "Comandos disponíveis:"
+	@echo "  make run-dani-local        - Processar todos os órgãos"
+	@echo "  make run-dani-integrity    - Processar planos de integridade (IMGA)"
+	@echo "  make run-dani-orgao ORGAO=X - Processar órgão específico"
+	@echo "  make run-dani-convert-pdf  - Converter DOCX para PDF"
+	@echo ""
+
+# ============================================
+# Docker - Comandos DANI
+# ============================================
+
+run-dani-docker: ## Executa DANI via Docker (todos os órgãos)
+	@echo "🚀 Executando DANI via Docker..."
+	$(COMPOSE) exec dani-worker python -c "from cli.dani_worker import run_dani_normal; run_dani_normal()"
+
+run-dani-integrity-docker: ## Executa DANI integridade via Docker (IMGA)
+	@echo "📊 Executando DANI Integridade via Docker..."
+	$(COMPOSE) exec dani-worker python -c "from cli.dani_worker import run_dani_integrity; run_dani_integrity()"
+
+logs-dani-worker: ## Mostra logs do worker DANI
+	$(COMPOSE) logs -f dani-worker
+
+restart-dani-worker: ## Reinicia o worker DANI
+	$(COMPOSE) restart dani-worker
+
+# ============================================
+# Dashboard - Atalhos
+# ============================================
+
+run-dashboard: up ## Inicia dashboard (alias para up)
+	@echo "📊 Dashboard disponível em http://localhost:8501"
+
+open-dashboard: ## Abre dashboard no navegador
+	@echo "🌐 Abrindo dashboard..."
+	@xdg-open http://localhost:8501 2>/dev/null || open http://localhost:8501 2>/dev/null || echo "Acesse: http://localhost:8501"
