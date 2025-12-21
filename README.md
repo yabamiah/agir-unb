@@ -1,96 +1,159 @@
-# AGIR - Automação para uma Governança Inteligente e Responsável no DF
+# AGIR - Automacao para uma Governanca Inteligente e Responsavel no DF
 
-## O que é AGIR?
+## Sobre o Projeto
 
-AGIR é um projeto de Engenharia de Software e automação da Universidade de Brasília (AGIR-UnB), que foi inscrito e aceito no Programa Institucional de Bolsas de Iniciação em Desenvolvimento Tecnológico e Inovação, que tem como objetivo automatizar a análise de documentos de licitação (processo pelo qual a Administração Pública contrata obras, serviços e compras) do Distrito Federal. Para isso, será desenvolvido dois bots que irão trabalhar em conjunto para que a análise seja feito com a maior cobertura de documentos e com uma análise detalhade e minusiosa de cada um.
+AGIR e um projeto de Engenharia de Software da Universidade de Brasilia (UnB), desenvolvido no ambito do Programa Institucional de Bolsas de Iniciacao em Desenvolvimento Tecnologico e Inovacao (PIBITI).
 
-## Ferramentas
-
-Para o desenvolvimento da automatização do processo anteriormente descrito, iremos utilizar as seguintes ferramentas de desenvolvimento:
-
-- Python
-- BeautifulSoup
-- Requests
-- Pandas
-- Selenium
-- Docker
-- Linux
+O objetivo principal e automatizar a analise de documentos de governanca e integridade do Distrito Federal, utilizando tecnicas de Processamento de Linguagem Natural (NLP) e automacao de coleta de dados.
 
 ## Arquitetura
 
-![agir modelagem](./assets/agir-modelagem.png)
+O sistema e composto por tres componentes principais:
 
-## Instalação e Uso com Docker
+### LARA-I (Robo de Coleta)
+Responsavel pela coleta automatizada de documentos do portal de transparencia do DF.
 
-### Pré-requisitos
+### DANI (Analisador de Documentos)
+Realiza duas funcoes principais:
+- **Analise Geral**: Busca por palavras-chave em documentos e gera relatorios
+- **Analise de Integridade (IMGA)**: Calcula o Indice de Maturidade da Governanca Algoritmica para planos de integridade
+
+### Dashboard Web
+Interface para visualizacao de resultados, execucao de processos e auditoria dos calculos IMGA.
+
+## Indice de Maturidade da Governanca Algoritmica (IMGA)
+
+O IMGA avalia planos de integridade em 8 eixos analiticos:
+
+| Eixo | Nome | Peso |
+|------|------|------|
+| E1 | Estrutura de Governanca e Lideranca | 10% |
+| E2 | Cultura de Integridade | 10% |
+| E3 | Ambiente de Compliance | 15% |
+| E4 | Due Diligence e Terceiros | 20% |
+| E5 | Comunicacao, Treinamento e Monitoramento | 10% |
+| E6 | Gestao de Riscos e Controles Internos | 15% |
+| E7 | Transparencia, Accountability e Evidenciacao | 10% |
+| E8 | Efetividade e Maturidade do Programa | 10% |
+
+### Faixas de Maturidade
+- **Incipiente** (0-25): Programa em fase inicial
+- **Basica** (26-50): Estruturas basicas estabelecidas
+- **Intermediaria** (51-75): Programa consolidado
+- **Avancada** (76-100): Excelencia em governanca
+
+## Tecnologias Utilizadas
+
+- Python 3.11
+- Streamlit (Dashboard)
+- PyMuPDF / pdfplumber (Extracao de PDF)
+- Tesseract OCR
+- Docker / Docker Compose
+- LibreOffice (Conversao DOCX para PDF)
+- Playwright (Automacao web)
+
+## Estrutura do Projeto
+
+```
+agir-unb/
+├── cli/                    # Comandos de linha de comando
+│   ├── dani_worker.py      # Worker para execucao em background
+│   └── orchestrator.py     # Orquestrador de processos
+├── core/
+│   ├── dashboard/          # Interface web Streamlit
+│   ├── models/
+│   │   └── dani.py         # Classe principal DANI
+│   ├── motor_nlp/          # Motor de NLP para IMGA
+│   │   ├── classificador_eixos.py
+│   │   ├── pontuador_maturidade.py
+│   │   ├── calculador_imga.py
+│   │   └── dicionario.json
+│   ├── processors/         # Processadores de documentos
+│   │   ├── pdf_processor.py
+│   │   └── docx_converter.py
+│   └── workers/            # Gerenciadores de workers
+├── data/
+│   └── dani/
+│       ├── docs/
+│       │   ├── input/      # Atas CIG (entrada)
+│       │   ├── integridade/# Planos de integridade
+│       │   └── output/     # Relatorios gerados
+│       └── palavras_chaves.txt
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+└── requirements.txt
+```
+
+## Instalacao e Uso
+
+### Pre-requisitos
 - Docker
 - Docker Compose
-- Make (opcional, mas recomendado)
+- Make (opcional)
 
-### Configuração Inicial
+### Configuracao Inicial
 
-1. **Clone o repositório:**
 ```bash
+# Clonar o repositorio
 git clone <repository-url>
 cd agir-unb
-```
 
-2. **Configure as variáveis de ambiente:**
-```bash
+# Configurar variaveis de ambiente
 cp env.example .env
-# Edite o arquivo .env com suas configurações
-```
 
-3. **Use o Makefile (recomendado):**
-```bash
-# Ver todos os comandos disponíveis
-make help
-
-# Construir e iniciar os serviços
+# Construir e iniciar
 make up-build
-
-# Ou manualmente:
-docker-compose up -d --build
 ```
 
 ### Comandos Principais
 
-| Comando | Descrição |
+| Comando | Descricao |
 |---------|-----------|
-| `make build` | Constrói as imagens Docker |
-| `make up` | Inicia todos os serviços |
-| `make down` | Para e remove os containers |
-| `make logs` | Mostra logs de todos os serviços |
-| `make logs-cli` | Mostra logs do serviço CLI |
-| `make logs-dash` | Mostra logs do dashboard |
-| `make shell-cli` | Abre shell no container CLI |
-| `make run-lara` | Executa trigger para iniciar LARA-I |
-| `make run-dani` | Executa trigger para iniciar DANI |
-| `make status` | Mostra status dos containers |
-| `make clean` | Remove containers, volumes e imagens |
-| `make rebuild` | Reconstrução completa |
+| `make up` | Inicia todos os servicos |
+| `make up-build` | Reconstroi e inicia servicos |
+| `make down` | Para todos os containers |
+| `make logs` | Mostra logs de todos os servicos |
+| `make logs-dani-worker` | Logs do worker DANI |
+| `make run-dani-integrity-trigger` | Dispara analise IMGA |
+| `make status` | Status dos containers |
+| `make clean` | Remove containers e volumes |
 
 ### Acessar o Dashboard
 
-Após iniciar os serviços, o dashboard estará disponível em:
+Apos iniciar os servicos:
 ```
 http://localhost:8501
 ```
 
-### Documentação de Dependências
+## Funcionalidades do Dashboard
 
-Para entender quais dependências do sistema são necessárias e por quê, consulte:
-- [DEPENDENCIES.md](DEPENDENCIES.md) - Documentação detalhada das dependências
+- **Resultados**: Metricas gerais e resultados IMGA com detalhamento por eixo
+- **Eixos Analiticos**: Referencia da taxonomia IMGA
+- **Documentos**: Visualizador de PDFs (inputs e outputs)
+- **Painel de Controle**: Execucao de processos e configuracao de palavras-chave
 
-## Coordenadores do projeto
+## Auditoria de Calculos
 
-| Membro | Email | 
-|:------:|:------:|
-| Fátima de Souza | ffreire@unb.br |
+O dashboard oferece transparencia total nos calculos IMGA:
+- Formula de normalizacao: `I_Ei = min((Soma_Bruta / (Total_Palavras/100)) * 10, 100)`
+- Formula do indice global: `IMGA = Soma(I_Ei x Peso_Ei)`
+- Detalhamento por eixo com soma bruta, densidade, contribuicao ponderada
+- Listagem completa de termos encontrados por eixo
+
+## Documentacao Adicional
+
+- [DEPENDENCIES.md](DEPENDENCIES.md) - Dependencias do sistema
+
+## Coordenadores
+
+| Nome | Email |
+|------|-------|
+| Fatima de Souza | ffreire@unb.br |
 
 ## Equipe
 
-| Membro | Email | GitLab |
-|:------:|:-----:|:------:|
-| Mateus S. Santana | | @Mateus-SS |
-|Vinícius M. Martins| viniciusmendes1019@gmail.com | @yabamiah1 |
+| Nome | Email | GitLab |
+|------|-------|--------|
+| Mateus S. Santana | - | @Mateus-SS |
+| Vinicius M. Martins | viniciusmendes1019@gmail.com | @yabamiah1 |
