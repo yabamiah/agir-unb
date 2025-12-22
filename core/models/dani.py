@@ -20,10 +20,7 @@ import hashlib
 from collections import defaultdict
 
 import time
-import traceback
-import subprocess
-from datetime import datetime
-
+import shutil
 from docx import Document
 from loguru import logger
 from typing import List, Dict, Tuple, Set, Optional
@@ -162,8 +159,8 @@ class Dani:
         self.keywords_file = keywords_file
 
         self._setup_logger()
-        self._check_conversion_dependencies()
-        self._log_optimization_status()
+        self._setup_logger()
+        self.docx_converter.check_dependencies()
         self._log_worker_status()
 
     def _check_conversion_dependencies(self) -> None:
@@ -211,12 +208,6 @@ class Dani:
             self.logger.info("✅ pdfplumber disponível - Boa para PDFs estruturados")
         else:
             self.logger.warning("⚠️ pdfplumber não disponível - Instale com: pip install pdfplumber")
-        
-        if not PYMUPDF_AVAILABLE and not PDFPLUMBER_AVAILABLE:
-            self.logger.warning("⚠️ Usando apenas OCR (Tesseract) - Muito mais lento!")
-            self.logger.info("💡 Para máxima velocidade, instale: pip install pymupdf pdfplumber")
-        else:
-            self.logger.info("🎉 Otimizações de PDF ativas - Processamento será significativamente mais rápido!")
 
     def _log_worker_status(self) -> None:
         """Loga o status dos workers adaptativos"""
@@ -245,138 +236,14 @@ class Dani:
                     avg_duration = sum(m['duration'] for m in metrics[-10:]) / min(10, len(metrics))
                     self.logger.info(f"    {task_type}: {avg_duration:.2f}s (últimas 10 execuções)")
 
-    def _check_pandoc_available(self) -> bool:
-        """Verifica se pandoc está disponível no sistema"""
-        try:
-            result = subprocess.run(['pandoc', '--version'], 
-                                  capture_output=True, text=True, timeout=10)
-            return result.returncode == 0
-        except (subprocess.TimeoutExpired, FileNotFoundError, subprocess.SubprocessError):
-            return False
 
-    def _check_libreoffice_available(self) -> bool:
-        """Verifica se LibreOffice está disponível no sistema"""
-        try:
-            result = subprocess.run(['libreoffice', '--version'], 
-                                  capture_output=True, text=True, timeout=10)
-            return result.returncode == 0
-        except (subprocess.TimeoutExpired, FileNotFoundError, subprocess.SubprocessError):
-            return False
-
-    def _convert_with_libreoffice(self, docx_file_path: str, pdf_output_path: str) -> bool:
-        """Conversão usando LibreOffice via linha de comando"""
-        try:
-            output_dir = os.path.dirname(pdf_output_path)
-            os.makedirs(output_dir, exist_ok=True)
-            
-            # Comando para converter DOCX para PDF usando LibreOffice
-            cmd = [
-                'libreoffice',
-                '--headless',
-                '--convert-to', 'pdf',
-                '--outdir', output_dir,
-                docx_file_path
-            ]
-            
-            self.logger.debug(f"Executando comando LibreOffice: {' '.join(cmd)}")
-            
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-            
-            if result.returncode == 0:
-                # LibreOffice cria o PDF com o mesmo nome base do arquivo DOCX
-                expected_pdf = os.path.join(output_dir, 
-                                          os.path.splitext(os.path.basename(docx_file_path))[0] + '.pdf')
-                
-                if os.path.exists(expected_pdf):
-                    # Move para o local esperado se necessário
-                    if expected_pdf != pdf_output_path:
-                        shutil.move(expected_pdf, pdf_output_path)
-                    
-                    self.logger.info(f"✅ [LibreOffice] Convertido: {os.path.basename(docx_file_path)}")
-                    return True
-                else:
-                    self.logger.error(f"❌ [LibreOffice] PDF não foi criado: {expected_pdf}")
-                    return False
-            else:
-                self.logger.error(f"❌ [LibreOffice] Erro na conversão: {result.stderr}")
-                return False
-                
-        except subprocess.TimeoutExpired:
-            self.logger.error(f"❌ [LibreOffice] Timeout na conversão de {docx_file_path}")
-            return False
-        except Exception as e:
-            self.logger.error(f"❌ [LibreOffice] Erro inesperado: {str(e)}")
-            return False
-
-    def _convert_with_pypandoc(self, docx_file_path: str, pdf_output_path: str) -> bool:
-        """Conversão usando pypandoc com diferentes engines"""
-        engines = ['xelatex', 'pdflatex', 'lualatex']
-        
-        for engine in engines:
-            try:
-                self.logger.debug(f"Tentando conversão com pypandoc usando {engine}")
-                
-                pypandoc.convert_file(
-                    docx_file_path,
-                    'pdf',
-                    outputfile=pdf_output_path,
-                    extra_args=[f'--pdf-engine={engine}']
-                )
-
-                if os.path.exists(pdf_output_path) and os.path.getsize(pdf_output_path) > 0:
-                    self.logger.info(f"✅ [pypandoc-{engine}] Convertido: {os.path.basename(docx_file_path)}")
-                    return True
-                else:
-                    self.logger.warning(f"⚠️ [pypandoc-{engine}] PDF vazio ou não criado")
-                    
-            except Exception as e:
-                self.logger.warning(f"⚠️ [pypandoc-{engine}] Falhou: {str(e)}")
-                continue
-        
-        return False
 
     def docx_to_pdf(self, docx_file_path: str, pdf_output_path: str) -> bool:
         """
-        Conversão robusta de DOCX para PDF usando múltiplas abordagens
-        Tenta: 1) LibreOffice, 2) pypandoc com diferentes engines
+        Conversão robusta de DOCX para PDF
+        Delega para o DocxConverter
         """
-        try:
-            # Verificar se o arquivo DOCX existe
-            if not os.path.exists(docx_file_path):
-                self.logger.error(f"❌ Arquivo DOCX não encontrado: {docx_file_path}")
-                return False
-
-            # Verificar se o arquivo não está vazio
-            if os.path.getsize(docx_file_path) == 0:
-                self.logger.error(f"❌ Arquivo DOCX está vazio: {docx_file_path}")
-                return False
-
-            self.logger.debug(f"🔄 Iniciando conversão: {os.path.basename(docx_file_path)}")
-
-            # Método 1: Tentar LibreOffice primeiro (mais confiável)
-            if self._check_libreoffice_available():
-                self.logger.debug("📝 Tentando conversão com LibreOffice...")
-                if self._convert_with_libreoffice(docx_file_path, pdf_output_path):
-                    return True
-            else:
-                self.logger.warning("⚠️ LibreOffice não está disponível")
-
-            # Método 2: Tentar pypandoc com diferentes engines
-            if self._check_pandoc_available():
-                self.logger.debug("📝 Tentando conversão com pypandoc...")
-                if self._convert_with_pypandoc(docx_file_path, pdf_output_path):
-                    return True
-            else:
-                self.logger.warning("⚠️ Pandoc não está disponível")
-
-            # Se chegou aqui, nenhum método funcionou
-            self.logger.error(f"❌ Todos os métodos de conversão falharam para: {os.path.basename(docx_file_path)}")
-            self.logger.error("💡 Verifique se LibreOffice ou Pandoc estão instalados no sistema")
-            return False
-
-        except Exception as e:
-            self.logger.error(f"❌ Erro crítico na conversão de {docx_file_path}: {str(e)}")
-            return False
+        return self.docx_converter.docx_to_pdf(docx_file_path, pdf_output_path)
 
     def convert_single_docx_to_pdf(self, docx_file_path: str, pdf_output_dir: str) -> bool:
         """
