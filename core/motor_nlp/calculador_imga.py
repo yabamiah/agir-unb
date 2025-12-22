@@ -66,14 +66,14 @@ class CalculadorIMGA:
                 'contribuicao_imga': round(i_ei_arredondado * self.pesos[eixo_id], 4)
             }
 
-        # Passo 2: IMGA Global (Média Ponderada)
-        imga_global = sum(indices_normalizados.get(e, 0) * self.pesos[e] for e in self.pesos)
+        # Passo 2: IMGA Global (Média Ponderada) * 10
+        imga_global = sum(indices_normalizados.get(e, 0) * self.pesos[e] for e in self.pesos) * 10
 
-        # Passo 3: Classificação por Faixas
+        # Passo 3: Classificacao por Faixas
         faixa = "Incipiente"
-        if imga_global > 75: faixa = "Avançada"
-        elif imga_global > 50: faixa = "Intermediária"
-        elif imga_global > 25: faixa = "Básica"
+        if imga_global > 75: faixa = "Avancada"
+        elif imga_global > 50: faixa = "Intermediaria"
+        elif imga_global > 25: faixa = "Basica"
 
         return {
             "imga_global": round(imga_global, 2),

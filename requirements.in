@@ -14,3 +14,5 @@ pytesseract
 pypandoc
 docx
 psutil
+wordcloud
+matplotlib

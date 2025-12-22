@@ -10,6 +10,15 @@ import os
 import base64
 import shutil
 from datetime import datetime
+from io import BytesIO
+
+# Wordcloud (opcional)
+try:
+    from wordcloud import WordCloud
+    import matplotlib.pyplot as plt
+    WORDCLOUD_AVAILABLE = True
+except ImportError:
+    WORDCLOUD_AVAILABLE = False
 
 # ============================================
 # Configuração de Caminhos
@@ -60,9 +69,9 @@ EIXOS_IMGA = {
 
 FAIXAS_MATURIDADE = {
     "Incipiente": {"cor": "#ef9a9a", "range": "0-25", "descricao": "Programa em fase inicial"},
-    "Básica": {"cor": "#ffe082", "range": "26-50", "descricao": "Estruturas básicas estabelecidas"},
-    "Intermediária": {"cor": "#a5d6a7", "range": "51-75", "descricao": "Programa consolidado"},
-    "Avançada": {"cor": "#81d4fa", "range": "76-100", "descricao": "Excelência em governança"},
+    "Basica": {"cor": "#ffe082", "range": "26-50", "descricao": "Estruturas basicas estabelecidas"},
+    "Intermediaria": {"cor": "#a5d6a7", "range": "51-75", "descricao": "Programa consolidado"},
+    "Avancada": {"cor": "#81d4fa", "range": "76-100", "descricao": "Excelencia em governanca"},
 }
 
 # ============================================
@@ -187,7 +196,7 @@ is_process_completed = is_lara_completed or is_dani_completed or is_dani_integri
 
 st.sidebar.subheader("Executar")
 
-if st.sidebar.button("LARA-I (Coleta)", disabled=is_process_running, use_container_width=True):
+if st.sidebar.button("LARA-I (Coleta)", disabled=True, use_container_width=True):
     os.makedirs(TRIGGER_DIR, exist_ok=True)
     with open(TRIGGER_LARA, 'w') as f:
         f.write('start')
@@ -195,7 +204,7 @@ if st.sidebar.button("LARA-I (Coleta)", disabled=is_process_running, use_contain
     time.sleep(1)
     st.rerun()
 
-if st.sidebar.button("DANI (Análise Geral)", disabled=is_process_running, use_container_width=True):
+if st.sidebar.button("DANI (Analise Geral)", disabled=True, use_container_width=True):
     os.makedirs(TRIGGER_DIR, exist_ok=True)
     with open(TRIGGER_DANI, 'w') as f:
         f.write('start')
@@ -327,7 +336,7 @@ with tab_resultados:
         imga_results = summary_data.get('imga_results', {})
         
         if imga_results:
-            st.subheader("Índice de Maturidade da Governança Algorítmica (IMGA)")
+            st.subheader("Indice de Maturidade da Governanca Algoritmica (IMGA)")
             
             # Resumo IMGA
             docs_count = len(imga_results)
@@ -335,7 +344,120 @@ with tab_resultados:
             
             col1, col2 = st.columns(2)
             col1.metric("Documentos Analisados", docs_count)
-            col2.metric("IMGA Médio", f"{avg_imga:.1f}")
+            col2.metric("IMGA Medio", f"{avg_imga:.1f}")
+            
+            st.divider()
+            
+            # Quadro Consolidado de Termos (todas as empresas)
+            with st.expander("Quadro Consolidado - Termos Encontrados (Todas as Empresas)", expanded=True):
+                # Agregar todos os termos por eixo
+                termos_consolidados = {}
+                for eixo_id in EIXOS_IMGA.keys():
+                    termos_consolidados[eixo_id] = {
+                        'termos': set(),
+                        'total_ocorrencias': 0,
+                        'empresas_count': 0,
+                        'empresas': []
+                    }
+                
+                for filename, result in imga_results.items():
+                    estatisticas = result.get('estatisticas_eixos', {})
+                    for eixo_id, stats in estatisticas.items():
+                        if eixo_id in termos_consolidados:
+                            termos_lista = stats.get('termos_lista', [])
+                            if termos_lista:
+                                termos_consolidados[eixo_id]['termos'].update(termos_lista)
+                                termos_consolidados[eixo_id]['total_ocorrencias'] += stats.get('total_ocorrencias', 0)
+                                termos_consolidados[eixo_id]['empresas_count'] += 1
+                                termos_consolidados[eixo_id]['empresas'].append(filename)
+                
+                # Criar tabela consolidada
+                dados_consolidados = []
+                for eixo_id, dados in termos_consolidados.items():
+                    termos_unicos = sorted(list(dados['termos']))
+                    if termos_unicos:
+                        dados_consolidados.append({
+                            "Eixo": eixo_id,
+                            "Nome": EIXOS_IMGA.get(eixo_id, {}).get('nome', eixo_id),
+                            "Termos Unicos": len(termos_unicos),
+                            "Total Ocorr.": dados['total_ocorrencias'],
+                            "Empresas": dados['empresas_count'],
+                            "Termos Encontrados": ", ".join(termos_unicos)
+                        })
+                
+                if dados_consolidados:
+                    df_consolidado = pd.DataFrame(dados_consolidados)
+                    st.dataframe(
+                        df_consolidado,
+                        use_container_width=True,
+                        hide_index=True,
+                        column_config={
+                            "Termos Encontrados": st.column_config.TextColumn(
+                                "Termos Encontrados",
+                                width="large"
+                            )
+                        }
+                    )
+                else:
+                    st.info("Nenhum termo encontrado nos documentos analisados")
+            
+            # Nuvens de Palavras por Eixo (Quadro Separado)
+            if WORDCLOUD_AVAILABLE:
+                with st.expander("Nuvens de Palavras por Eixo", expanded=True):
+                    # Reagregar termos para o wordcloud
+                    termos_para_nuvem = {}
+                    for eixo_id in EIXOS_IMGA.keys():
+                        termos_para_nuvem[eixo_id] = set()
+                    
+                    for filename, result in imga_results.items():
+                        estatisticas = result.get('estatisticas_eixos', {})
+                        for eixo_id, stats in estatisticas.items():
+                            if eixo_id in termos_para_nuvem:
+                                termos_lista = stats.get('termos_lista', [])
+                                termos_para_nuvem[eixo_id].update(termos_lista)
+                    
+                    # Filtrar apenas eixos com termos
+                    eixos_com_termos = [(eixo_id, termos) for eixo_id, termos in termos_para_nuvem.items() if termos]
+                    
+                    if eixos_com_termos:
+                        # Criar colunas para exibir 2 wordclouds por linha
+                        for i in range(0, len(eixos_com_termos), 2):
+                            cols = st.columns(2)
+                            for j, col in enumerate(cols):
+                                if i + j < len(eixos_com_termos):
+                                    eixo_id, termos = eixos_com_termos[i + j]
+                                    termos_texto = " ".join(list(termos))
+                                    
+                                    if termos_texto.strip():
+                                        with col:
+                                            st.caption(f"{eixo_id} - {EIXOS_IMGA.get(eixo_id, {}).get('nome', eixo_id)}")
+                                            
+                                            try:
+                                                # Gerar wordcloud
+                                                wc = WordCloud(
+                                                    width=400,
+                                                    height=200,
+                                                    background_color='white',
+                                                    colormap='viridis',
+                                                    max_words=50
+                                                ).generate(termos_texto)
+                                                
+                                                # Converter para imagem
+                                                fig, ax = plt.subplots(figsize=(6, 3))
+                                                ax.imshow(wc, interpolation='bilinear')
+                                                ax.axis('off')
+                                                
+                                                # Salvar em buffer
+                                                buf = BytesIO()
+                                                fig.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.1)
+                                                buf.seek(0)
+                                                plt.close(fig)
+                                                
+                                                st.image(buf, use_container_width=True)
+                                            except Exception as e:
+                                                st.warning(f"Erro ao gerar nuvem: {e}")
+                    else:
+                        st.info("Nenhum termo encontrado para gerar nuvens de palavras")
             
             st.divider()
             

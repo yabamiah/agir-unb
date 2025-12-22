@@ -44,7 +44,7 @@ COPY requirements.txt .
 
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir pymupdf pdfplumber
+    pip install --no-cache-dir pymupdf pdfplumber wordcloud matplotlib
 
 # Instala navegadores do Playwright sem dependências do sistema
 RUN playwright install chromium
