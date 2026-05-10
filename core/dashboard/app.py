@@ -391,7 +391,7 @@ def call_gemini(prompt, model):
         except requests.HTTPError as exc:
             last_http_error = exc
             status_code = exc.response.status_code if exc.response is not None else None
-            if status_code in {500, 502, 503, 504}:
+            if status_code in {400, 404, 500, 502, 503, 504}:
                 continue
             raise
 
@@ -668,11 +668,13 @@ triggers_writable = can_write_trigger_dir()
 st.sidebar.subheader("Módulos")
 
 main_modules = [
-    "LARA-I - Coleta",
-    "DANI - Análise geral",
-    "Análise de Integridade/IMGA",
-    "Análise com inteligência artificial",
-    "Eixos Analíticos",
+    "Coleta de Documentos",
+    "Mapeamento de Termos",
+    "Indicadores de Integridade (IMGA)",
+    "Auditoria Inteligente (IA)",
+    "Monitor de Ausência Documental",
+    "Eixos de Avaliação",
+    "Visualizador de Documentos",
 ]
 
 if "main_section" not in st.session_state:
@@ -796,8 +798,8 @@ rag_counts = get_rag_db_counts()
 # ============================================
 # Seção: LARA-I - Coleta
 # ============================================
-if main_section == "LARA-I - Coleta":
-    st.subheader("LARA-I - Coleta")
+if main_section == "Coleta de Documentos":
+    st.subheader("Coleta de Documentos Oficiais (LARA-I)")
     st.caption("Coleta e organiza documentos institucionais para análise posterior.")
 
     if st.button(
@@ -831,8 +833,8 @@ if main_section == "LARA-I - Coleta":
 # ============================================
 # Seção: DANI - Análise geral
 # ============================================
-if main_section == "DANI - Análise geral":
-    st.subheader("DANI - Análise geral")
+if main_section == "Mapeamento de Termos":
+    st.subheader("Mapeamento de Termos (DANI)")
     st.caption("Analisa documentos com palavras-chave e consolida frequências e ocorrências.")
 
     if st.button(
@@ -886,8 +888,8 @@ if main_section == "DANI - Análise geral":
 # ============================================
 # Seção: Análise de Integridade/IMGA
 # ============================================
-if main_section == "Análise de Integridade/IMGA":
-    st.subheader("Análise de Integridade/IMGA")
+if main_section == "Indicadores de Integridade (IMGA)":
+    st.subheader("Indicadores de Integridade (IMGA)")
     st.caption("Avalia maturidade de governança e integridade com base nos eixos IMGA.")
 
     if st.button(
@@ -1141,8 +1143,8 @@ if main_section == "Análise de Integridade/IMGA":
 # ============================================
 # Seção: Análise com inteligência artificial
 # ============================================
-if main_section == "Análise com inteligência artificial":
-    st.subheader("Análise com inteligência artificial")
+if main_section == "Auditoria Inteligente (IA)":
+    st.subheader("Auditoria Inteligente (IA)")
     st.caption("AGIR-RAG Lite transforma documentos públicos em respostas citáveis, evidências revisáveis e indicadores de conformidade.")
 
     orgaos_rag, tipos_rag = get_rag_filter_options()
@@ -1609,11 +1611,64 @@ if main_section == "Análise com inteligência artificial":
             )
         else:
             st.caption("A amostra de validação manual ainda não foi gerada.")
+# ============================================
+# Seção: Monitor de Ausência Documental
+# ============================================
+if main_section == "Monitor de Ausência Documental":
+    st.subheader("Monitor de Ausência Documental")
+    st.caption("Painel de Transparência: Identifica órgãos que não publicaram documentos obrigatórios (Atas, Programa de Integridade ou Compliance).")
+    
+    orgaos_rag, _ = get_rag_filter_options()
+    
+    # Vamos verificar quais orgãos NÃO possuem cig, pg ou compliance
+    ausencias = []
+    
+    # Orgaos detectados nas pastas ou base
+    todos_orgaos = sorted(set(orgaos_rag))
+    
+    if not todos_orgaos:
+        st.info("Nenhum órgão indexado ou encontrado nas pastas locais. Execute a coleta primeiro.")
+    else:
+        # Busca no banco de dados
+        try:
+            with sqlite3.connect(RAG_DB_FILE) as conn:
+                for orgao in todos_orgaos:
+                    rows = conn.execute("SELECT DISTINCT tipo_documento FROM documents WHERE orgao = ?", (orgao,)).fetchall()
+                    tipos_encontrados = {row[0] for row in rows}
+                    
+                    # Checando
+                    falta_cig = "cig" not in tipos_encontrados
+                    falta_pg = "pg" not in tipos_encontrados
+                    falta_compliance = "compliance" not in tipos_encontrados
+                    
+                    if falta_cig or falta_pg or falta_compliance:
+                        ausencias.append({
+                            "Órgão": orgao,
+                            "Falta Atas (CIG)": "❌ Sim" if falta_cig else "✅ Ok",
+                            "Falta Prog. de Integridade": "❌ Sim" if falta_pg else "✅ Ok",
+                            "Falta Compliance": "❌ Sim" if falta_compliance else "✅ Ok",
+                            "Status de Transparência": "🔴 Risco Alto" if (falta_pg and falta_cig) else "⚠️ Risco Moderado"
+                        })
+        except Exception as e:
+            st.error(f"Não foi possível carregar a base de dados: {e}")
+        
+        col1, col2 = st.columns(2)
+        col1.metric("Órgãos mapeados", len(todos_orgaos))
+        col2.metric("Órgãos com pendências documentais", len(ausencias))
+        
+        st.divider()
+        
+        if ausencias:
+            st.error("Os órgãos abaixo possuem pendências de publicação documental (falta do Plano de Integridade, Atas ou Compliance).")
+            df_ausencias = pd.DataFrame(ausencias)
+            st.dataframe(df_ausencias, width="stretch", hide_index=True)
+        else:
+            st.success("Excelente! Todos os órgãos mapeados possuem Atas CIG, Programa de Integridade e Plano de Compliance.")
 
 # ============================================
 # Seção: Eixos Analíticos
 # ============================================
-if main_section == "Eixos Analíticos":
+if main_section == "Eixos de Avaliação":
     st.subheader("Taxonomia Analítica IMGA")
     st.caption("Eixos utilizados na classificação automatizada dos relatórios de integridade")
     
@@ -1652,7 +1707,7 @@ if main_section == "Eixos Analíticos":
 # ============================================
 # Seção: Documentos
 # ============================================
-if main_section == "Documentos":
+if main_section == "Visualizador de Documentos":
     st.subheader("Visualizador de Documentos")
     
     doc_type = st.selectbox("Selecione o tipo:", [
