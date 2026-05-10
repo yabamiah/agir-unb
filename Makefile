@@ -1,8 +1,16 @@
-.PHONY: help build up down logs restart clean shell cli dash rebuild run-lara run-dani stop-all run-dani-integrity-docker
+.PHONY: help build up down logs restart clean shell cli dash rebuild run-lara run-dani stop-all run-dani-integrity-docker fix-data-permissions run-lara-local run-lara-local-upload run-rag-index-local run-rag-index-pilot run-rag-search-local run-rag-classify-local run-rag-classify-pilot run-rag-pipeline-pilot run-dashboard-local run-dashboard-rag-local test-gemini
 
 # Variáveis
-COMPOSE = docker-compose
+COMPOSE = docker compose
 DOCKER = docker
+RAG_PYTHON ?= $(shell if [ -x .venv/bin/python ] && .venv/bin/python -c "import loguru" >/dev/null 2>&1; then echo .venv/bin/python; elif [ -x .venv-clean/bin/python ]; then echo .venv-clean/bin/python; else echo python3; fi)
+STREAMLIT_PORT ?= 8501
+RAG_PILOT_DOCS ?= 5
+RAG_PILOT_ORGAOS ?=
+RAG_PILOT_TIPOS ?= pg compliance
+RAG_PILOT_CRITERIOS ?= 10
+RAG_PILOT_TOP_K ?= 5
+RAG_MAX_PAGES_PER_DOC ?= 40
 
 # Comando padrão
 .DEFAULT_GOAL := help
@@ -26,46 +34,12 @@ up-build: ## Constrói e inicia os serviços
 down: ## Para e remove os containers
 	$(COMPOSE) down
 
-down-volumes: ## Para e remove containers e volumes
-	$(COMPOSE) down -v
-
 logs: ## Mostra logs de todos os serviços
 	$(COMPOSE) logs -f
-
-logs-cli: ## Mostra logs do serviço CLI
-	$(COMPOSE) logs -f cli
-
-logs-dash: ## Mostra logs do dashboard
-	$(COMPOSE) logs -f dashboard
-
-logs-tail: ## Mostra últimas 100 linhas dos logs
-	$(COMPOSE) logs --tail=100
-
-ps: ## Lista containers em execução
-	$(COMPOSE) ps
-
-restart: ## Reinicia todos os serviços
-	$(COMPOSE) restart
-
-restart-cli: ## Reinicia o serviço CLI
-	$(COMPOSE) restart cli
-
-restart-dash: ## Reinicia o dashboard
-	$(COMPOSE) restart dashboard
 
 clean: ## Remove containers, volumes e imagens não utilizadas
 	$(COMPOSE) down -v --rmi local --remove-orphans
 	$(DOCKER) system prune -f
-
-shell-cli: ## Abre shell interativo no container CLI
-	$(COMPOSE) exec cli /bin/bash
-
-shell-dash: ## Abre shell interativo no container dashboard
-	$(COMPOSE) exec dashboard /bin/bash
-
-cli: shell-cli ## Alias para shell-cli
-
-dash: shell-dash ## Alias para shell-dash
 
 rebuild: clean build up ## Remove tudo, reconstrói e inicia
 
@@ -86,6 +60,11 @@ run-dani-integrity-trigger: ## Cria trigger para DANI integridade (via Docker)
 	@touch data/triggers/run_dani_integrity.trigger
 	@echo "📊 Trigger DANI Integridade criado"
 
+fix-data-permissions: ## Corrige permissoes locais de data/ criadas por containers Docker
+	@echo "🔧 Ajustando permissões de data/ para o usuário local..."
+	$(COMPOSE) run --rm --user root cli sh -c "mkdir -p /app/data/triggers /app/data/dani/docs/output /app/data/dani/docs/result_pdf/output && for path in /app/data/triggers /app/data/dani/docs/output /app/data/dani/docs/result_pdf /app/data/dani/docs/summary_results.json; do if [ -e \"$$path\" ]; then chown -R $(shell id -u):$(shell id -g) \"$$path\" && chmod -R u+rwX,g+rwX \"$$path\"; fi; done"
+	@echo "✅ Permissões de data/triggers e resultados DANI ajustadas."
+
 status: ## Mostra status dos containers
 	$(COMPOSE) ps
 	@echo "\n--- Logs recentes ---"
@@ -94,16 +73,6 @@ status: ## Mostra status dos containers
 stop-all: down ## Para todos os containers
 
 start-all: up ## Inicia todos os containers
-
-update: ## Atualiza imagens e reconstrói
-	$(COMPOSE) pull
-	$(COMPOSE) up -d --build
-
-follow-logs: logs ## Alias para logs
-
-# Comandos de desenvolvimento
-test: ## Executa testes
-	$(COMPOSE) exec cli python -m pytest
 
 install-deps: ## Instala dependências localmente
 	pip install -r requirements.txt
@@ -125,16 +94,18 @@ install-venv-deps: ## Instala dependências no venv existente
 install-all: install-venv-deps ## Instala todas as dependências (alias)
 	@echo "✅ Todas as dependências instaladas!"
 
-# Informações do sistema
-info: ## Mostra informações do Docker
-	@echo "=== Docker Info ==="
-	$(DOCKER) --version
-	@echo "\n=== Docker Compose Info ==="
-	$(COMPOSE) --version
-	@echo "\n=== Containers ==="
-	$(COMPOSE) ps
-	@echo "\n=== Imagens ==="
-	$(DOCKER) images | grep agir-unb
+# ============================================
+# LARA-I - Execução Local
+# ============================================
+# Opcional: argumentos extra (ex.: make run-lara-local ARGS='--tipos pg --limite 2')
+
+run-lara-local: ## Executa LARA-I localmente (coleta PDFs, sem upload S3)
+	@echo "🚀 Iniciando LARA-I (sem upload S3)..."
+	.venv/bin/python -m core.models.lara_i $(ARGS)
+
+run-lara-local-upload: ## Executa LARA-I localmente e envia PDFs para a S3 após a coleta
+	@echo "🚀 Iniciando LARA-I (com upload S3)..."
+	.venv-clean/bin/python -m core.models.lara_i --upload-s3 $(ARGS)
 
 # ============================================
 # DANI - Execução Local
@@ -161,18 +132,32 @@ run-dani-convert-pdf: ## Converte DOCX para PDF (todos os órgãos)
 	@echo "📄 Iniciando conversão DOCX → PDF..."
 	.venv/bin/python -c "from core.models.dani import Dani; d = Dani(); d.run_with_pdf_conversion()"
 
-dani-help: ## Mostra ajuda específica do DANI
-	@echo ""
-	@echo "════════════════════════════════════════════════════"
-	@echo "  DANI - Desenvolvedor e Apresentador de Números"
-	@echo "════════════════════════════════════════════════════"
-	@echo ""
-	@echo "Comandos disponíveis:"
-	@echo "  make run-dani-local        - Processar todos os órgãos"
-	@echo "  make run-dani-integrity    - Processar planos de integridade (IMGA)"
-	@echo "  make run-dani-orgao ORGAO=X - Processar órgão específico"
-	@echo "  make run-dani-convert-pdf  - Converter DOCX para PDF"
-	@echo ""
+run-rag-index-local: ## Executa a Sprint 5: base auditavel + SQLite/Parquet + Qdrant local
+	@echo "🧭 Construindo base auditavel e indice vetorial local..."
+	$(RAG_PYTHON) -m cli.rag_indexer $(ARGS)
+
+run-rag-index-pilot: ## Indexa amostra pequena do RAG (ajuste RAG_PILOT_DOCS/RAG_PILOT_ORGAOS/RAG_PILOT_TIPOS)
+	@echo "🧭 Construindo amostra RAG com até $(RAG_PILOT_DOCS) documento(s)..."
+	$(RAG_PYTHON) -m cli.rag_indexer --reset --tipos $(RAG_PILOT_TIPOS) $(if $(RAG_PILOT_ORGAOS),--orgaos $(RAG_PILOT_ORGAOS),) --max-documents $(RAG_PILOT_DOCS) --max-pages-per-document $(RAG_MAX_PAGES_PER_DOC)
+
+run-rag-search-local: ## Executa a Sprint 6: recuperacao hibrida + evidencias
+	@echo "🔎 Buscando evidencias com recuperacao hibrida..."
+	$(RAG_PYTHON) -m cli.rag_search $(ARGS)
+
+run-rag-classify-local: ## Executa a Sprint 7: classificacao + indicadores IMGA
+	@echo "📐 Classificando evidencias e calculando indicadores..."
+	$(RAG_PYTHON) -m cli.rag_classify $(ARGS)
+
+run-rag-classify-pilot: ## Calcula conformidade em amostra pequena do RAG
+	@echo "📐 Calculando conformidade documental da amostra..."
+	$(RAG_PYTHON) -m cli.rag_classify --max-orgaos 3 --max-criterios $(RAG_PILOT_CRITERIOS) --top-k $(RAG_PILOT_TOP_K)
+
+run-rag-pipeline-pilot: run-rag-index-pilot run-rag-classify-pilot ## Executa pipeline RAG piloto: indexacao pequena + conformidade
+	@echo "✅ Pipeline RAG piloto concluido."
+
+test-gemini: ## Testa GEMINI_API_KEY do .env com uma chamada curta
+	@echo "🧪 Testando Gemini..."
+	$(RAG_PYTHON) -m cli.gemini_test
 
 # ============================================
 # Docker - Comandos DANI
@@ -198,6 +183,15 @@ restart-dani-worker: ## Reinicia o worker DANI
 
 run-dashboard: up ## Inicia dashboard (alias para up)
 	@echo "📊 Dashboard disponível em http://localhost:8501"
+
+run-dashboard-local: ## Inicia dashboard local carregando .env
+	@echo "📊 Dashboard local em http://localhost:$(STREAMLIT_PORT)"
+	@mkdir -p /tmp/matplotlib-cache /tmp/agir-pycache
+	@set -a; [ -f .env ] && . ./.env; set +a; \
+	MPLCONFIGDIR=/tmp/matplotlib-cache PYTHONPYCACHEPREFIX=/tmp/agir-pycache STREAMLIT_BROWSER_GATHER_USAGE_STATS=false \
+	$(RAG_PYTHON) -m streamlit run core/dashboard/app.py --server.port $(STREAMLIT_PORT) --server.headless true --browser.gatherUsageStats false
+
+run-dashboard-rag-local: run-rag-pipeline-pilot run-dashboard-local ## Executa amostra RAG e abre dashboard local
 
 open-dashboard: ## Abre dashboard no navegador
 	@echo "🌐 Abrindo dashboard..."

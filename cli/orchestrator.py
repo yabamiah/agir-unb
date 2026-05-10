@@ -11,6 +11,17 @@ from core.models.dani import Dani
 TRIGGER_DIR = "/app/data/triggers"
 DANI_INPUT_DIR = "/app/data/dani/docs/input"
 
+
+def _dani_input_tem_arquivos(input_root: str) -> bool:
+    """True se existir ao menos um arquivo em qualquer subpasta do input do DANI."""
+    if not os.path.isdir(input_root):
+        return False
+    for _root, _dirs, files in os.walk(input_root):
+        if files:
+            return True
+    return False
+
+
 TRIGGER_LARA = os.path.join(TRIGGER_DIR, "run_lara.trigger")
 TRIGGER_DANI = os.path.join(TRIGGER_DIR, "run_dani.trigger")
 RUNNING_LARA = os.path.join(TRIGGER_DIR, "running_lara.trigger")
@@ -77,7 +88,7 @@ async def main():
             with open(RUNNING_LARA, 'w') as f:
                 f.write(f"started_at_{int(time.time())}")
 
-            if os.path.exists(DANI_INPUT_DIR) and os.listdir(DANI_INPUT_DIR):
+            if _dani_input_tem_arquivos(DANI_INPUT_DIR):
                 log_status("Diretório de entrada do DANI já contém arquivos. Pulando execução do LARA-I.")
                 # Remove o arquivo de running já que não vai executar
                 if os.path.exists(RUNNING_LARA):

@@ -40,6 +40,8 @@ from core.motor_nlp.calculador_imga import CalculadorIMGA
 # Removido: AdaptiveWorkerManager (movido para core/workers/adaptive_manager.py)
 # Removido: OptimizedPdfProcessor (movido para core/processors/pdf_processor.py)
 
+# Pastas de primeiro nível em data/dani/docs/input/ (LARA-I); legado sem essa camada vai para input/cig/
+TIPOS_DOCUMENTO_LARA = frozenset({"cig", "pg", "compliance"})
 
 
 class Dani:
@@ -68,13 +70,20 @@ class Dani:
         
         if only_integrity_plans:
             self.docs_path = os.path.join(base_dir, 'data', 'dani', 'docs', 'integridade')
+            self._input_root = None
         else:
-            self.docs_path = docs_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'input')
+            self._input_root = os.path.join(base_dir, 'data', 'dani', 'docs', 'input')
+            subdir = os.environ.get('DANI_INPUT_SUBDIR', 'cig')
+            self.docs_path = docs_path or os.path.join(self._input_root, subdir)
 
         if not os.path.exists(self.docs_path):
-            os.makedirs(self.docs_path)
+            os.makedirs(self.docs_path, exist_ok=True)
 
-        if not only_integrity_plans and len(os.listdir(self.docs_path)) == 0:
+        if (
+            not only_integrity_plans
+            and self._input_root
+            and self._entrada_sem_arquivos(self.docs_path)
+        ):
             self._download_from_s3()
 
         self.output_path = output_path or os.path.join(base_dir, 'data', 'dani', 'docs', 'output', 'resultados.txt')
@@ -452,28 +461,60 @@ class Dani:
 
         return estatisticas
 
+    @staticmethod
+    def _entrada_sem_arquivos(path: str) -> bool:
+        """True se o diretório não existir ou não tiver nenhum arquivo (ignora subpastas vazias)."""
+        if not os.path.isdir(path):
+            return True
+        for _root, _dirs, files in os.walk(path):
+            if files:
+                return False
+        return True
+
     def _download_from_s3(self):
-        """Download otimizado dos arquivos da S3 com controle de recursos"""
-        diretorios = self.s3_service.listar_diretorios(bucket='agir-bucket', prefixo='dani-docs/')
-        if not diretorios:
-            logger.warning(f"Não foi encontrar os diretorios na S3 para {self.docs_path}")
+        """Sincroniza dani-docs/ da S3 para data/dani/docs/input/{cig,pg,compliance}/{SIGLA}/.
+
+        Compatível com layout antigo na S3: dani-docs/{SIGLA}/*.pdf → input/cig/{SIGLA}/.
+        """
+        base = 'dani-docs/'
+        primeiro_nivel = self.s3_service.listar_diretorios(bucket='agir-bucket', prefixo=base)
+        if not primeiro_nivel:
+            logger.warning(f"Não foi possível listar diretórios na S3 para {base}")
             exit(0)
 
-        with ThreadPoolExecutor(max_workers=min(self.max_workers, 3)) as executor:
+        tarefas: List[Tuple[str, str]] = []
+        for prefix in primeiro_nivel:
+            nome = prefix.rstrip('/').split('/')[-1]
+            if nome in TIPOS_DOCUMENTO_LARA:
+                for org_prefix in self.s3_service.listar_diretorios(bucket='agir-bucket', prefixo=prefix):
+                    sigla = org_prefix.rstrip('/').split('/')[-1]
+                    destino = os.path.join(self._input_root, nome, sigla)
+                    tarefas.append((org_prefix, destino))
+            else:
+                destino = os.path.join(self._input_root, 'cig', nome)
+                tarefas.append((prefix, destino))
+
+        if not tarefas:
+            logger.warning("Nenhum prefixo de órgão encontrado em dani-docs/ na S3")
+            exit(0)
+
+        with ThreadPoolExecutor(max_workers=min(self.max_workers, 6)) as executor:
             futures = []
-            for diretorio in diretorios:
-                future = executor.submit(
-                    self.s3_service.download_object_by_directory,
-                    'agir-bucket',
-                    'dani-docs/',
-                    os.path.join(self.docs_path, diretorio)
+            for s3_prefix, destino in tarefas:
+                os.makedirs(destino, exist_ok=True)
+                futures.append(
+                    executor.submit(
+                        self.s3_service.download_object_by_directory,
+                        'agir-bucket',
+                        s3_prefix,
+                        destino,
+                    )
                 )
-                futures.append(future)
 
             for future in as_completed(futures):
                 try:
                     if not future.result():
-                        logger.warning(f"Não foi possível baixar os arquivos do bucket da S3")
+                        logger.warning("Não foi possível baixar alguns arquivos do bucket da S3")
                         exit(0)
                 except Exception as e:
                     logger.error(f"Erro no download da S3: {e}")

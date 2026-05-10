@@ -1,0 +1,964 @@
+{
+  "versao": "1.0.0",
+  "projeto": "AGIR-RAG Lite",
+  "sprint": "Sprint 2 - Modelo Normativo",
+  "descricao": "Estrutura consolidada de criterios normativos para verificacao automatizada de governanca, integridade, compliance, riscos, transparencia e maturidade institucional em documentos publicos do GDF.",
+  "objetivo": "Permitir que o pipeline AGIR-RAG Lite recupere evidencias documentais, classifique aderencia normativa e gere indicadores auditaveis por orgao, estatal ou empresa contratada.",
+  "fontes_base": [
+    "Lei Federal n. 13.303/2016",
+    "Lei Federal n. 12.846/2013",
+    "Lei Federal n. 12.527/2011",
+    "Decreto Federal n. 9.203/2017",
+    "Decreto Distrital n. 39.736/2019",
+    "Decreto Distrital n. 40.388/2020",
+    "Lei Distrital n. 6.112/2018",
+    "Lei Distrital n. 6.308/2019",
+    "Boas praticas CGDF, OCDE, COSO e ISO 31000"
+  ],
+  "escala_classificacao": {
+    "atende": {
+      "pontuacao": 1.0,
+      "descricao": "Ha evidencia documental explicita, especifica e vinculada ao criterio."
+    },
+    "atende_parcialmente": {
+      "pontuacao": 0.5,
+      "descricao": "Ha evidencia documental parcial, generica ou incompleta, sem demonstrar plenamente implementacao, formalizacao ou efetividade."
+    },
+    "nao_atende": {
+      "pontuacao": 0.0,
+      "descricao": "Ha evidencia de ausencia, descumprimento ou inexistencia do item verificado."
+    },
+    "nao_encontrado": {
+      "pontuacao": 0.0,
+      "descricao": "Nao foram encontradas evidencias suficientes nos documentos analisados."
+    }
+  },
+  "requisitos_evidencia": {
+    "campos_obrigatorios": [
+      "orgao",
+      "tipo_documento",
+      "arquivo",
+      "pagina",
+      "trecho",
+      "score_recuperacao"
+    ],
+    "minimo_evidencias_por_criterio": 1,
+    "observacao": "Toda classificacao deve ser acompanhada de pelo menos um trecho verificavel, exceto nos casos classificados como nao_encontrado."
+  },
+  "eixos_imga": {
+    "E1": {
+      "nome": "Estrutura de Governanca e Lideranca",
+      "peso_eixo": 10
+    },
+    "E2": {
+      "nome": "Cultura de Integridade",
+      "peso_eixo": 10
+    },
+    "E3": {
+      "nome": "Ambiente de Compliance",
+      "peso_eixo": 15
+    },
+    "E4": {
+      "nome": "Due Diligence e Terceiros",
+      "peso_eixo": 20
+    },
+    "E5": {
+      "nome": "Comunicacao, Treinamento e Monitoramento",
+      "peso_eixo": 10
+    },
+    "E6": {
+      "nome": "Gestao de Riscos e Controles Internos",
+      "peso_eixo": 15
+    },
+    "E7": {
+      "nome": "Transparencia, Accountability e Evidenciacao",
+      "peso_eixo": 10
+    },
+    "E8": {
+      "nome": "Efetividade e Maturidade do Programa",
+      "peso_eixo": 10
+    }
+  },
+  "criterios": [
+    {
+      "codigo": "E1-GOV-001",
+      "titulo": "Instancia superior de governanca formalizada",
+      "pergunta_normativa": "A organizacao possui instancia superior de governanca formalizada e atuante, como Conselho de Administracao, comite superior, colegiado de governanca ou estrutura equivalente?",
+      "base_legal": [
+        "Lei n. 13.303/2016",
+        "Decreto n. 39.736/2019",
+        "Decreto n. 9.203/2017"
+      ],
+      "eixo_imga": "E1",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "conselho de administracao",
+        "comite interno de governanca",
+        "CIG",
+        "CIGOV",
+        "colegiado de governanca",
+        "alta administracao",
+        "estrutura de governanca"
+      ],
+      "evidencia_esperada": "Trecho que demonstre existencia formal, atribuicoes ou funcionamento da instancia de governanca.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Identifica instancia formal de governanca com atribuicoes ou registros de atuacao.",
+        "atende_parcialmente": "Menciona governanca ou alta administracao, mas sem demonstrar formalizacao ou atuacao.",
+        "nao_atende": "Documento declara inexistencia ou ausencia da instancia.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E1-GOV-002",
+      "titulo": "Independencia e composicao da governanca em estatais",
+      "pergunta_normativa": "No caso de estatal, ha evidencia de composicao adequada do Conselho de Administracao, incluindo membros independentes?",
+      "base_legal": [
+        "Lei n. 13.303/2016, art. 13"
+      ],
+      "eixo_imga": "E1",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "estatal"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "membros independentes",
+        "25%",
+        "composicao do conselho",
+        "conselheiro independente",
+        "requisitos de composicao"
+      ],
+      "evidencia_esperada": "Trecho que mencione composicao do conselho, independencia de membros ou percentual minimo de membros independentes.",
+      "regra_classificacao": {
+        "tipo": "presenca_especifica",
+        "atende": "Ha mencao explicita a membros independentes ou criterio equivalente de composicao.",
+        "atende_parcialmente": "Ha mencao ao Conselho de Administracao, mas sem informacao sobre independencia.",
+        "nao_atende": "Ha evidencia de composicao em desacordo ou ausencia de membros independentes.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E1-GOV-003",
+      "titulo": "Comite de auditoria, riscos ou integridade",
+      "pergunta_normativa": "Existe comite de auditoria, riscos, integridade ou instancia equivalente responsavel por supervisionar controles, riscos e integridade?",
+      "base_legal": [
+        "Lei n. 13.303/2016",
+        "Decreto n. 39.736/2019"
+      ],
+      "eixo_imga": "E1",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal"
+      ],
+      "tipos_documento_prioritarios": [
+        "cig",
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "comite de auditoria",
+        "comite de riscos",
+        "comite de integridade",
+        "COAUD",
+        "auditoria interna",
+        "supervisao da integridade"
+      ],
+      "evidencia_esperada": "Trecho que demonstre existencia do comite ou instancia equivalente e sua funcao de supervisao.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Identifica instancia formal com atribuicoes relacionadas a auditoria, riscos ou integridade.",
+        "atende_parcialmente": "Menciona auditoria, riscos ou integridade sem indicar instancia responsavel.",
+        "nao_atende": "Indica ausencia de comite ou instancia equivalente.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E2-INT-001",
+      "titulo": "Programa ou plano de integridade implementado",
+      "pergunta_normativa": "A organizacao possui Programa ou Plano de Integridade formalmente instituido e implementado?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Lei n. 13.303/2016",
+        "Lei n. 12.846/2013"
+      ],
+      "eixo_imga": "E2",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "programa de integridade",
+        "plano de integridade",
+        "integridade publica",
+        "compliance",
+        "implementacao do programa"
+      ],
+      "evidencia_esperada": "Trecho que comprove existencia, instituicao, implementacao ou aprovacao do plano ou programa.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de programa ou plano formal, vigente ou implementado.",
+        "atende_parcialmente": "Ha mencao generica a integridade ou compliance, sem demonstrar programa estruturado.",
+        "nao_atende": "Ha evidencia de inexistencia ou nao implementacao.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E2-INT-002",
+      "titulo": "Codigo de etica, conduta ou integridade",
+      "pergunta_normativa": "A organizacao possui codigo de etica, codigo de conduta ou instrumento equivalente de orientacao etica institucional?",
+      "base_legal": [
+        "Lei n. 13.303/2016, art. 9, par. 1 e par. 2",
+        "Decreto n. 39.736/2019"
+      ],
+      "eixo_imga": "E2",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "codigo de etica",
+        "codigo de conduta",
+        "codigo de integridade",
+        "padroes de conduta",
+        "valores eticos"
+      ],
+      "evidencia_esperada": "Trecho que mencione existencia, aplicacao ou divulgacao do codigo.",
+      "regra_classificacao": {
+        "tipo": "presenca_especifica",
+        "atende": "Identifica codigo de etica, conduta ou integridade formalizado.",
+        "atende_parcialmente": "Menciona valores eticos ou conduta, mas sem instrumento formal.",
+        "nao_atende": "Indica ausencia de codigo ou instrumento equivalente.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E2-INT-003",
+      "titulo": "Comprometimento da alta administracao",
+      "pergunta_normativa": "O programa de integridade demonstra comprometimento da alta administracao com etica, integridade e governanca?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Lei n. 12.846/2013"
+      ],
+      "eixo_imga": "E2",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "alta administracao",
+        "comprometimento",
+        "apoio da direcao",
+        "patrocinio da alta gestao",
+        "tom da lideranca",
+        "tone at the top"
+      ],
+      "evidencia_esperada": "Trecho que vincule a alta administracao a responsabilidades, aprovacao, patrocinio ou monitoramento do programa.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de envolvimento explicito da alta administracao.",
+        "atende_parcialmente": "Ha mencao institucional a integridade, mas sem atribuicao clara a alta administracao.",
+        "nao_atende": "Ha evidencia de ausencia de apoio ou responsabilidade definida.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E3-COMP-001",
+      "titulo": "Canal de denuncias ou ouvidoria acessivel",
+      "pergunta_normativa": "Existe canal de denuncias, ouvidoria ou mecanismo equivalente, seguro e acessivel para comunicacao de irregularidades?",
+      "base_legal": [
+        "Lei n. 13.303/2016",
+        "Decreto n. 39.736/2019",
+        "Lei n. 12.846/2013"
+      ],
+      "eixo_imga": "E3",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "canal de denuncias",
+        "denuncia",
+        "ouvidoria",
+        "OUV-DF",
+        "SIGO",
+        "sigilo",
+        "anonimato",
+        "protecao ao denunciante"
+      ],
+      "evidencia_esperada": "Trecho que indique existencia do canal, forma de acesso, seguranca, sigilo ou fluxo de tratamento.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de canal acessivel e com finalidade de recebimento de denuncias ou irregularidades.",
+        "atende_parcialmente": "Ha mencao a ouvidoria ou atendimento, mas sem vinculo claro a denuncias ou integridade.",
+        "nao_atende": "Indica ausencia de canal ou mecanismo equivalente.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E3-COMP-002",
+      "titulo": "Estrutura formal de compliance ou integridade",
+      "pergunta_normativa": "A organizacao define responsabilidades, unidade, setor ou agentes responsaveis pela integridade, compliance ou governanca?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Lei n. 13.303/2016"
+      ],
+      "eixo_imga": "E3",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "unidade de integridade",
+        "area de compliance",
+        "responsavel pelo programa",
+        "gestor de integridade",
+        "estrutura de compliance",
+        "responsabilidades"
+      ],
+      "evidencia_esperada": "Trecho que identifique responsaveis, unidades, papeis ou atribuicoes para execucao do programa.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha responsavel ou estrutura formal designada para integridade ou compliance.",
+        "atende_parcialmente": "Ha mencao a integridade, mas sem responsavel ou atribuicao definida.",
+        "nao_atende": "Documento indica ausencia de estrutura ou responsavel.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E3-COMP-003",
+      "titulo": "Politicas internas de integridade e controles",
+      "pergunta_normativa": "O programa contempla politicas internas, normas, procedimentos ou controles voltados a prevenir fraudes, corrupcao e desvios de conduta?",
+      "base_legal": [
+        "Lei n. 12.846/2013",
+        "Lei n. 13.303/2016",
+        "Decreto n. 39.736/2019"
+      ],
+      "eixo_imga": "E3",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "politica de integridade",
+        "procedimentos internos",
+        "controles",
+        "prevencao a fraude",
+        "prevencao a corrupcao",
+        "conflito de interesses"
+      ],
+      "evidencia_esperada": "Trecho que apresente politica, norma ou procedimento preventivo associado a integridade.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha politicas ou procedimentos explicitamente vinculados a integridade ou compliance.",
+        "atende_parcialmente": "Ha mencao generica a controles, mas sem detalhamento ou finalidade preventiva.",
+        "nao_atende": "Ha evidencia de ausencia de politicas ou controles.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E4-TERC-001",
+      "titulo": "Due diligence e avaliacao de terceiros",
+      "pergunta_normativa": "A organizacao adota procedimentos de due diligence, avaliacao de integridade ou verificacao de riscos de terceiros?",
+      "base_legal": [
+        "Decreto n. 40.388/2020",
+        "Lei n. 12.846/2013",
+        "Lei n. 13.303/2016"
+      ],
+      "eixo_imga": "E4",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance",
+        "cig"
+      ],
+      "palavras_chave": [
+        "due diligence",
+        "terceiros",
+        "fornecedores",
+        "avaliacao de integridade",
+        "risco de terceiros",
+        "empresas contratadas",
+        "antecedentes"
+      ],
+      "evidencia_esperada": "Trecho que demonstre avaliacao previa, monitoramento ou verificacao de integridade de terceiros.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha procedimento descrito para avaliar terceiros ou fornecedores.",
+        "atende_parcialmente": "Ha mencao a terceiros ou fornecedores, mas sem procedimento claro de avaliacao.",
+        "nao_atende": "Indica ausencia de avaliacao de terceiros.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E4-TERC-002",
+      "titulo": "Exigencia de programa de integridade em contratacoes",
+      "pergunta_normativa": "Em contratacoes aplicaveis, ha exigencia ou verificacao de Programa de Integridade de empresas contratadas?",
+      "base_legal": [
+        "Decreto n. 40.388/2020",
+        "Lei Distrital n. 6.112/2018",
+        "Lei Distrital n. 6.308/2019"
+      ],
+      "eixo_imga": "E4",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "compliance",
+        "pg",
+        "cig"
+      ],
+      "palavras_chave": [
+        "programa de integridade",
+        "contratadas",
+        "contratos",
+        "R$ 5 milhoes",
+        "180 dias",
+        "exigencia contratual",
+        "habilitacao"
+      ],
+      "evidencia_esperada": "Trecho que indique exigencia, comprovacao ou monitoramento de programa de integridade em contratos.",
+      "regra_classificacao": {
+        "tipo": "presenca_especifica",
+        "atende": "Ha evidencia de exigencia ou verificacao de programa de integridade em contratacoes aplicaveis.",
+        "atende_parcialmente": "Ha mencao a contratacoes ou integridade de terceiros, mas sem regra de exigencia.",
+        "nao_atende": "Indica ausencia da exigencia quando aplicavel.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E5-COM-001",
+      "titulo": "Comunicacao institucional sobre integridade",
+      "pergunta_normativa": "O programa possui acoes de comunicacao interna ou externa sobre integridade, etica, compliance ou governanca?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Lei n. 12.846/2013"
+      ],
+      "eixo_imga": "E5",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance",
+        "cig"
+      ],
+      "palavras_chave": [
+        "comunicacao",
+        "divulgacao",
+        "campanha",
+        "integridade",
+        "sensibilizacao",
+        "disseminacao",
+        "portal"
+      ],
+      "evidencia_esperada": "Trecho que demonstre acoes de divulgacao, campanhas, comunicados ou estrategia de comunicacao.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de acao ou estrategia de comunicacao sobre integridade.",
+        "atende_parcialmente": "Ha mencao a comunicacao ou divulgacao, mas sem acao concreta.",
+        "nao_atende": "Indica ausencia de comunicacao sobre o programa.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E5-COM-002",
+      "titulo": "Treinamento e capacitacao em integridade",
+      "pergunta_normativa": "A organizacao realiza treinamentos ou capacitacoes sobre etica, integridade, riscos, controles ou compliance?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Lei n. 12.846/2013"
+      ],
+      "eixo_imga": "E5",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "treinamento",
+        "capacitacao",
+        "curso",
+        "sensibilizacao",
+        "educacao corporativa",
+        "integridade",
+        "compliance"
+      ],
+      "evidencia_esperada": "Trecho que indique realizacao, previsao, publico-alvo ou periodicidade de treinamentos.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de treinamento realizado ou planejado com tema vinculado a integridade.",
+        "atende_parcialmente": "Ha mencao generica a capacitacao, sem tema, periodicidade ou publico definido.",
+        "nao_atende": "Indica ausencia de treinamentos.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E5-COM-003",
+      "titulo": "Monitoramento continuo do programa",
+      "pergunta_normativa": "Ha monitoramento continuo ou acompanhamento periodico das acoes do programa de integridade?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Decreto n. 9.203/2017"
+      ],
+      "eixo_imga": "E5",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "monitoramento continuo",
+        "acompanhamento",
+        "plano de acao",
+        "cronograma",
+        "metas",
+        "responsaveis",
+        "reuniao de acompanhamento"
+      ],
+      "evidencia_esperada": "Trecho que indique rotina de acompanhamento, metas, responsaveis, cronograma ou monitoramento.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de rotina ou mecanismo continuo de acompanhamento.",
+        "atende_parcialmente": "Ha mencao a acompanhamento sem periodicidade, responsavel ou mecanismo definido.",
+        "nao_atende": "Indica ausencia de monitoramento.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E6-RISC-001",
+      "titulo": "Gestao de riscos formalizada",
+      "pergunta_normativa": "A organizacao possui processo formal de gestao de riscos, com identificacao, avaliacao, tratamento ou monitoramento de riscos?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Decreto n. 37.302/2016",
+        "Lei n. 13.303/2016"
+      ],
+      "eixo_imga": "E6",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "gestao de riscos",
+        "matriz de riscos",
+        "identificacao de riscos",
+        "avaliacao de riscos",
+        "tratamento de riscos",
+        "monitoramento de riscos"
+      ],
+      "evidencia_esperada": "Trecho que demonstre processo estruturado de gestao de riscos ou matriz de riscos.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de processo ou matriz formal de gestao de riscos.",
+        "atende_parcialmente": "Ha mencao a riscos sem processo, matriz ou tratamento definido.",
+        "nao_atende": "Indica ausencia de gestao de riscos.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E6-RISC-002",
+      "titulo": "Metodologia reconhecida de gestao de riscos",
+      "pergunta_normativa": "A gestao de riscos utiliza metodologia reconhecida, como ISO 31000, COSO, ERM, SAEWEB ou metodologia institucional equivalente?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Boas praticas ISO 31000 e COSO"
+      ],
+      "eixo_imga": "E6",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance",
+        "cig"
+      ],
+      "palavras_chave": [
+        "ISO 31000",
+        "COSO",
+        "ERM",
+        "SAEWEB",
+        "metodologia de riscos",
+        "apetite a risco",
+        "controles internos"
+      ],
+      "evidencia_esperada": "Trecho que indique metodologia, referencia tecnica ou ferramenta formal de gestao de riscos.",
+      "regra_classificacao": {
+        "tipo": "presenca_especifica",
+        "atende": "Ha metodologia reconhecida ou institucional explicitamente citada.",
+        "atende_parcialmente": "Ha gestao de riscos, mas sem metodologia identificada.",
+        "nao_atende": "Indica ausencia de metodologia formal.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E6-RISC-003",
+      "titulo": "Controles internos vinculados a riscos e integridade",
+      "pergunta_normativa": "Os controles internos estao vinculados a riscos, integridade, auditoria ou processos decisorios?",
+      "base_legal": [
+        "Lei n. 13.303/2016",
+        "Decreto n. 39.736/2019",
+        "Decreto n. 9.203/2017"
+      ],
+      "eixo_imga": "E6",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "controles internos",
+        "ambiente de controle",
+        "auditoria interna",
+        "mitigacao",
+        "plano de controle",
+        "risco residual"
+      ],
+      "evidencia_esperada": "Trecho que relacione controles internos a mitigacao de riscos, auditoria ou integridade.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha controles internos vinculados explicitamente a riscos ou integridade.",
+        "atende_parcialmente": "Ha mencao a controles internos sem vinculo claro a riscos ou integridade.",
+        "nao_atende": "Indica ausencia de controles internos.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E7-TRANS-001",
+      "titulo": "Transparencia ativa de documentos e informacoes",
+      "pergunta_normativa": "A organizacao disponibiliza publicamente documentos, informacoes institucionais, planos, relatorios ou dados de integridade em regime de transparencia ativa?",
+      "base_legal": [
+        "Lei n. 12.527/2011",
+        "Lei n. 13.303/2016",
+        "Decreto n. 39.736/2019"
+      ],
+      "eixo_imga": "E7",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "transparencia ativa",
+        "portal da transparencia",
+        "LAI",
+        "acesso a informacao",
+        "publicacao",
+        "disponibilizacao",
+        "site institucional"
+      ],
+      "evidencia_esperada": "Trecho que indique publicacao ativa, disponibilidade publica ou canal de acesso aos documentos.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha evidencia de divulgacao publica ou transparencia ativa.",
+        "atende_parcialmente": "Ha mencao a transparencia, mas sem indicar documento, portal ou forma de acesso.",
+        "nao_atende": "Indica ausencia de publicacao ou transparencia ativa.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E7-TRANS-002",
+      "titulo": "Relatorios de gestao, governanca ou prestacao de contas",
+      "pergunta_normativa": "A organizacao publica relatorios de gestao, relatorios integrados, carta de governanca, plano de negocios, prestacao de contas ou documentos equivalentes?",
+      "base_legal": [
+        "Lei n. 13.303/2016, art. 8",
+        "Lei n. 12.527/2011"
+      ],
+      "eixo_imga": "E7",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "relatorio de gestao",
+        "relatorio integrado",
+        "carta de governanca",
+        "plano de negocios",
+        "prestacao de contas",
+        "relatorio anual",
+        "politica de remuneracao"
+      ],
+      "evidencia_esperada": "Trecho que comprove publicacao ou existencia dos relatorios ou documentos de prestacao de contas.",
+      "regra_classificacao": {
+        "tipo": "presenca_especifica",
+        "atende": "Ha evidencia de publicacao ou existencia de relatorio ou documento equivalente.",
+        "atende_parcialmente": "Ha mencao generica a prestacao de contas sem documento identificado.",
+        "nao_atende": "Indica ausencia de relatorios ou documentos equivalentes.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E7-TRANS-003",
+      "titulo": "Accountability e responsabilizacao",
+      "pergunta_normativa": "O documento apresenta mecanismos de accountability, responsabilizacao, apuracao de irregularidades ou consequencias por descumprimento de regras de integridade?",
+      "base_legal": [
+        "Lei n. 12.846/2013",
+        "Decreto n. 39.736/2019",
+        "Lei n. 13.303/2016"
+      ],
+      "eixo_imga": "E7",
+      "peso_criterio": 4,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "compliance",
+        "cig"
+      ],
+      "palavras_chave": [
+        "responsabilizacao",
+        "accountability",
+        "apuracao",
+        "sancoes",
+        "medidas disciplinares",
+        "correicao",
+        "irregularidades"
+      ],
+      "evidencia_esperada": "Trecho que indique procedimento de apuracao, responsabilizacao ou consequencias por descumprimento.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha mecanismo de responsabilizacao ou apuracao explicitamente descrito.",
+        "atende_parcialmente": "Ha mencao a responsabilidade ou sancao sem procedimento definido.",
+        "nao_atende": "Indica ausencia de responsabilizacao ou apuracao.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E8-MAT-001",
+      "titulo": "Indicadores de desempenho do programa",
+      "pergunta_normativa": "O programa de integridade possui indicadores, metricas, KPIs ou criterios de avaliacao de desempenho?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Boas praticas CGDF e OCDE"
+      ],
+      "eixo_imga": "E8",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "indicadores",
+        "KPI",
+        "metricas",
+        "desempenho",
+        "resultados do programa",
+        "maturidade",
+        "painel de indicadores"
+      ],
+      "evidencia_esperada": "Trecho que identifique indicadores, metricas ou forma de avaliar desempenho do programa.",
+      "regra_classificacao": {
+        "tipo": "presenca_especifica",
+        "atende": "Ha indicadores, metricas ou KPIs explicitamente definidos.",
+        "atende_parcialmente": "Ha mencao a avaliacao ou desempenho, mas sem indicadores definidos.",
+        "nao_atende": "Indica ausencia de indicadores.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E8-MAT-002",
+      "titulo": "Revisao periodica e melhoria continua",
+      "pergunta_normativa": "O programa passa por revisao periodica, avaliacao anual, atualizacao ou processo de melhoria continua?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Decreto n. 9.203/2017",
+        "Boas praticas CGDF"
+      ],
+      "eixo_imga": "E8",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "pg",
+        "cig",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "revisao anual",
+        "avaliacao periodica",
+        "melhoria continua",
+        "atualizacao do programa",
+        "aprimoramento",
+        "plano de melhoria",
+        "monitoramento de resultados"
+      ],
+      "evidencia_esperada": "Trecho que indique revisao, atualizacao, melhoria continua ou avaliacao periodica do programa.",
+      "regra_classificacao": {
+        "tipo": "presenca_qualificada",
+        "atende": "Ha rotina de revisao, atualizacao ou melhoria continua definida.",
+        "atende_parcialmente": "Ha mencao a melhoria ou avaliacao, mas sem periodicidade ou processo definido.",
+        "nao_atende": "Indica ausencia de revisao ou melhoria continua.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    },
+    {
+      "codigo": "E8-MAT-003",
+      "titulo": "Evidencia de efetividade e nao apenas formalizacao",
+      "pergunta_normativa": "Ha evidencias de execucao pratica do programa, evitando que a integridade se limite a declaracoes formais sem efetividade?",
+      "base_legal": [
+        "Decreto n. 39.736/2019",
+        "Lei n. 12.846/2013",
+        "Boas praticas OCDE"
+      ],
+      "eixo_imga": "E8",
+      "peso_criterio": 5,
+      "aplicabilidade": [
+        "orgao_publico",
+        "estatal",
+        "empresa_contratada"
+      ],
+      "tipos_documento_prioritarios": [
+        "cig",
+        "pg",
+        "compliance"
+      ],
+      "palavras_chave": [
+        "execucao",
+        "resultados",
+        "acoes realizadas",
+        "evidencias",
+        "implementado",
+        "acompanhamento",
+        "efetividade",
+        "desacoplamento institucional"
+      ],
+      "evidencia_esperada": "Trecho que demonstre acoes executadas, resultados, reunioes, entregas, registros ou acompanhamento concreto do programa.",
+      "regra_classificacao": {
+        "tipo": "evidencia_de_execucao",
+        "atende": "Ha evidencia concreta de execucao ou resultado do programa.",
+        "atende_parcialmente": "Ha previsao ou intencao de executar, mas sem evidencia de realizacao.",
+        "nao_atende": "Ha evidencia de nao execucao ou programa apenas formal.",
+        "nao_encontrado": "Nao ha evidencias suficientes."
+      }
+    }
+  ],
+  "saida_esperada_por_criterio": {
+    "codigo": "string",
+    "orgao": "string",
+    "classificacao": "atende | atende_parcialmente | nao_atende | nao_encontrado",
+    "pontuacao": "number",
+    "confianca": "number",
+    "evidencias": [
+      {
+        "arquivo": "string",
+        "pagina": "number",
+        "trecho": "string",
+        "score_recuperacao": "number",
+        "tipo_busca": "lexical | semantica | hibrida"
+      }
+    ],
+    "observacao": "string"
+  }
+}

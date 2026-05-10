@@ -7,12 +7,16 @@ colorama
 boto3
 streamlit
 pandas
-dotenv
+python-dotenv
 werkzeug
 pdf2image
+pymupdf
+pdfplumber
 pytesseract
 pypandoc
 docx
 psutil
 wordcloud
 matplotlib
+pyarrow
+qdrant-client

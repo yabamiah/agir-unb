@@ -1,4 +1,5 @@
 *.txt
+!requirements.txt
 teste*
 # Ignore all pycache
 __pycache__
@@ -129,11 +130,22 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv-clean/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Local Codex/session files
+.codex
+
+# Generated/local data artifacts
+data/rag/
+data/dani/docs/input/
+
+# Local project exports with personal data
+Projeto ID - Profa Fatima.md
 
 # Spyder project settings
 .spyderproject

@@ -4,6 +4,7 @@ Suporta múltiplas estratégias de extração de texto: PyMuPDF, pdfplumber, OCR
 """
 
 import os
+import shutil
 from typing import List, Tuple
 
 from core.utils.pdf_handler import PdfReader
@@ -13,8 +14,12 @@ try:
     import pymupdf as fitz
     PYMUPDF_AVAILABLE = True
 except ImportError:
-    PYMUPDF_AVAILABLE = False
-    fitz = None
+    try:
+        import fitz
+        PYMUPDF_AVAILABLE = True
+    except ImportError:
+        PYMUPDF_AVAILABLE = False
+        fitz = None
 
 try:
     import pdfplumber
@@ -34,10 +39,14 @@ class OptimizedPdfProcessor:
     3. OCR (Tesseract) - Fallback para PDFs escaneados
     """
     
-    def __init__(self, logger):
+    def __init__(self, logger, enable_ocr: bool = True, max_pages: int | None = None):
         self.logger = logger
         self.cache = {}  # Cache simples para evitar reprocessamento
         self.fallback_processor = PdfReader()
+        self.enable_ocr = enable_ocr
+        self.max_pages = max_pages
+        self.ocr_available = enable_ocr and shutil.which("tesseract") is not None
+        self._ocr_warning_emitted = False
         
     def extract_text_fast(self, file_path: str) -> Tuple[List[str], int]:
         """
@@ -80,7 +89,19 @@ class OptimizedPdfProcessor:
             except Exception as e:
                 self.logger.warning(f"pdfplumber falhou para {file_path}: {e}")
         
-        # Estratégia 3: Fallback para OCR (mais lento mas funciona sempre)
+        # Estratégia 3: Fallback para OCR (mais lento, exige Tesseract instalado)
+        if not self.ocr_available:
+            if not self._ocr_warning_emitted:
+                if self.enable_ocr:
+                    self.logger.warning(
+                        "Tesseract nao encontrado no PATH. PDFs escaneados serao ignorados na indexacao RAG. "
+                        "Instale tesseract-ocr e tesseract-ocr-por para habilitar OCR."
+                    )
+                else:
+                    self.logger.warning("OCR desabilitado para esta execucao. PDFs escaneados serao ignorados.")
+                self._ocr_warning_emitted = True
+            return [], 0
+
         try:
             pages_text = self.fallback_processor.pdf_to_string(file_path)
             total_words = self.fallback_processor.get_total_words_pdf()
@@ -97,7 +118,9 @@ class OptimizedPdfProcessor:
         pages_text = []
         total_words = 0
         
-        for page_num in range(doc.page_count):
+        page_count = min(doc.page_count, self.max_pages) if self.max_pages else doc.page_count
+
+        for page_num in range(page_count):
             page = doc[page_num]
             text = page.get_text()
             if text.strip():
@@ -113,7 +136,8 @@ class OptimizedPdfProcessor:
         total_words = 0
         
         with pdfplumber.open(file_path) as pdf:
-            for page in pdf.pages:
+            pages = pdf.pages[: self.max_pages] if self.max_pages else pdf.pages
+            for page in pages:
                 text = page.extract_text()
                 if text and text.strip():
                     pages_text.append(text.lower())
