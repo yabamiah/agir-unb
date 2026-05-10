@@ -13,7 +13,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from loguru import logger
 
-from core.services.rag_index_service import RagIndexService, TIPOS_DOCUMENTO_VALIDOS
+from core.services.rag_index_service import (TIPOS_DOCUMENTO_VALIDOS,
+                                             RagIndexService)
 
 
 def build_parser() -> argparse.ArgumentParser:

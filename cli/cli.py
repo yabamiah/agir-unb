@@ -1,8 +1,9 @@
 import asyncio
+
 from colorama import Fore, Style
 
-from core.models.lara_i import LaraI, ConfiguracaoLara
 from core.models.dani import Dani
+from core.models.lara_i import ConfiguracaoLara, LaraI
 
 
 class Cli:
@@ -33,10 +34,14 @@ class Cli:
             self.args = input("Digite um comando: ").strip().lower()
 
             commands = {
-                'lara': self.trigger_lara, 'l': self.trigger_lara,
-                'dani': self.trigger_dani, 'd': self.trigger_dani,
-                'help': self.__help__, 'h': self.__help__,
-                'quit': self.__quit__, 'q': self.__quit__,
+                "lara": self.trigger_lara,
+                "l": self.trigger_lara,
+                "dani": self.trigger_dani,
+                "d": self.trigger_dani,
+                "help": self.__help__,
+                "h": self.__help__,
+                "quit": self.__quit__,
+                "q": self.__quit__,
             }
 
             command_func = commands.get(self.args)
@@ -65,15 +70,23 @@ class Cli:
         try:
             await lara.processar_orgaos()
             await lara.upload_pdfs_s3()
-            print(f"{Fore.GREEN}--- LARA-I concluiu a coleta de documentos. ---{Style.RESET_ALL}")
+            print(
+                f"{Fore.GREEN}--- LARA-I concluiu a coleta de documentos. ---{Style.RESET_ALL}"
+            )
 
-            sn = input("Deseja continuar e executar a análise com o DANI [S/N]? ").strip().lower()
-            if sn == 's':
+            sn = (
+                input("Deseja continuar e executar a análise com o DANI [S/N]? ")
+                .strip()
+                .lower()
+            )
+            if sn == "s":
                 self.trigger_dani()
             else:
                 self.__quit__()
         except Exception as e:
-            print(f"{Fore.RED}Ocorreu um erro fatal durante a execução do LARA-I: {e}{Style.RESET_ALL}")
+            print(
+                f"{Fore.RED}Ocorreu um erro fatal durante a execução do LARA-I: {e}{Style.RESET_ALL}"
+            )
 
     def trigger_dani(self) -> None:
         print(f"{Fore.CYAN}--- Iniciando DANI ---{Style.RESET_ALL}")
@@ -81,9 +94,12 @@ class Cli:
             dani = Dani()
             dani.run()
             print(
-                f"{Fore.GREEN}--- DANI concluiu a análise. Verifique os relatórios no diretório 'data'. ---{Style.RESET_ALL}")
+                f"{Fore.GREEN}--- DANI concluiu a análise. Verifique os relatórios no diretório 'data'. ---{Style.RESET_ALL}"
+            )
         except Exception as e:
-            print(f"{Fore.RED}Ocorreu um erro fatal durante a execução do DANI: {e}{Style.RESET_ALL}")
+            print(
+                f"{Fore.RED}Ocorreu um erro fatal durante a execução do DANI: {e}{Style.RESET_ALL}"
+            )
 
 
 async def main():

@@ -1,10 +1,9 @@
-from docx import Document
-from docx.shared import Pt
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
-
 from pathlib import Path
 
 import pypandoc
+from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
+from docx.shared import Pt
 
 
 def add_table(doc: Document, data: list[list[str]]) -> None:
@@ -20,7 +19,7 @@ def add_table(doc: Document, data: list[list[str]]) -> None:
         raise ValueError("No data provided for the table.")
 
     table = doc.add_table(rows=len(data), cols=len(data[0]))
-    table.style = 'Table Grid'
+    table.style = "Table Grid"
 
     for i, row in enumerate(data):
         for j, cell_data in enumerate(row):
@@ -41,7 +40,6 @@ class DocumentService:
         """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-
 
     def create_document(
         self,
@@ -86,7 +84,9 @@ class DocumentService:
 
         return str(output_path)
 
-    def create_document_with_table(self, title: str, data: list[list[str]], filename: str) -> str:
+    def create_document_with_table(
+        self, title: str, data: list[list[str]], filename: str
+    ) -> str:
         """
         Generates a Word document with a table.
 
@@ -98,7 +98,7 @@ class DocumentService:
         Returns:
             str: The path to the saved document.
         """
-        
+
         doc = Document()
 
         title_paragraph = doc.add_paragraph()
@@ -113,7 +113,7 @@ class DocumentService:
         doc.save(file_path)
         print(f"Document with table saved to {file_path}")
         return str(file_path)
-    
+
     def generate_report(self, data: dict, file_name: str = "report.docx") -> str:
         """
         Generates a detailed report from a data dictionary.
@@ -125,7 +125,7 @@ class DocumentService:
         Returns:
             str: Path to the generated report.
         """
-        
+
         document = Document()
 
         for section_title, paragraphs in data.items():
@@ -138,8 +138,10 @@ class DocumentService:
         document.save(output_path)
 
         return str(output_path)
-    
-    def generate_default_report(self, content: list[str], file_name: str = "default_report.docx") -> str:
+
+    def generate_default_report(
+        self, content: list[str], file_name: str = "default_report.docx"
+    ) -> str:
         """
         Generates a default report with a fixed title and footer.
 
@@ -150,15 +152,17 @@ class DocumentService:
         Returns:
             str: Path to the generated report.
         """
-        
+
         title = "Default Report Title"
         footer = "This is a system-generated report."
 
         return self.create_document(
             title=title, content=content, footer=footer, file_name=file_name
         )
-        
-    def convert_docx_to_pdf(self, input_file: str, output_file: str = "document.docx") -> None:
+
+    def convert_docx_to_pdf(
+        self, input_file: str, output_file: str = "document.docx"
+    ) -> None:
         """
         Converts a .docx file to a .pdf file using Pandoc.
 
@@ -166,9 +170,11 @@ class DocumentService:
             input_file (str): Path to the .docx file.
             output_file (str): Path to save the output .pdf file.
         """
-        
+
         try:
-            pypandoc.convert_file(input_file, 'pdf', outputfile= self.output_dir / output_file)
+            pypandoc.convert_file(
+                input_file, "pdf", outputfile=self.output_dir / output_file
+            )
             print(f"File converted successfully to {output_file}")
         except Exception as e:
             print(f"An error occurred: {e}")

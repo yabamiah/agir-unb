@@ -18,7 +18,8 @@ from typing import Iterable
 
 from loguru import logger
 
-from core.services.rag_index_service import LocalTextEmbedder, TIPOS_DOCUMENTO_VALIDOS
+from core.services.rag_index_service import (TIPOS_DOCUMENTO_VALIDOS,
+                                             LocalTextEmbedder)
 
 
 @dataclass
@@ -66,7 +67,9 @@ class RagRetrievalService:
         rrf_k: int = 60,
     ) -> None:
         self.repo_root = Path(__file__).resolve().parents[2]
-        self.data_dir = Path(data_dir or os.getenv("DATA_DIR", str(self.repo_root / "data")))
+        self.data_dir = Path(
+            data_dir or os.getenv("DATA_DIR", str(self.repo_root / "data"))
+        )
         self.rag_dir = self.data_dir / "rag"
         self.sqlite_path = self.rag_dir / "agir_rag.db"
         self.qdrant_path = self.rag_dir / "qdrant"
@@ -98,7 +101,9 @@ class RagRetrievalService:
         }
 
         lexical_results = self._search_lexical(pergunta, orgao, tipos, lexical_limit)
-        semantic_results, semantic_status = self._search_semantic(pergunta, orgao, tipos, semantic_limit)
+        semantic_results, semantic_status = self._search_semantic(
+            pergunta, orgao, tipos, semantic_limit
+        )
         evidencias = self._merge_results(lexical_results, semantic_results, top_k)
 
         return HybridSearchResponse(
@@ -132,7 +137,9 @@ class RagRetrievalService:
     ) -> list[HybridSearchResponse]:
         criteria = self._load_criteria(criteria_path)
         if codigo:
-            criteria = [criterion for criterion in criteria if criterion.get("codigo") == codigo]
+            criteria = [
+                criterion for criterion in criteria if criterion.get("codigo") == codigo
+            ]
             if not criteria:
                 raise ValueError(f"Criterio nao encontrado: {codigo}")
 
@@ -141,11 +148,17 @@ class RagRetrievalService:
 
         responses = []
         for criterion in criteria:
-            pergunta = criterion.get("pergunta_normativa") or criterion.get("pergunta") or criterion.get("titulo")
+            pergunta = (
+                criterion.get("pergunta_normativa")
+                or criterion.get("pergunta")
+                or criterion.get("titulo")
+            )
             if not pergunta:
                 continue
 
-            tipos_prioritarios = tipos_documento or criterion.get("tipos_documento_prioritarios")
+            tipos_prioritarios = tipos_documento or criterion.get(
+                "tipos_documento_prioritarios"
+            )
             responses.append(
                 self.search(
                     pergunta=pergunta,
@@ -212,8 +225,12 @@ class RagRetrievalService:
         try:
             rows = conn.execute(sql, params).fetchall()
         except sqlite3.OperationalError as exc:
-            logger.warning(f"Consulta FTS falhou ({exc}). Tentando busca LIKE como fallback.")
-            rows = self._search_lexical_like(conn, pergunta, orgao, tipos_documento, limit)
+            logger.warning(
+                f"Consulta FTS falhou ({exc}). Tentando busca LIKE como fallback."
+            )
+            rows = self._search_lexical_like(
+                conn, pergunta, orgao, tipos_documento, limit
+            )
         finally:
             conn.close()
 
@@ -283,7 +300,8 @@ class RagRetrievalService:
     ) -> tuple[list[dict], dict]:
         try:
             from qdrant_client import QdrantClient
-            from qdrant_client.http.models import FieldCondition, Filter, MatchAny, MatchValue
+            from qdrant_client.http.models import (FieldCondition, Filter,
+                                                   MatchAny, MatchValue)
         except ImportError:
             return [], {"enabled": False, "reason": "qdrant-client ausente"}
 
@@ -292,11 +310,15 @@ class RagRetrievalService:
 
         try:
             client = QdrantClient(path=str(self.qdrant_path))
-            collections = {collection.name for collection in client.get_collections().collections}
+            collections = {
+                collection.name for collection in client.get_collections().collections
+            }
             if self.collection_name not in collections:
                 return [], {"enabled": False, "reason": "collection ausente"}
 
-            query_filter = self._build_qdrant_filter(orgao, tipos_documento, FieldCondition, Filter, MatchAny, MatchValue)
+            query_filter = self._build_qdrant_filter(
+                orgao, tipos_documento, FieldCondition, Filter, MatchAny, MatchValue
+            )
             query_vector = self.embedder.embed([pergunta])[0]
 
             query_response = client.query_points(
@@ -311,7 +333,11 @@ class RagRetrievalService:
             logger.warning(f"Busca semantica indisponivel: {exc}")
             return [], {"enabled": False, "reason": str(exc)}
 
-        chunk_ids = [point.payload.get("chunk_id") for point in points if point.payload and point.payload.get("chunk_id")]
+        chunk_ids = [
+            point.payload.get("chunk_id")
+            for point in points
+            if point.payload and point.payload.get("chunk_id")
+        ]
         chunks = self._fetch_chunks_by_ids(chunk_ids)
         results = []
 
@@ -356,18 +382,26 @@ class RagRetrievalService:
 
         return {row["chunk_id"]: dict(row) for row in rows}
 
-    def _merge_results(self, lexical_results: list[dict], semantic_results: list[dict], top_k: int) -> list[EvidenceRecord]:
+    def _merge_results(
+        self, lexical_results: list[dict], semantic_results: list[dict], top_k: int
+    ) -> list[EvidenceRecord]:
         merged: dict[str, dict] = {}
 
         for item in lexical_results:
             current = merged.setdefault(item["chunk_id"], dict(item))
-            current["score_lexical"] = max(current.get("score_lexical", 0.0), item.get("lexical_score", 0.0))
+            current["score_lexical"] = max(
+                current.get("score_lexical", 0.0), item.get("lexical_score", 0.0)
+            )
             current.setdefault("fontes", set()).add("lexical")
 
         for item in semantic_results:
             current = merged.setdefault(item["chunk_id"], dict(item))
-            current["score_semantico"] = max(current.get("score_semantico", 0.0), item.get("semantic_score", 0.0))
-            current["semantic_raw_score"] = item.get("semantic_raw_score", current.get("semantic_raw_score", 0.0))
+            current["score_semantico"] = max(
+                current.get("score_semantico", 0.0), item.get("semantic_score", 0.0)
+            )
+            current["semantic_raw_score"] = item.get(
+                "semantic_raw_score", current.get("semantic_raw_score", 0.0)
+            )
             current.setdefault("fontes", set()).add("semantica")
 
         evidencias = []
@@ -392,7 +426,9 @@ class RagRetrievalService:
                 )
             )
 
-        return sorted(evidencias, key=lambda evidence: evidence.score, reverse=True)[:top_k]
+        return sorted(evidencias, key=lambda evidence: evidence.score, reverse=True)[
+            :top_k
+        ]
 
     def _load_criteria(self, criteria_path: str | Path) -> list[dict]:
         path = Path(criteria_path)

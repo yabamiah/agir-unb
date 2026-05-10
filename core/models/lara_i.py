@@ -1,25 +1,21 @@
 ###########################################################################
-## LARA-I : Levantador Automático de Recursos Administrativos Interativo ##
+# LARA-I : Levantador Automático de Recursos Administrativos Interativo #
 ###########################################################################
 import argparse
 import asyncio
+import json
 import os
 import os.path
 import re
-import json
 from collections import deque
 from dataclasses import dataclass
-from typing import Tuple, List, Optional, Dict, Any, FrozenSet, Literal, Callable, Awaitable, TypeVar
-from urllib.parse import urljoin, urlparse, unquote
+from typing import (Any, Awaitable, Callable, Dict, FrozenSet, List, Literal,
+                    Optional, Tuple, TypeVar)
+from urllib.parse import unquote, urljoin, urlparse
 
 from loguru import logger
-from playwright.async_api import (
-    async_playwright,
-    ElementHandle,
-    Page,
-    BrowserContext,
-    APIRequestContext,
-)
+from playwright.async_api import (APIRequestContext, BrowserContext,
+                                  ElementHandle, Page, async_playwright)
 
 from core.services.aws_service import S3Service
 
@@ -37,10 +33,7 @@ def pasta_downloads_orgao_tem_arquivos(
     pasta = os.path.join(output_files, tipo_documento, sigla.upper())
     if not os.path.isdir(pasta):
         return False
-    return any(
-        os.path.isfile(os.path.join(pasta, nome))
-        for nome in os.listdir(pasta)
-    )
+    return any(os.path.isfile(os.path.join(pasta, nome)) for nome in os.listdir(pasta))
 
 
 def _user_agent_string() -> str:
@@ -92,15 +85,17 @@ class ConfiguracaoLara:
         path = ""
 
         if self.arquivo_orgaos is None:
-            base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
-            path = os.path.join(base_dir, 'data', 'lara', 'orgaos_gdf_links.json')
+            base_dir = os.path.normpath(
+                os.path.join(os.path.dirname(__file__), "..", "..")
+            )
+            path = os.path.join(base_dir, "data", "lara", "orgaos_gdf_links.json")
 
             os.makedirs(os.path.dirname(path), exist_ok=True)
             if not os.path.exists(path):
                 sucesso = self.s3_service.download_object(
-                    bucket='agir-bucket',
-                    object_name='lara-config/orgaos_gdf_links.json',
-                    file_path=path
+                    bucket="agir-bucket",
+                    object_name="lara-config/orgaos_gdf_links.json",
+                    file_path=path,
                 )
                 if not sucesso:
                     logger.error("Falha ao baixar o arquivo órgãos do S3.")
@@ -117,19 +112,19 @@ class ConfiguracaoLara:
                 "Comitê Interno de Governança",
                 "cigp",
                 "Reuniões: Atas",
-                "Relatórios de Reuniões de Governança"
+                "Relatórios de Reuniões de Governança",
             ],
             "pg": [
                 "programa de integridade",
                 "programa integridade",
-                "integridade e compliance"
+                "integridade e compliance",
             ],
             "compliance": [
                 "plano de compliance",
                 "plano compliance",
                 "compliance",
-                "plano de integridade e compliance"
-            ]
+                "plano de integridade e compliance",
+            ],
         }
 
         self.inputs_pesquisa = self.inputs_pesquisa or ["s", "q", "searchword"]
@@ -143,7 +138,9 @@ def _verificar_resultado(
     tem_links = links is not None and len(links) > 0
 
     if possui_repositorio:
-        return "✅ OK" if tem_links else "❌ Erro: nenhum link encontrado no repositório"
+        return (
+            "✅ OK" if tem_links else "❌ Erro: nenhum link encontrado no repositório"
+        )
 
     if (possui_atas and not tem_links) or (not possui_atas and tem_links):
         return "❌ Erro: inconsistência"
@@ -171,7 +168,9 @@ class LaraISession:
 
     def _pasta_downloads_nao_vazia(self, sigla: str, tipo_documento: str) -> bool:
         """True se já existem arquivos em output/{tipo}/{SIGLA} (evita re-download e re-extração)."""
-        return pasta_downloads_orgao_tem_arquivos(self.output_files, sigla, tipo_documento)
+        return pasta_downloads_orgao_tem_arquivos(
+            self.output_files, sigla, tipo_documento
+        )
 
     async def _retry_async(
         self,
@@ -186,7 +185,7 @@ class LaraISession:
             except Exception as e:
                 last_exc = e
                 if attempt < n - 1:
-                    delay_s = (self.config.backoff_base_ms / 1000.0) * (2 ** attempt)
+                    delay_s = (self.config.backoff_base_ms / 1000.0) * (2**attempt)
                     logger.warning(
                         f"{operation_name} falhou (tentativa {attempt + 1}/{n}): {e}; "
                         f"nova tentativa em {delay_s:.1f}s"
@@ -250,15 +249,34 @@ class LaraISession:
 
         path_keywords = {
             "cig": (
-                "cig", "governanca", "governança", "ata", "atas", "transparencia",
-                "transparência", "acervo", "documento", "comite", "comitê",
-                "reuniao", "reunião", "colegiado",
+                "cig",
+                "governanca",
+                "governança",
+                "ata",
+                "atas",
+                "transparencia",
+                "transparência",
+                "acervo",
+                "documento",
+                "comite",
+                "comitê",
+                "reuniao",
+                "reunião",
+                "colegiado",
             ),
             "pg": (
-                "integridade", "programa", "compliance", "transparencia", "transparência",
+                "integridade",
+                "programa",
+                "compliance",
+                "transparencia",
+                "transparência",
             ),
             "compliance": (
-                "compliance", "integridade", "plano", "transparencia", "transparência",
+                "compliance",
+                "integridade",
+                "plano",
+                "transparencia",
+                "transparência",
             ),
         }[tipo]
 
@@ -364,7 +382,9 @@ class LaraISession:
             if possui_repositorio:
                 link_repo = dados.get("link_repo")
 
-                logger.info(f"Órgão {sigla} possui repositório. Extraindo links diretamente...")
+                logger.info(
+                    f"Órgão {sigla} possui repositório. Extraindo links diretamente..."
+                )
 
                 await self._goto(url)
                 resultados = "não foi preciso."
@@ -375,7 +395,9 @@ class LaraISession:
                         )
                         links_detalhados = None
                     else:
-                        links_detalhados = await self.extrair_links_cig(link_repo, "cig")
+                        links_detalhados = await self.extrair_links_cig(
+                            link_repo, "cig"
+                        )
                         if links_detalhados:
                             logger.info(f"Baixando PDFs para {sigla}...")
                             await self._baixar_pdfs(links_detalhados, sigla, "cig")
@@ -383,7 +405,9 @@ class LaraISession:
                     links_detalhados = None
 
                 if self._deve_coletar("pg"):
-                    programas_de_integridade = await self.possui_programa_integridade(url)
+                    programas_de_integridade = await self.possui_programa_integridade(
+                        url
+                    )
                 else:
                     programas_de_integridade = None
 
@@ -401,10 +425,16 @@ class LaraISession:
                             logger.info(
                                 f"Extraindo links detalhados de Programa de Integridade para {sigla}..."
                             )
-                            links_pg_detalhados = await self.extrair_links_cig(links_pg, "pg")
+                            links_pg_detalhados = await self.extrair_links_cig(
+                                links_pg, "pg"
+                            )
                             if links_pg_detalhados:
-                                logger.info(f"Baixando PDFs de Programa de Integridade para {sigla}...")
-                                await self._baixar_pdfs(links_pg_detalhados, sigla, "pg")
+                                logger.info(
+                                    f"Baixando PDFs de Programa de Integridade para {sigla}..."
+                                )
+                                await self._baixar_pdfs(
+                                    links_pg_detalhados, sigla, "pg"
+                                )
                 else:
                     programas_integridade_links = None
 
@@ -426,8 +456,12 @@ class LaraISession:
                                 links_compliance, "compliance"
                             )
                             if links_compliance_detalhados:
-                                logger.info(f"Baixando PDFs de Plano de Compliance para {sigla}...")
-                                await self._baixar_pdfs(links_compliance_detalhados, sigla, "compliance")
+                                logger.info(
+                                    f"Baixando PDFs de Plano de Compliance para {sigla}..."
+                                )
+                                await self._baixar_pdfs(
+                                    links_compliance_detalhados, sigla, "compliance"
+                                )
                 else:
                     planos_compliance = None
             else:
@@ -452,8 +486,12 @@ class LaraISession:
 
                         if links:
                             logger.info(f"Extraindo links detalhados para {sigla}...")
-                            links_detalhados = await self.extrair_links_cig(links, "cig")
-                            logger.debug(f"Links detalhados {sigla}: {links_detalhados!r}")
+                            links_detalhados = await self.extrair_links_cig(
+                                links, "cig"
+                            )
+                            logger.debug(
+                                f"Links detalhados {sigla}: {links_detalhados!r}"
+                            )
 
                             if links_detalhados:
                                 logger.info(f"Baixando PDFs para {sigla}...")
@@ -465,7 +503,9 @@ class LaraISession:
                     links_detalhados = None
 
                 if self._deve_coletar("pg"):
-                    programas_de_integridade = await self.possui_programa_integridade(url)
+                    programas_de_integridade = await self.possui_programa_integridade(
+                        url
+                    )
                     if self._pasta_downloads_nao_vazia(sigla, "pg"):
                         logger.info(
                             f"Pulando Programa de Integridade para {sigla}: "
@@ -479,10 +519,16 @@ class LaraISession:
                             logger.info(
                                 f"Extraindo links detalhados de Programa de Integridade para {sigla}..."
                             )
-                            links_pg_detalhados = await self.extrair_links_cig(links_pg, "pg")
+                            links_pg_detalhados = await self.extrair_links_cig(
+                                links_pg, "pg"
+                            )
                             if links_pg_detalhados:
-                                logger.info(f"Baixando PDFs de Programa de Integridade para {sigla}...")
-                                await self._baixar_pdfs(links_pg_detalhados, sigla, "pg")
+                                logger.info(
+                                    f"Baixando PDFs de Programa de Integridade para {sigla}..."
+                                )
+                                await self._baixar_pdfs(
+                                    links_pg_detalhados, sigla, "pg"
+                                )
                 else:
                     programas_integridade_links = None
 
@@ -504,12 +550,18 @@ class LaraISession:
                                 links_compliance, "compliance"
                             )
                             if links_compliance_detalhados:
-                                logger.info(f"Baixando PDFs de Plano de Compliance para {sigla}...")
-                                await self._baixar_pdfs(links_compliance_detalhados, sigla, "compliance")
+                                logger.info(
+                                    f"Baixando PDFs de Plano de Compliance para {sigla}..."
+                                )
+                                await self._baixar_pdfs(
+                                    links_compliance_detalhados, sigla, "compliance"
+                                )
                 else:
                     planos_compliance = None
 
-            verificacao = _verificar_resultado(possui_atas, resultados, possui_repositorio)
+            verificacao = _verificar_resultado(
+                possui_atas, resultados, possui_repositorio
+            )
 
         except Exception as e:
             logger.error(f"Erro ao processar {sigla}: {str(e)}")
@@ -534,15 +586,21 @@ class LaraISession:
             logger.warning(f"Nenhum input de pesquisa encontrado em {url}")
             hubs = await self._bfs_coletar_hubs(url, "cig")
             if hubs:
-                logger.info(f"BFS (cig): {len(hubs)} página(s) candidata(s) sem busca no site")
+                logger.info(
+                    f"BFS (cig): {len(hubs)} página(s) candidata(s) sem busca no site"
+                )
             return hubs if hubs else None
 
-        for termo in self.config.termos_pesquisa.get('cig'):
+        for termo in self.config.termos_pesquisa.get("cig"):
             logger.info(f"Pesquisando por '{termo}'...")
             try:
-                all_elements_links = await self._buscar_elementos_por_input(input_name, termo)
+                all_elements_links = await self._buscar_elementos_por_input(
+                    input_name, termo
+                )
 
-                link_valido, link_titulo, tem_ano = await self._verificar_titulos_cig(all_elements_links)
+                link_valido, link_titulo, tem_ano = await self._verificar_titulos_cig(
+                    all_elements_links
+                )
                 if link_valido:
                     if tem_ano:
                         links_anos = await self._coletar_links_por_ano()
@@ -560,7 +618,9 @@ class LaraISession:
             logger.warning(f"Nenhum link de atas encontrado para URL: {url}")
             hubs = await self._bfs_coletar_hubs(url, "cig")
             if hubs:
-                logger.info(f"BFS (cig): fallback com {len(hubs)} página(s) candidata(s)")
+                logger.info(
+                    f"BFS (cig): fallback com {len(hubs)} página(s) candidata(s)"
+                )
             return hubs if hubs else None
         return links_coletados
 
@@ -577,7 +637,9 @@ class LaraISession:
         for termo in self.config.termos_pesquisa.get("pg"):
             logger.info(f"Pesquisando por '{termo}'...")
             try:
-                all_elements_links = await self._buscar_elementos_por_input(input_name, termo)
+                all_elements_links = await self._buscar_elementos_por_input(
+                    input_name, termo
+                )
 
                 tem_pg = await self._verificar_titulos_pg(all_elements_links)
 
@@ -604,10 +666,14 @@ class LaraISession:
         for termo in self.config.termos_pesquisa.get("pg"):
             logger.info(f"Pesquisando Programa de Integridade por '{termo}'...")
             try:
-                all_elements_links = await self._buscar_elementos_por_input(input_name, termo)
+                all_elements_links = await self._buscar_elementos_por_input(
+                    input_name, termo
+                )
 
-                link_valido, link_titulo, tem_ano = await self._verificar_titulos_programa_integridade(
-                    all_elements_links
+                link_valido, link_titulo, tem_ano = (
+                    await self._verificar_titulos_programa_integridade(
+                        all_elements_links
+                    )
                 )
                 if link_valido:
                     if tem_ano:
@@ -623,10 +689,14 @@ class LaraISession:
                 continue
 
         if not links_coletados:
-            logger.warning(f"Nenhum link de Programa de Integridade encontrado para URL: {url}")
+            logger.warning(
+                f"Nenhum link de Programa de Integridade encontrado para URL: {url}"
+            )
             hubs = await self._bfs_coletar_hubs(url, "pg")
             if hubs:
-                logger.info(f"BFS (pg): fallback com {len(hubs)} página(s) candidata(s)")
+                logger.info(
+                    f"BFS (pg): fallback com {len(hubs)} página(s) candidata(s)"
+                )
             return hubs if hubs else None
         return links_coletados
 
@@ -644,10 +714,12 @@ class LaraISession:
         for termo in self.config.termos_pesquisa.get("compliance"):
             logger.info(f"Pesquisando Plano de Compliance por '{termo}'...")
             try:
-                all_elements_links = await self._buscar_elementos_por_input(input_name, termo)
+                all_elements_links = await self._buscar_elementos_por_input(
+                    input_name, termo
+                )
 
-                link_valido, link_titulo, tem_ano = await self._verificar_titulos_plano_compliance(
-                    all_elements_links
+                link_valido, link_titulo, tem_ano = (
+                    await self._verificar_titulos_plano_compliance(all_elements_links)
                 )
                 if link_valido:
                     if tem_ano:
@@ -663,25 +735,37 @@ class LaraISession:
                 continue
 
         if not links_coletados:
-            logger.warning(f"Nenhum link de Plano de Compliance encontrado para URL: {url}")
+            logger.warning(
+                f"Nenhum link de Plano de Compliance encontrado para URL: {url}"
+            )
             hubs = await self._bfs_coletar_hubs(url, "compliance")
             if hubs:
-                logger.info(f"BFS (compliance): fallback com {len(hubs)} página(s) candidata(s)")
+                logger.info(
+                    f"BFS (compliance): fallback com {len(hubs)} página(s) candidata(s)"
+                )
             return hubs if hubs else None
         return links_coletados
 
     async def _buscar_elementos_por_input(self, input_name: str, termo: str):
         """Busca links e paragrafos da página e retorna elementos tratados"""
 
-        await self.page.fill(f"input[name='{input_name}']", termo, timeout=self.config.timeout_preenchimento)
-        await self.page.press(f"input[name='{input_name}']", "Enter", timeout=self.config.timeout_press)
+        await self.page.fill(
+            f"input[name='{input_name}']",
+            termo,
+            timeout=self.config.timeout_preenchimento,
+        )
+        await self.page.press(
+            f"input[name='{input_name}']", "Enter", timeout=self.config.timeout_press
+        )
         await self._wait_after_navigation()
 
         links = await self.page.query_selector_all(
             "li h3 a, li h4 a, div.row div.col div.col a, h2.genericItemTitle a"
         )
 
-        paragrafos = await self.page.query_selector_all("li p, div.row div.col div.col span")
+        paragrafos = await self.page.query_selector_all(
+            "li p, div.row div.col div.col span"
+        )
 
         all_elements_links = []
         if paragrafos:
@@ -701,29 +785,33 @@ class LaraISession:
                 return input_name
         return None
 
-    async def _get_element_data(self, link: ElementHandle, paragrafo: ElementHandle = "") -> dict:
+    async def _get_element_data(
+        self, link: ElementHandle, paragrafo: ElementHandle = ""
+    ) -> dict:
         """Extrai dados de um elemento da página"""
 
         if paragrafo:
             return {
-                'text': (await link.text_content() or "").strip().lower(),
-                'paragraph': (await paragrafo.text_content() or "").strip().lower(),
-                'href': await link.get_attribute('href') or "",
+                "text": (await link.text_content() or "").strip().lower(),
+                "paragraph": (await paragrafo.text_content() or "").strip().lower(),
+                "href": await link.get_attribute("href") or "",
             }
 
         return {
-            'text': (await link.text_content() or "").strip().lower(),
-            'paragraph': "",
-            'href': await link.get_attribute('href') or "",
+            "text": (await link.text_content() or "").strip().lower(),
+            "paragraph": "",
+            "href": await link.get_attribute("href") or "",
         }
 
-    async def _verificar_titulos_cig(self, elements: list[dict]) -> Tuple[bool, Optional[str], bool]:
+    async def _verificar_titulos_cig(
+        self, elements: list[dict]
+    ) -> Tuple[bool, Optional[str], bool]:
         """Verifica os títulos dos resultados"""
 
         for element in elements:
-            link = element['href']
-            titulo = element['text']
-            paragrafo = element['paragraph']
+            link = element["href"]
+            titulo = element["text"]
+            paragrafo = element["paragraph"]
 
             termos_busca = [
                 "comitê interno de governança",
@@ -731,13 +819,14 @@ class LaraISession:
                 "atas",
                 "atas das reuniões",
                 "atas de reuniões",
-                "governança pública"
+                "governança pública",
             ]
 
-            if (any(termo in titulo.lower() for termo in termos_busca) or
-                    any(termo in paragrafo.lower() for termo in termos_busca)):
+            if any(termo in titulo.lower() for termo in termos_busca) or any(
+                termo in paragrafo.lower() for termo in termos_busca
+            ):
                 link_valido = link
-                tem_ano = bool(re.search(r'\b(20\d{2})\b', titulo))
+                tem_ano = bool(re.search(r"\b(20\d{2})\b", titulo))
                 return True, link_valido, tem_ano
 
         return False, None, False
@@ -746,12 +835,12 @@ class LaraISession:
         """Verifica os títulos dos resultados"""
 
         for element in elements:
-            titulo = element['text']
+            titulo = element["text"]
 
             termos_busca = [
                 "integridade e compliance",
                 "integridade",
-                "programa de integridade"
+                "programa de integridade",
             ]
 
             if any(termo in titulo.lower() for termo in termos_busca):
@@ -759,50 +848,56 @@ class LaraISession:
 
         return False
 
-    async def _verificar_titulos_programa_integridade(self, elements: list[dict]) -> Tuple[bool, Optional[str], bool]:
+    async def _verificar_titulos_programa_integridade(
+        self, elements: list[dict]
+    ) -> Tuple[bool, Optional[str], bool]:
         """Verifica os títulos dos resultados de Programa de Integridade"""
 
         for element in elements:
-            link = element['href']
-            titulo = element['text']
-            paragrafo = element.get('paragraph', '')
+            link = element["href"]
+            titulo = element["text"]
+            paragrafo = element.get("paragraph", "")
 
             termos_busca = [
                 "programa de integridade",
                 "programa integridade",
                 "integridade e compliance",
                 "integridade",
-                "compliance e integridade"
+                "compliance e integridade",
             ]
 
-            if (any(termo in titulo.lower() for termo in termos_busca) or
-                    any(termo in paragrafo.lower() for termo in termos_busca)):
+            if any(termo in titulo.lower() for termo in termos_busca) or any(
+                termo in paragrafo.lower() for termo in termos_busca
+            ):
                 link_valido = link
-                tem_ano = bool(re.search(r'\b(20\d{2})\b', titulo))
+                tem_ano = bool(re.search(r"\b(20\d{2})\b", titulo))
                 return True, link_valido, tem_ano
 
         return False, None, False
 
-    async def _verificar_titulos_plano_compliance(self, elements: list[dict]) -> Tuple[bool, Optional[str], bool]:
+    async def _verificar_titulos_plano_compliance(
+        self, elements: list[dict]
+    ) -> Tuple[bool, Optional[str], bool]:
         """Verifica os títulos dos resultados de Plano de Compliance"""
 
         for element in elements:
-            link = element['href']
-            titulo = element['text']
-            paragrafo = element.get('paragraph', '')
+            link = element["href"]
+            titulo = element["text"]
+            paragrafo = element.get("paragraph", "")
 
             termos_busca = [
                 "plano de compliance",
                 "plano compliance",
                 "compliance",
                 "plano de integridade e compliance",
-                "plano integridade compliance"
+                "plano integridade compliance",
             ]
 
-            if (any(termo in titulo.lower() for termo in termos_busca) or
-                    any(termo in paragrafo.lower() for termo in termos_busca)):
+            if any(termo in titulo.lower() for termo in termos_busca) or any(
+                termo in paragrafo.lower() for termo in termos_busca
+            ):
                 link_valido = link
-                tem_ano = bool(re.search(r'\b(20\d{2})\b', titulo))
+                tem_ano = bool(re.search(r"\b(20\d{2})\b", titulo))
                 return True, link_valido, tem_ano
 
         return False, None, False
@@ -817,7 +912,7 @@ class LaraISession:
 
         for elemento in elementos:
             titulo = await elemento.inner_text()
-            if re.search(r'\b(20\d{2})\b', titulo):
+            if re.search(r"\b(20\d{2})\b", titulo):
                 if link := await elemento.get_attribute("href"):
                     links_anos.append(link)
 
@@ -884,16 +979,11 @@ class LaraISession:
         seletores = [
             "a[href$='.pdf']",
             "a[href*='.pdf']",
-
             "a[href$='-pdf']",
-
             "a[href*='/documents/'][href$='-pdf']",
-
             "a[href*='/documents/d/'][href$='-pdf']",
-
             "a:contains('PDF')",
             "a:contains('pdf')",
-
             "a[href*='documento']",
             "a[href*='ata']",
             "a[href*='reuniao']",
@@ -903,7 +993,9 @@ class LaraISession:
             try:
                 elementos.extend(await self.page.query_selector_all(seletor))
             except Exception as e:
-                logger.debug(f"Erro ao buscar elementos com seletor {seletor}: {str(e)}")
+                logger.debug(
+                    f"Erro ao buscar elementos com seletor {seletor}: {str(e)}"
+                )
 
         return elementos
 
@@ -946,44 +1038,44 @@ class LaraISession:
                 return True
 
         criterios_url = [
-            href_lower.endswith('.pdf'),
-            '.pdf' in href_lower,
-            href_lower.endswith('-pdf'),
-            '/documents/' in href_lower,
-            'documento' in href_lower,
-            'ata' in href_lower,
-            'reuniao' in href_lower,
+            href_lower.endswith(".pdf"),
+            ".pdf" in href_lower,
+            href_lower.endswith("-pdf"),
+            "/documents/" in href_lower,
+            "documento" in href_lower,
+            "ata" in href_lower,
+            "reuniao" in href_lower,
         ]
 
         criterios_texto = [
-            'pdf' in texto_lower,
-            'ata' in texto_lower,
-            'reunião' in texto_lower,
-            'relatório' in texto_lower,
+            "pdf" in texto_lower,
+            "ata" in texto_lower,
+            "reunião" in texto_lower,
+            "relatório" in texto_lower,
         ]
 
         contra_criterios_texto = [
-            'diário' in texto_lower,
-            'instrução' in texto_lower,
-            'portaria' in texto_lower,
-            'resolução' in texto_lower,
-            'apresentação' in texto_lower,
-            'decreto' in texto_lower,
-            'certificado' in texto_lower,
-            'retificação' in texto_lower,
-            'organograma' in texto_lower,
-            'pesquisa' in texto_lower,
-            'cartilhas' in texto_lower,
-            'guia' in texto_lower,
-            'certidão' in texto_lower,
-            'manual' in texto_lower,
+            "diário" in texto_lower,
+            "instrução" in texto_lower,
+            "portaria" in texto_lower,
+            "resolução" in texto_lower,
+            "apresentação" in texto_lower,
+            "decreto" in texto_lower,
+            "certificado" in texto_lower,
+            "retificação" in texto_lower,
+            "organograma" in texto_lower,
+            "pesquisa" in texto_lower,
+            "cartilhas" in texto_lower,
+            "guia" in texto_lower,
+            "certidão" in texto_lower,
+            "manual" in texto_lower,
         ]
 
         if tipo_documento == "cig":
             contra_criterios_texto.extend(
                 [
-                    'plano' in texto_lower,
-                    'política' in texto_lower,
+                    "plano" in texto_lower,
+                    "política" in texto_lower,
                 ]
             )
 
@@ -992,7 +1084,9 @@ class LaraISession:
 
         return any(criterios_url) or any(criterios_texto)
 
-    async def _processar_elemento_pdf(self, elemento: ElementHandle) -> Optional[Dict[str, str]]:
+    async def _processar_elemento_pdf(
+        self, elemento: ElementHandle
+    ) -> Optional[Dict[str, str]]:
         """Processa um elemento de link e extrai informações do PDF"""
 
         try:
@@ -1009,18 +1103,16 @@ class LaraISession:
                 return None
 
             if not titulo:
-                path_last = unquote(urlparse(href).path.rstrip("/").split("/")[-1] or "")
+                path_last = unquote(
+                    urlparse(href).path.rstrip("/").split("/")[-1] or ""
+                )
                 titulo = (
                     path_last.replace("-", " ").replace("_", " ").strip() or "documento"
                 )
 
-            data = self._extrair_data_documento(titulo)
+            self._extrair_data_documento(titulo)
 
-            return {
-                "url": href,
-                "titulo": titulo,
-                "data": ""
-            }
+            return {"url": href, "titulo": titulo, "data": ""}
 
         except Exception as e:
             logger.debug(f"Erro ao processar elemento: {str(e)}")
@@ -1035,31 +1127,40 @@ class LaraISession:
         url_lower = url.lower()
         path_part = url_lower.split("?")[0].split("#")[0].rstrip("/")
 
-        if path_part.endswith('.pdf'):
+        if path_part.endswith(".pdf"):
             return True
 
-        if '.pdf' in path_part:
-            partes = path_part.split('.pdf')
+        if ".pdf" in path_part:
+            partes = path_part.split(".pdf")
             if len(partes) > 1 and not any(c.isalnum() for c in partes[1][:1]):
                 return True
 
-        if path_part.endswith('-pdf') or path_part.endswith('_pdf'):
+        if path_part.endswith("-pdf") or path_part.endswith("_pdf"):
             return True
 
         padroes_pdf = [
-            '/documents/',
-            '/documento',
-            '/ata',
-            '/reuniao',
-            '/relatorio',
-            '/arquivo',
-            'pdf-',
-            '_pdf',
-            'download',
+            "/documents/",
+            "/documento",
+            "/ata",
+            "/reuniao",
+            "/relatorio",
+            "/arquivo",
+            "pdf-",
+            "_pdf",
+            "download",
         ]
 
         if any(padrao in url_lower for padrao in padroes_pdf):
-            terminacoes_documento = ['-pdf', '_pdf', '-doc', '_doc', 'documento', 'ata', 'reuniao', 'relatorio']
+            terminacoes_documento = [
+                "-pdf",
+                "_pdf",
+                "-doc",
+                "_doc",
+                "documento",
+                "ata",
+                "reuniao",
+                "relatorio",
+            ]
             if any(path_part.endswith(term) for term in terminacoes_documento):
                 return True
 
@@ -1073,11 +1174,7 @@ class LaraISession:
 
         titulo_lower = titulo.lower()
 
-        palavras_exclusao = [
-            "resolução",
-            "governança",
-            "portaria"
-        ]
+        palavras_exclusao = ["resolução", "governança", "portaria"]
 
         if any(palavra in titulo_lower for palavra in palavras_exclusao):
             return False, None
@@ -1095,7 +1192,7 @@ class LaraISession:
             "comissao",
             "colegiado",
             "plenária",
-            "plenaria"
+            "plenaria",
         ]
 
         for palavra in palavras_ata:
@@ -1103,10 +1200,13 @@ class LaraISession:
                 return True, titulo_lower
 
         padroes_numericos = [
-            "º", "ª",
-            "ordinária", "ordinaria",
-            "extraordinária", "extraordinaria",
-            "especial"
+            "º",
+            "ª",
+            "ordinária",
+            "ordinaria",
+            "extraordinária",
+            "extraordinaria",
+            "especial",
         ]
 
         if any(padrao in titulo_lower for padrao in padroes_numericos):
@@ -1119,12 +1219,12 @@ class LaraISession:
         """Extrai a data do documento do título ou contexto"""
 
         padroes_data = [
-            r'\b\d{2}/\d{2}/\d{4}\b',
-            r'\b\d{2}-\d{2}-\d{4}\b',
-            r'\b\d{2}\.\d{2}\.\d{4}\b',
-            r'\b\d{2} de [A-Za-zçÇ]+ de \d{4}\b',
-            r'\b[A-Za-zçÇ]+ de \d{4}\b',
-            r'\b\d{4}\b'
+            r"\b\d{2}/\d{2}/\d{4}\b",
+            r"\b\d{2}-\d{2}-\d{4}\b",
+            r"\b\d{2}\.\d{2}\.\d{4}\b",
+            r"\b\d{2} de [A-Za-zçÇ]+ de \d{4}\b",
+            r"\b[A-Za-zçÇ]+ de \d{4}\b",
+            r"\b\d{4}\b",
         ]
 
         texto_completo = titulo
@@ -1157,14 +1257,16 @@ class LaraISession:
 
         return url
 
-    def _filtrar_links_duplicados(self, links: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    def _filtrar_links_duplicados(
+        self, links: List[Dict[str, str]]
+    ) -> List[Dict[str, str]]:
         """Remove links duplicados mantendo apenas a primeira ocorrência"""
 
         urls_vistas = set()
         links_unicos = []
 
         for link in links:
-            url_normalizada = link["url"].lower().split('?')[0]
+            url_normalizada = link["url"].lower().split("?")[0]
 
             if url_normalizada not in urls_vistas:
                 urls_vistas.add(url_normalizada)
@@ -1183,7 +1285,9 @@ class LaraISession:
         Ver documentação em docs/lara-i-downloads-e-bfs.md.
         """
         if tipo_documento not in TIPOS_DOCUMENTO_INPUT:
-            raise ValueError(f"tipo_documento deve ser um de {TIPOS_DOCUMENTO_INPUT}, recebido: {tipo_documento}")
+            raise ValueError(
+                f"tipo_documento deve ser um de {TIPOS_DOCUMENTO_INPUT}, recebido: {tipo_documento}"
+            )
 
         if self._pasta_downloads_nao_vazia(sigla, tipo_documento):
             dest = os.path.join(self.output_files, tipo_documento, sigla.upper())
@@ -1203,9 +1307,9 @@ class LaraISession:
                 os.makedirs(of_tratado)
                 logger.info(f"📂 Diretório '{of_tratado}' criado.")
 
-            url = link['url']
-            titulo = link['titulo']
-            data = link['data']
+            url = link["url"]
+            titulo = link["titulo"]
+            data = link["data"]
 
             if not url:
                 logger.warning(f"⚠ URL não encontrada para: {titulo}. Pulando...")
@@ -1214,7 +1318,7 @@ class LaraISession:
             logger.info(f"📂 Baixando PDF: {url}")
 
             nome_arquivo_tratado = "".join(
-                c if c.isalnum() or c in (' ', '.', '_') else '_' for c in titulo
+                c if c.isalnum() or c in (" ", ".", "_") else "_" for c in titulo
             )
             if data:
                 nome_arquivo = f"{data.replace('/', '-')}_{nome_arquivo_tratado}.pdf"
@@ -1239,7 +1343,7 @@ class LaraISession:
                                 f"content-type={ct!r}. Salvando mesmo assim."
                             )
 
-                    with open(caminho_completo, 'wb') as f:
+                    with open(caminho_completo, "wb") as f:
                         f.write(body)
 
                     logger.info(f"'{nome_arquivo}' salvo em '{of_tratado}'")
@@ -1248,7 +1352,7 @@ class LaraISession:
                 except Exception as e:
                     ultimo_erro = e
                     if attempt < tentativas - 1:
-                        delay_s = (self.config.backoff_base_ms / 1000.0) * (2 ** attempt)
+                        delay_s = (self.config.backoff_base_ms / 1000.0) * (2**attempt)
                         logger.warning(
                             f"Download falhou (tentativa {attempt + 1}/{tentativas}) {url[:80]}: {e}; "
                             f"nova tentativa em {delay_s:.1f}s"
@@ -1268,8 +1372,8 @@ class LaraI:
         self.config = config or ConfiguracaoLara()
         self._setup_logger()
 
-        base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
-        self.output_files = os.path.join(base_dir, 'data', 'dani', 'docs', 'input')
+        base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+        self.output_files = os.path.join(base_dir, "data", "dani", "docs", "input")
         os.makedirs(self.output_files, exist_ok=True)
         for tipo in TIPOS_DOCUMENTO_INPUT:
             os.makedirs(os.path.join(self.output_files, tipo), exist_ok=True)
@@ -1282,7 +1386,9 @@ class LaraI:
             if env_path:
                 return [env_path]
 
-            base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+            base_dir = os.path.normpath(
+                os.path.join(os.path.dirname(__file__), "..", "..")
+            )
             return [
                 os.path.join(base_dir, "logs", "lara-i_logs.log"),
                 os.path.join("/tmp", "agir-unb", "logs", "lara-i_logs.log"),
@@ -1294,7 +1400,9 @@ class LaraI:
                 log_dir = os.path.dirname(log_path) or "."
                 os.makedirs(log_dir, exist_ok=True)
                 if not os.access(log_dir, os.W_OK):
-                    raise PermissionError(f"Diretório sem permissão de escrita: {log_dir}")
+                    raise PermissionError(
+                        f"Diretório sem permissão de escrita: {log_dir}"
+                    )
 
                 logger.add(
                     log_path,
@@ -1337,7 +1445,9 @@ class LaraI:
         """CIG só é coletado com repositório ou com possui_atas (alinhado a executar_orgao)."""
         return bool(dados.get("possui_repositorio")) or bool(dados.get("possui_atas"))
 
-    def _tipo_tem_coleta_pendente(self, sigla: str, tipo: str, dados: Dict[str, Any]) -> bool:
+    def _tipo_tem_coleta_pendente(
+        self, sigla: str, tipo: str, dados: Dict[str, Any]
+    ) -> bool:
         """Pasta do tipo vazia e, para CIG, metadados permitem coleta."""
         if pasta_downloads_orgao_tem_arquivos(self.output_files, sigla, tipo):
             return False
@@ -1385,7 +1495,9 @@ class LaraI:
                 f"{', '.join(sorted(s for s, _ in pulados))}"
             )
         if items:
-            logger.info(f"Órgãos que serão raspados: {', '.join(sorted(s for s, _ in items))}")
+            logger.info(
+                f"Órgãos que serão raspados: {', '.join(sorted(s for s, _ in items))}"
+            )
         else:
             logger.info("Nenhum órgão com coleta pendente; scraping não será iniciado.")
 
@@ -1488,20 +1600,21 @@ class LaraI:
                     file_path = os.path.join(orgao_path, pdf)
                     if not os.path.isfile(file_path):
                         continue
-                    object_name = f'dani-docs/{tipo}/{sigla}/{pdf}'
+                    object_name = f"dani-docs/{tipo}/{sigla}/{pdf}"
 
                     if self.config.s3_service.object_exists(
-                        bucket='agir-bucket',
-                        object_name=object_name
+                        bucket="agir-bucket", object_name=object_name
                     ):
-                        logger.warning(f"⚠ Arquivo já existe na S3 e será ignorado: {object_name}")
+                        logger.warning(
+                            f"⚠ Arquivo já existe na S3 e será ignorado: {object_name}"
+                        )
                         continue
 
                     logger.debug(f"📄 Enviando PDF: {pdf}")
                     self.config.s3_service.upload_object(
-                        bucket='agir-bucket',
+                        bucket="agir-bucket",
                         object_name=object_name,
-                        file_path=file_path
+                        file_path=file_path,
                     )
         return True
 
@@ -1568,10 +1681,13 @@ async def main():
             if ok:
                 logger.info("✅ Upload de PDFs para a S3 concluído.")
             else:
-                logger.warning("⚠ Upload S3 finalizado com falhas ou sem arquivos; veja os logs acima.")
+                logger.warning(
+                    "⚠ Upload S3 finalizado com falhas ou sem arquivos; veja os logs acima."
+                )
     except Exception as e:
         logger.error(f"Erro durante a execução do LARA-I: {str(e)}")
         raise
+
 
 if __name__ == "__main__":
     asyncio.run(main())

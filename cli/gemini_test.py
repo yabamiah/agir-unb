@@ -10,7 +10,6 @@ import sys
 import requests
 from dotenv import load_dotenv
 
-
 PREFERRED_MODELS = (
     "gemini-2.5-flash",
     "gemini-2.0-flash",
@@ -49,7 +48,9 @@ def choose_models(api_key: str) -> list[str]:
         if configured_name in available:
             candidates.append(configured_name)
         else:
-            print(f"GEMINI_MODEL={configured} nao esta disponivel para generateContent. Buscando alternativa...")
+            print(
+                f"GEMINI_MODEL={configured} nao esta disponivel para generateContent. Buscando alternativa..."
+            )
 
     available_suffixes = {name.removeprefix("models/"): name for name in available}
     for preferred in PREFERRED_MODELS:
@@ -59,7 +60,9 @@ def choose_models(api_key: str) -> list[str]:
                 candidates.append(candidate)
 
     if not candidates and not available:
-        raise RuntimeError("Nenhum modelo Gemini com generateContent disponivel para esta chave.")
+        raise RuntimeError(
+            "Nenhum modelo Gemini com generateContent disponivel para esta chave."
+        )
     if not candidates:
         candidates.append(available[0])
     return candidates
@@ -81,14 +84,24 @@ def main() -> int:
             response = requests.post(
                 f"https://generativelanguage.googleapis.com/v1beta/{candidate_model}:generateContent",
                 params={"key": api_key},
-                json={"contents": [{"parts": [{"text": "Responda em uma frase: Gemini configurado?"}]}]},
+                json={
+                    "contents": [
+                        {
+                            "parts": [
+                                {"text": "Responda em uma frase: Gemini configurado?"}
+                            ]
+                        }
+                    ]
+                },
                 timeout=30,
             )
             try:
                 response.raise_for_status()
             except requests.HTTPError as exc:
                 last_error = exc
-                status_code = exc.response.status_code if exc.response is not None else None
+                status_code = (
+                    exc.response.status_code if exc.response is not None else None
+                )
                 if status_code in {500, 502, 503, 504}:
                     continue
                 raise
@@ -97,13 +110,18 @@ def main() -> int:
         if payload is None and last_error:
             raise last_error
     except requests.HTTPError as exc:
-        status_code = exc.response.status_code if exc.response is not None else "sem status"
+        status_code = (
+            exc.response.status_code if exc.response is not None else "sem status"
+        )
         body = exc.response.text[:800] if exc.response is not None else str(exc)
         print(f"Erro HTTP ao testar Gemini: {status_code}", file=sys.stderr)
         print(body.replace(api_key, "[GEMINI_API_KEY]"), file=sys.stderr)
         return 1
     except requests.RequestException as exc:
-        print("Erro de rede ao testar Gemini. Verifique conexao/DNS/proxy e tente novamente.", file=sys.stderr)
+        print(
+            "Erro de rede ao testar Gemini. Verifique conexao/DNS/proxy e tente novamente.",
+            file=sys.stderr,
+        )
         print(str(exc).replace(api_key, "[GEMINI_API_KEY]"), file=sys.stderr)
         return 1
 

@@ -4,8 +4,9 @@ Aplica pesos semânticos (1-3) e boosters operacionais (+1) com cap de 5.
 """
 
 import re
-from typing import Dict, List, Any
 from dataclasses import dataclass
+from typing import Dict, List
+
 
 @dataclass
 class ResultadoMaturidade:
@@ -13,6 +14,7 @@ class ResultadoMaturidade:
     eixo_id: str
     evidencias: List[str]
     detalhe_boosters: Dict[str, bool]
+
 
 class PontuadorMaturidadeDANI:
     """
@@ -22,14 +24,43 @@ class PontuadorMaturidadeDANI:
     def __init__(self):
         # Boosters conforme Anexo 2 do documento
         self.boosters_config = {
-            "B1_ACAO": ["implementou", "realiza", "executa", "monitora", "apura", "investiga", "audita"],
-            "B2_PERIODICIDADE": ["anualmente", "mensalmente", "trimestralmente", "periodicamente", "contínua"],
-            "B3_RESPONSAVEL": ["conselho", "diretoria", "compliance officer", "auditoria", "comitê"],
-            "B4_ARTEFATO": ["política", "manual", "regimento", "fluxo", "plano", "relatório"]
+            "B1_ACAO": [
+                "implementou",
+                "realiza",
+                "executa",
+                "monitora",
+                "apura",
+                "investiga",
+                "audita",
+            ],
+            "B2_PERIODICIDADE": [
+                "anualmente",
+                "mensalmente",
+                "trimestralmente",
+                "periodicamente",
+                "contínua",
+            ],
+            "B3_RESPONSAVEL": [
+                "conselho",
+                "diretoria",
+                "compliance officer",
+                "auditoria",
+                "comitê",
+            ],
+            "B4_ARTEFATO": [
+                "política",
+                "manual",
+                "regimento",
+                "fluxo",
+                "plano",
+                "relatório",
+            ],
         }
         self.cap = 5
 
-    def calcular_score_eixo(self, texto: str, eixo_id: str, sinais_eixo: Dict[str, List[str]]) -> ResultadoMaturidade:
+    def calcular_score_eixo(
+        self, texto: str, eixo_id: str, sinais_eixo: Dict[str, List[str]]
+    ) -> ResultadoMaturidade:
         """
         Calcula a pontuação de maturidade para um eixo específico em um trecho.
         """
@@ -77,5 +108,5 @@ class PontuadorMaturidadeDANI:
             score_final=score_final,
             eixo_id=eixo_id,
             evidencias=list(set(evidencias_encontradas)),
-            detalhe_boosters=detalhe
+            detalhe_boosters=detalhe,
         )

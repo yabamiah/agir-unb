@@ -24,7 +24,6 @@ from sklearn.feature_extraction.text import HashingVectorizer
 
 from core.processors.pdf_processor import OptimizedPdfProcessor
 
-
 TIPOS_DOCUMENTO_VALIDOS = ("cig", "pg", "compliance", "integridade")
 
 
@@ -92,7 +91,7 @@ class LocalTextEmbedder:
 
         for row in matrix:
             dense = row.toarray()[0].astype(float)
-            norm = math.sqrt(float((dense ** 2).sum()))
+            norm = math.sqrt(float((dense**2).sum()))
             if norm > 0:
                 dense /= norm
             vectors.append(dense.tolist())
@@ -112,7 +111,9 @@ class RagIndexService:
         max_pages_per_document: int | None = 40,
     ) -> None:
         self.repo_root = Path(__file__).resolve().parents[2]
-        self.data_dir = Path(data_dir or os.getenv("DATA_DIR", str(self.repo_root / "data")))
+        self.data_dir = Path(
+            data_dir or os.getenv("DATA_DIR", str(self.repo_root / "data"))
+        )
         self.docs_dir = self.data_dir / "dani" / "docs"
         self.input_dir = self.docs_dir / "input"
         self.integridade_dir = self.docs_dir / "integridade"
@@ -144,7 +145,9 @@ class RagIndexService:
         tipos = self._resolve_tipos(tipos_documento)
         orgaos_normalizados = self._resolve_orgaos(orgaos)
         self._ensure_dirs(reset=reset)
-        document_records, chunk_records = self._extract_records(tipos, orgaos_normalizados, max_documents)
+        document_records, chunk_records = self._extract_records(
+            tipos, orgaos_normalizados, max_documents
+        )
         self._write_sqlite(document_records, chunk_records, reset=reset)
         self._write_parquet(document_records, chunk_records)
         qdrant_summary = self._write_qdrant(chunk_records, reset=reset)
@@ -189,7 +192,12 @@ class RagIndexService:
         self.qdrant_path.mkdir(parents=True, exist_ok=True)
 
         if reset:
-            for path in (self.sqlite_path, self.parquet_documents_path, self.parquet_chunks_path, self.manifest_path):
+            for path in (
+                self.sqlite_path,
+                self.parquet_documents_path,
+                self.parquet_chunks_path,
+                self.manifest_path,
+            ):
                 if path.exists():
                     path.unlink()
 
@@ -206,7 +214,9 @@ class RagIndexService:
 
         for tipo_documento, pdf_path in self._iter_pdf_files(tipos_documento, orgaos):
             if max_documents is not None and pdfs_visitados >= max_documents:
-                logger.info(f"Limite de {max_documents} documentos atingido. Encerrando indexacao piloto.")
+                logger.info(
+                    f"Limite de {max_documents} documentos atingido. Encerrando indexacao piloto."
+                )
                 break
 
             pdfs_visitados += 1
@@ -216,14 +226,20 @@ class RagIndexService:
 
             logger.info(f"Indexando PDF RAG: {caminho_relativo}")
             pages_text, total_words = self.processor.extract_text_fast(str(pdf_path))
-            cleaned_pages = [self._normalize_whitespace(page) for page in pages_text if self._normalize_whitespace(page)]
+            cleaned_pages = [
+                self._normalize_whitespace(page)
+                for page in pages_text
+                if self._normalize_whitespace(page)
+            ]
 
             if not cleaned_pages:
                 logger.warning(f"Nenhum texto extraido de {pdf_path}")
                 continue
 
             caracteres_total = sum(len(page) for page in cleaned_pages)
-            document_id = hashlib.sha1(f"{caminho_relativo}:{sha256}".encode("utf-8")).hexdigest()
+            document_id = hashlib.sha1(
+                f"{caminho_relativo}:{sha256}".encode("utf-8")
+            ).hexdigest()
 
             document_records.append(
                 DocumentRecord(
@@ -274,7 +290,9 @@ class RagIndexService:
                 continue
 
             for pdf_path in sorted(base_dir.rglob("*.pdf")):
-                if pdf_path.is_file() and (orgaos is None or pdf_path.parent.name.upper() in orgaos):
+                if pdf_path.is_file() and (
+                    orgaos is None or pdf_path.parent.name.upper() in orgaos
+                ):
                     yield tipo, pdf_path
 
     def _build_chunks(
@@ -343,8 +361,14 @@ class RagIndexService:
 
             if current:
                 chunks.append(current)
-                overlap_text = current[-self.chunk_overlap :].strip() if self.chunk_overlap > 0 else ""
-                current = f"{overlap_text} {sentence}".strip() if overlap_text else sentence
+                overlap_text = (
+                    current[-self.chunk_overlap :].strip()
+                    if self.chunk_overlap > 0
+                    else ""
+                )
+                current = (
+                    f"{overlap_text} {sentence}".strip() if overlap_text else sentence
+                )
             else:
                 chunks.extend(self._hard_split(sentence))
                 current = ""
@@ -437,7 +461,9 @@ class RagIndexService:
             """
         )
 
-    def _insert_documents(self, conn: sqlite3.Connection, records: list[DocumentRecord]) -> None:
+    def _insert_documents(
+        self, conn: sqlite3.Connection, records: list[DocumentRecord]
+    ) -> None:
         conn.execute("DELETE FROM documents")
         if not records:
             return
@@ -469,7 +495,9 @@ class RagIndexService:
             ],
         )
 
-    def _insert_chunks(self, conn: sqlite3.Connection, records: list[ChunkRecord]) -> None:
+    def _insert_chunks(
+        self, conn: sqlite3.Connection, records: list[ChunkRecord]
+    ) -> None:
         conn.execute("DELETE FROM chunks")
         if not records:
             conn.execute("DELETE FROM chunks_fts")
@@ -524,17 +552,28 @@ class RagIndexService:
 
     def _write_qdrant(self, chunk_records: list[ChunkRecord], reset: bool) -> dict:
         if not chunk_records:
-            return {"enabled": False, "indexed_chunks": 0, "reason": "Nenhum chunk gerado"}
+            return {
+                "enabled": False,
+                "indexed_chunks": 0,
+                "reason": "Nenhum chunk gerado",
+            }
 
         try:
             from qdrant_client import QdrantClient
-            from qdrant_client.http.models import Distance, PointStruct, VectorParams
+            from qdrant_client.http.models import (Distance, PointStruct,
+                                                   VectorParams)
         except ImportError:
             logger.warning("qdrant-client nao instalado. Pulando indice vetorial.")
-            return {"enabled": False, "indexed_chunks": 0, "reason": "qdrant-client ausente"}
+            return {
+                "enabled": False,
+                "indexed_chunks": 0,
+                "reason": "qdrant-client ausente",
+            }
 
         client = QdrantClient(path=str(self.qdrant_path))
-        collection_exists = self.collection_name in {c.name for c in client.get_collections().collections}
+        collection_exists = self.collection_name in {
+            c.name for c in client.get_collections().collections
+        }
 
         if collection_exists:
             client.delete_collection(self.collection_name)
@@ -592,7 +631,9 @@ class RagIndexService:
     ) -> dict:
         by_type = {}
         for record in document_records:
-            current = by_type.setdefault(record.tipo_documento, {"documentos": 0, "orgaos": set()})
+            current = by_type.setdefault(
+                record.tipo_documento, {"documentos": 0, "orgaos": set()}
+            )
             current["documentos"] += 1
             current["orgaos"].add(record.orgao)
 

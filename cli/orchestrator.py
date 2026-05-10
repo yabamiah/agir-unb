@@ -5,8 +5,8 @@ from datetime import datetime
 
 from loguru import logger
 
-from core.models.lara_i import LaraI, ConfiguracaoLara
 from core.models.dani import Dani
+from core.models.lara_i import ConfiguracaoLara, LaraI
 
 TRIGGER_DIR = "/app/data/triggers"
 DANI_INPUT_DIR = "/app/data/dani/docs/input"
@@ -32,7 +32,7 @@ COMPLETED_DANI = os.path.join(TRIGGER_DIR, "completed_dani.trigger")
 
 def log_status(message):
     """Função de log com timestamp."""
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     logger.info(f"[{timestamp}] {message}")
 
 
@@ -52,7 +52,7 @@ async def run_lara():
         if os.path.exists(RUNNING_LARA):
             os.remove(RUNNING_LARA)
         # Cria arquivo de completed para o dashboard detectar e atualizar
-        with open(COMPLETED_LARA, 'w') as f:
+        with open(COMPLETED_LARA, "w") as f:
             f.write(f"completed_at_{int(time.time())}")
 
 
@@ -70,7 +70,7 @@ def run_dani():
         if os.path.exists(RUNNING_DANI):
             os.remove(RUNNING_DANI)
         # Cria arquivo de completed para o dashboard detectar e atualizar
-        with open(COMPLETED_DANI, 'w') as f:
+        with open(COMPLETED_DANI, "w") as f:
             f.write(f"completed_at_{int(time.time())}")
 
 
@@ -81,35 +81,43 @@ async def main():
 
     while True:
         if os.path.exists(TRIGGER_LARA):
-            log_status("Gatilho para LARA encontrado. Removendo gatilho e iniciando processo...")
+            log_status(
+                "Gatilho para LARA encontrado. Removendo gatilho e iniciando processo..."
+            )
             os.remove(TRIGGER_LARA)
-            
+
             # Cria arquivo de "running" para o dashboard detectar
-            with open(RUNNING_LARA, 'w') as f:
+            with open(RUNNING_LARA, "w") as f:
                 f.write(f"started_at_{int(time.time())}")
 
             if _dani_input_tem_arquivos(DANI_INPUT_DIR):
-                log_status("Diretório de entrada do DANI já contém arquivos. Pulando execução do LARA-I.")
+                log_status(
+                    "Diretório de entrada do DANI já contém arquivos. Pulando execução do LARA-I."
+                )
                 # Remove o arquivo de running já que não vai executar
                 if os.path.exists(RUNNING_LARA):
                     os.remove(RUNNING_LARA)
                 # Cria arquivo de completed mesmo quando pula a execução
-                with open(COMPLETED_LARA, 'w') as f:
+                with open(COMPLETED_LARA, "w") as f:
                     f.write(f"completed_at_{int(time.time())}")
             else:
-                log_status("Diretório de entrada do DANI está vazio. Iniciando processo LARA-I...")
+                log_status(
+                    "Diretório de entrada do DANI está vazio. Iniciando processo LARA-I..."
+                )
                 await run_lara()
-            
+
             log_status("Aguardando próximo gatilho...")
 
         if os.path.exists(TRIGGER_DANI):
-            log_status("Gatilho para DANI encontrado. Removendo gatilho e iniciando processo...")
+            log_status(
+                "Gatilho para DANI encontrado. Removendo gatilho e iniciando processo..."
+            )
             os.remove(TRIGGER_DANI)
-            
+
             # Cria arquivo de "running" para o dashboard detectar
-            with open(RUNNING_DANI, 'w') as f:
+            with open(RUNNING_DANI, "w") as f:
                 f.write(f"started_at_{int(time.time())}")
-            
+
             run_dani()
             log_status("Aguardando próximo gatilho...")
 

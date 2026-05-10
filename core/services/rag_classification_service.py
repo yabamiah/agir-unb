@@ -18,8 +18,8 @@ from typing import Iterable
 
 import pandas as pd
 
-from core.services.rag_retrieval_service import EvidenceRecord, RagRetrievalService
-
+from core.services.rag_retrieval_service import (EvidenceRecord,
+                                                 RagRetrievalService)
 
 CLASSIFICATION_POINTS = {
     "atende": 1.0,
@@ -84,8 +84,12 @@ class Sprint7Report:
             "criterios_file": self.criterios_file,
             "output_dir": self.output_dir,
             "parametros": self.parametros,
-            "indicadores_orgaos": [asdict(indicador) for indicador in self.indicadores_orgaos],
-            "classificacoes": [asdict(classificacao) for classificacao in self.classificacoes],
+            "indicadores_orgaos": [
+                asdict(indicador) for indicador in self.indicadores_orgaos
+            ],
+            "classificacoes": [
+                asdict(classificacao) for classificacao in self.classificacoes
+            ],
             "arquivos": self.arquivos,
         }
 
@@ -101,11 +105,15 @@ class RagClassificationService:
         evidence_top_k: int = 5,
     ) -> None:
         self.repo_root = Path(__file__).resolve().parents[2]
-        self.data_dir = Path(data_dir or os.getenv("DATA_DIR", str(self.repo_root / "data")))
+        self.data_dir = Path(
+            data_dir or os.getenv("DATA_DIR", str(self.repo_root / "data"))
+        )
         self.rag_dir = self.data_dir / "rag"
         self.sqlite_path = self.rag_dir / "agir_rag.db"
         self.output_dir = self.rag_dir / "sprint7"
-        self.retrieval_service = retrieval_service or RagRetrievalService(data_dir=str(self.data_dir))
+        self.retrieval_service = retrieval_service or RagRetrievalService(
+            data_dir=str(self.data_dir)
+        )
         self.min_score_atende = min_score_atende
         self.min_score_parcial = min_score_parcial
         self.min_keyword_hits_atende = min_keyword_hits_atende
@@ -132,11 +140,17 @@ class RagClassificationService:
         classificacoes: list[CriterionClassification] = []
         for orgao in selected_orgaos:
             for criterion in criteria:
-                pergunta = criterion.get("pergunta_normativa") or criterion.get("pergunta") or criterion.get("titulo")
+                pergunta = (
+                    criterion.get("pergunta_normativa")
+                    or criterion.get("pergunta")
+                    or criterion.get("titulo")
+                )
                 if not pergunta:
                     continue
 
-                tipos_prioritarios = tipos_documento or criterion.get("tipos_documento_prioritarios")
+                tipos_prioritarios = tipos_documento or criterion.get(
+                    "tipos_documento_prioritarios"
+                )
                 response = self.retrieval_service.search(
                     pergunta=pergunta,
                     criterio=criterion.get("codigo"),
@@ -144,7 +158,9 @@ class RagClassificationService:
                     tipos_documento=tipos_prioritarios,
                     top_k=self.evidence_top_k,
                 )
-                classificacoes.append(self._classify_criterion(orgao, criterion, response.evidencias))
+                classificacoes.append(
+                    self._classify_criterion(orgao, criterion, response.evidencias)
+                )
 
         indicadores = self._calculate_indicators(classificacoes, criteria_payload)
         arquivos = self._write_outputs(
@@ -187,17 +203,26 @@ class RagClassificationService:
         keywords = [str(keyword) for keyword in criterion.get("palavras_chave", [])]
         keyword_hits = self._keyword_hits(keywords, evidencias)
         top_score = max((evidence.score for evidence in evidencias), default=0.0)
-        has_negative = any(self._has_negative_signal(evidence.trecho) for evidence in evidencias[:2])
+        has_negative = any(
+            self._has_negative_signal(evidence.trecho) for evidence in evidencias[:2]
+        )
 
-        has_insufficient_retrieval = top_score < self.min_score_parcial and not keyword_hits
+        has_insufficient_retrieval = (
+            top_score < self.min_score_parcial and not keyword_hits
+        )
 
         if not evidencias or has_insufficient_retrieval:
             classificacao = "nao_encontrado"
-            justificativa = "Nao foram encontradas evidencias suficientes para o criterio."
+            justificativa = (
+                "Nao foram encontradas evidencias suficientes para o criterio."
+            )
         elif has_negative:
             classificacao = "nao_atende"
             justificativa = "As evidencias recuperadas indicam ausencia, inexistencia ou falta de formalizacao."
-        elif top_score >= self.min_score_atende and len(keyword_hits) >= self.min_keyword_hits_atende:
+        elif (
+            top_score >= self.min_score_atende
+            and len(keyword_hits) >= self.min_keyword_hits_atende
+        ):
             classificacao = "atende"
             justificativa = "Ha evidencia documental especifica com recuperacao forte e termos esperados do criterio."
         else:
@@ -211,9 +236,13 @@ class RagClassificationService:
         return CriterionClassification(
             orgao=orgao,
             criterio=str(criterion.get("codigo") or ""),
-            pergunta=str(criterion.get("pergunta_normativa") or criterion.get("pergunta") or ""),
+            pergunta=str(
+                criterion.get("pergunta_normativa") or criterion.get("pergunta") or ""
+            ),
             titulo=criterion.get("titulo"),
-            eixo_imga=str(criterion.get("eixo_imga") or criterion.get("eixo") or "SEM_EIXO"),
+            eixo_imga=str(
+                criterion.get("eixo_imga") or criterion.get("eixo") or "SEM_EIXO"
+            ),
             peso_criterio=peso_criterio,
             classificacao=classificacao,
             pontuacao=pontuacao,
@@ -245,14 +274,21 @@ class RagClassificationService:
             axis_totals: dict[str, dict[str, float]] = {}
 
             for row in rows:
-                classificacoes_count[row.classificacao] = classificacoes_count.get(row.classificacao, 0) + 1
-                axis = axis_totals.setdefault(row.eixo_imga, {"peso": 0.0, "score": 0.0, "criterios": 0.0})
+                classificacoes_count[row.classificacao] = (
+                    classificacoes_count.get(row.classificacao, 0) + 1
+                )
+                axis = axis_totals.setdefault(
+                    row.eixo_imga, {"peso": 0.0, "score": 0.0, "criterios": 0.0}
+                )
                 axis["peso"] += row.peso_criterio
                 axis["score"] += row.score_ponderado
                 axis["criterios"] += 1
 
             pontuacao_por_eixo = {
-                axis: round((values["score"] / values["peso"] * 100) if values["peso"] else 0.0, 2)
+                axis: round(
+                    (values["score"] / values["peso"] * 100) if values["peso"] else 0.0,
+                    2,
+                )
                 for axis, values in sorted(axis_totals.items())
             }
             criterios_por_eixo = {
@@ -260,7 +296,10 @@ class RagClassificationService:
                 for axis, values in sorted(axis_totals.items())
             }
             imga_global = round(
-                sum(pontuacao_por_eixo.get(axis, 0.0) * weight for axis, weight in axis_weights.items()),
+                sum(
+                    pontuacao_por_eixo.get(axis, 0.0) * weight
+                    for axis, weight in axis_weights.items()
+                ),
                 2,
             )
 
@@ -314,7 +353,9 @@ class RagClassificationService:
                 "score_ponderado": item.score_ponderado,
                 "score_recuperacao": item.score_recuperacao,
                 "evidencias_total": item.evidencias_total,
-                "documento_top": item.evidencias[0]["documento"] if item.evidencias else "",
+                "documento_top": (
+                    item.evidencias[0]["documento"] if item.evidencias else ""
+                ),
                 "pagina_top": item.evidencias[0]["pagina"] if item.evidencias else "",
                 "trecho_top": item.evidencias[0]["trecho"] if item.evidencias else "",
             }
@@ -349,7 +390,9 @@ class RagClassificationService:
         summary_payload["arquivos"]["relatorio"] = str(summary_path)
         return summary_payload["arquivos"]
 
-    def _resolve_orgaos(self, orgaos: Iterable[str] | None, max_orgaos: int | None) -> list[str]:
+    def _resolve_orgaos(
+        self, orgaos: Iterable[str] | None, max_orgaos: int | None
+    ) -> list[str]:
         if orgaos:
             selected = [str(orgao).strip() for orgao in orgaos if str(orgao).strip()]
         else:
@@ -358,7 +401,9 @@ class RagClassificationService:
         if max_orgaos is not None:
             selected = selected[:max_orgaos]
         if not selected:
-            raise ValueError("Nenhum orgao encontrado. Execute a Sprint 5 ou informe --orgao.")
+            raise ValueError(
+                "Nenhum orgao encontrado. Execute a Sprint 5 ou informe --orgao."
+            )
         return selected
 
     def _list_indexed_orgaos(self) -> list[str]:
@@ -369,7 +414,9 @@ class RagClassificationService:
 
         conn = sqlite3.connect(self.sqlite_path)
         try:
-            rows = conn.execute("SELECT DISTINCT orgao FROM documents ORDER BY orgao").fetchall()
+            rows = conn.execute(
+                "SELECT DISTINCT orgao FROM documents ORDER BY orgao"
+            ).fetchall()
         finally:
             conn.close()
         return [str(row[0]) for row in rows if row[0]]
@@ -390,18 +437,26 @@ class RagClassificationService:
             raise ValueError(f"Arquivo de criterios invalido: {criteria_path}")
         return payload, criteria
 
-    def _filter_criteria(self, criteria: list[dict], codigo: str | None, max_criterios: int | None) -> list[dict]:
+    def _filter_criteria(
+        self, criteria: list[dict], codigo: str | None, max_criterios: int | None
+    ) -> list[dict]:
         filtered = criteria
         if codigo:
-            filtered = [criterion for criterion in filtered if criterion.get("codigo") == codigo]
+            filtered = [
+                criterion for criterion in filtered if criterion.get("codigo") == codigo
+            ]
             if not filtered:
                 raise ValueError(f"Criterio nao encontrado: {codigo}")
         if max_criterios is not None:
             filtered = filtered[:max_criterios]
         return filtered
 
-    def _keyword_hits(self, keywords: list[str], evidencias: list[EvidenceRecord]) -> list[str]:
-        haystack = self._normalize_text(" ".join(evidence.trecho for evidence in evidencias))
+    def _keyword_hits(
+        self, keywords: list[str], evidencias: list[EvidenceRecord]
+    ) -> list[str]:
+        haystack = self._normalize_text(
+            " ".join(evidence.trecho for evidence in evidencias)
+        )
         hits = []
         for keyword in keywords:
             normalized = self._normalize_text(keyword)
@@ -414,7 +469,11 @@ class RagClassificationService:
         return any(re.search(pattern, normalized) for pattern in NEGATIVE_PATTERNS)
 
     def _axis_weights(self, criteria_payload: dict) -> dict[str, float]:
-        eixos = criteria_payload.get("eixos_imga", {}) if isinstance(criteria_payload, dict) else {}
+        eixos = (
+            criteria_payload.get("eixos_imga", {})
+            if isinstance(criteria_payload, dict)
+            else {}
+        )
         weights = {}
         if isinstance(eixos, dict):
             for axis, payload in eixos.items():

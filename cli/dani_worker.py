@@ -4,8 +4,8 @@ Monitora triggers e executa DANI conforme solicitado pelo dashboard.
 """
 
 import os
-import time
 import sys
+import time
 
 # Adicionar diretório raiz ao path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -15,7 +15,9 @@ from loguru import logger
 # Configuração de caminhos
 DATA_DIR = os.getenv("DATA_DIR", "/app/data")
 TRIGGER_DIR = os.path.join(DATA_DIR, "triggers")
-KEYWORDS_FILE = os.getenv("KEYWORDS_FILE", os.path.join(DATA_DIR, "dani", "palavras_chaves.txt"))
+KEYWORDS_FILE = os.getenv(
+    "KEYWORDS_FILE", os.path.join(DATA_DIR, "dani", "palavras_chaves.txt")
+)
 
 # Triggers
 TRIGGER_DANI = os.path.join(TRIGGER_DIR, "run_dani.trigger")
@@ -32,21 +34,18 @@ logger.add(
     os.path.join(DATA_DIR, "logs", "dani_worker.log"),
     rotation="10 MB",
     retention="7 days",
-    level="INFO"
+    level="INFO",
 )
 
 
 def run_dani_normal():
     """Executa DANI no modo normal (análise geral)."""
     from core.models.dani import Dani
-    
+
     logger.info("🚀 Iniciando DANI (modo normal)...")
-    
+
     try:
-        d = Dani(
-            all_orgaos=True,
-            keywords_file=KEYWORDS_FILE
-        )
+        d = Dani(all_orgaos=True, keywords_file=KEYWORDS_FILE)
         d.run()
         logger.info("✅ DANI (normal) concluído com sucesso!")
         return True
@@ -58,14 +57,12 @@ def run_dani_normal():
 def run_dani_integrity():
     """Executa DANI no modo integridade (IMGA)."""
     from core.models.dani import Dani
-    
+
     logger.info("🚀 Iniciando DANI (modo integridade/IMGA)...")
-    
+
     try:
         d = Dani(
-            only_integrity_plans=True,
-            all_orgaos=True,
-            keywords_file=KEYWORDS_FILE
+            only_integrity_plans=True, all_orgaos=True, keywords_file=KEYWORDS_FILE
         )
         d.run()
         logger.info("✅ DANI (integridade/IMGA) concluído com sucesso!")
@@ -79,23 +76,23 @@ def process_trigger(trigger_path, running_path, completed_path, process_func, na
     """Processa um trigger se existir."""
     if os.path.exists(trigger_path):
         logger.info(f"📥 Trigger {name} detectado!")
-        
+
         # Remove trigger e cria running flag
         os.remove(trigger_path)
-        with open(running_path, 'w') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S'))
-        
+        with open(running_path, "w") as f:
+            f.write(time.strftime("%Y-%m-%d %H:%M:%S"))
+
         try:
-            success = process_func()
+            process_func()
         finally:
             # Remove running flag
             if os.path.exists(running_path):
                 os.remove(running_path)
-            
+
             # Cria completed flag
-            with open(completed_path, 'w') as f:
-                f.write(time.strftime('%Y-%m-%d %H:%M:%S'))
-        
+            with open(completed_path, "w") as f:
+                f.write(time.strftime("%Y-%m-%d %H:%M:%S"))
+
         return True
     return False
 
@@ -107,33 +104,29 @@ def main():
     logger.info(f"📁 Diretório de triggers: {TRIGGER_DIR}")
     logger.info(f"📄 Arquivo de keywords: {KEYWORDS_FILE}")
     logger.info("=" * 60)
-    
+
     # Garantir que diretório de triggers existe
     os.makedirs(TRIGGER_DIR, exist_ok=True)
-    
+
     while True:
         try:
             # Verificar trigger DANI normal
             process_trigger(
-                TRIGGER_DANI,
-                RUNNING_DANI,
-                COMPLETED_DANI,
-                run_dani_normal,
-                "DANI"
+                TRIGGER_DANI, RUNNING_DANI, COMPLETED_DANI, run_dani_normal, "DANI"
             )
-            
+
             # Verificar trigger DANI integridade
             process_trigger(
                 TRIGGER_DANI_INTEGRITY,
                 RUNNING_DANI_INTEGRITY,
                 COMPLETED_DANI_INTEGRITY,
                 run_dani_integrity,
-                "DANI Integridade"
+                "DANI Integridade",
             )
-            
+
         except Exception as e:
             logger.error(f"❌ Erro no loop principal: {e}")
-        
+
         # Aguardar antes de verificar novamente
         time.sleep(2)
 

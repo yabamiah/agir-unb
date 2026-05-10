@@ -2,20 +2,21 @@
 Dashboard AGIR - Interface Web para análise de governança e integridade
 """
 
-import time
+import base64
 import html
-import streamlit as st
-import pandas as pd
 import json
 import os
-import sys
-import base64
 import shutil
 import sqlite3
-import requests
+import sys
+import time
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
+
+import pandas as pd
+import requests
+import streamlit as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
@@ -23,14 +24,16 @@ if str(PROJECT_ROOT) not in sys.path:
 
 try:
     from dotenv import load_dotenv
+
     load_dotenv(PROJECT_ROOT / ".env")
 except ImportError:
     pass
 
 # Wordcloud (opcional)
 try:
-    from wordcloud import WordCloud
     import matplotlib.pyplot as plt
+    from wordcloud import WordCloud
+
     WORDCLOUD_AVAILABLE = True
 except ImportError:
     WORDCLOUD_AVAILABLE = False
@@ -61,7 +64,9 @@ RAG_CLASSIFICATIONS_FILE = os.path.join(RAG_SPRINT7_DIR, "classificacoes.json")
 RAG_INDICATORS_FILE = os.path.join(RAG_SPRINT7_DIR, "indicadores_orgaos.csv")
 RAG_MATRIX_FILE = os.path.join(RAG_SPRINT7_DIR, "criterios_orgaos.csv")
 RAG_MANUAL_SAMPLE_FILE = os.path.join(RAG_SPRINT7_DIR, "validacao_manual_amostra.csv")
-DEFAULT_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip() or "gemini-2.5-flash"
+DEFAULT_GEMINI_MODEL = (
+    os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip() or "gemini-2.5-flash"
+)
 PREFERRED_GEMINI_MODELS = (
     "gemini-2.5-flash",
     "gemini-2.0-flash",
@@ -84,39 +89,88 @@ COMPLETED_DANI_INTEGRITY = os.path.join(TRIGGER_DIR, "completed_dani_integrity.t
 # Definição dos Eixos IMGA
 # ============================================
 EIXOS_IMGA = {
-    "E1": {"nome": "Estrutura de Governança e Liderança", "peso": 10, "icone": "",
-           "descricao": "Avalia o comprometimento da alta administração e a arquitetura decisória"},
-    "E2": {"nome": "Cultura de Integridade", "peso": 10, "icone": "",
-           "descricao": "Capta o tom normativo, simbólico e cultural atribuído à ética organizacional"},
-    "E3": {"nome": "Ambiente de Compliance", "peso": 15, "icone": "",
-           "descricao": "Verifica a existência e densidade do arcabouço normativo"},
-    "E4": {"nome": "Due Diligence e Terceiros", "peso": 20, "icone": "",
-           "descricao": "Identifica práticas preventivas para mitigação de riscos externos"},
-    "E5": {"nome": "Comunicação, Treinamento e Monitoramento", "peso": 10, "icone": "",
-           "descricao": "Avalia estratégias de difusão e formação em integridade"},
-    "E6": {"nome": "Gestão de Riscos e Controles Internos", "peso": 15, "icone": "",
-           "descricao": "Analisa integração entre governança, riscos e controles"},
-    "E7": {"nome": "Transparência, Accountability e Evidenciação", "peso": 10, "icone": "",
-           "descricao": "Avalia abertura informacional e responsabilização"},
-    "E8": {"nome": "Efetividade e Maturidade do Programa", "peso": 10, "icone": "",
-           "descricao": "Diferencia programas formais de programas efetivamente implementados"},
+    "E1": {
+        "nome": "Estrutura de Governança e Liderança",
+        "peso": 10,
+        "icone": "",
+        "descricao": "Avalia o comprometimento da alta administração e a arquitetura decisória",
+    },
+    "E2": {
+        "nome": "Cultura de Integridade",
+        "peso": 10,
+        "icone": "",
+        "descricao": "Capta o tom normativo, simbólico e cultural atribuído à ética organizacional",
+    },
+    "E3": {
+        "nome": "Ambiente de Compliance",
+        "peso": 15,
+        "icone": "",
+        "descricao": "Verifica a existência e densidade do arcabouço normativo",
+    },
+    "E4": {
+        "nome": "Due Diligence e Terceiros",
+        "peso": 20,
+        "icone": "",
+        "descricao": "Identifica práticas preventivas para mitigação de riscos externos",
+    },
+    "E5": {
+        "nome": "Comunicação, Treinamento e Monitoramento",
+        "peso": 10,
+        "icone": "",
+        "descricao": "Avalia estratégias de difusão e formação em integridade",
+    },
+    "E6": {
+        "nome": "Gestão de Riscos e Controles Internos",
+        "peso": 15,
+        "icone": "",
+        "descricao": "Analisa integração entre governança, riscos e controles",
+    },
+    "E7": {
+        "nome": "Transparência, Accountability e Evidenciação",
+        "peso": 10,
+        "icone": "",
+        "descricao": "Avalia abertura informacional e responsabilização",
+    },
+    "E8": {
+        "nome": "Efetividade e Maturidade do Programa",
+        "peso": 10,
+        "icone": "",
+        "descricao": "Diferencia programas formais de programas efetivamente implementados",
+    },
 }
 
 FAIXAS_MATURIDADE = {
-    "Incipiente": {"cor": "#ef9a9a", "range": "0-25", "descricao": "Programa em fase inicial"},
-    "Basica": {"cor": "#ffe082", "range": "26-50", "descricao": "Estruturas basicas estabelecidas"},
-    "Intermediaria": {"cor": "#a5d6a7", "range": "51-75", "descricao": "Programa consolidado"},
-    "Avancada": {"cor": "#81d4fa", "range": "76-100", "descricao": "Excelencia em governanca"},
+    "Incipiente": {
+        "cor": "#ef9a9a",
+        "range": "0-25",
+        "descricao": "Programa em fase inicial",
+    },
+    "Basica": {
+        "cor": "#ffe082",
+        "range": "26-50",
+        "descricao": "Estruturas basicas estabelecidas",
+    },
+    "Intermediaria": {
+        "cor": "#a5d6a7",
+        "range": "51-75",
+        "descricao": "Programa consolidado",
+    },
+    "Avancada": {
+        "cor": "#81d4fa",
+        "range": "76-100",
+        "descricao": "Excelencia em governanca",
+    },
 }
 
 # ============================================
 # Funções Auxiliares
 # ============================================
 
+
 def load_data():
     """Carrega os dados de resumo gerados pelo DANI."""
     if os.path.exists(SUMMARY_FILE):
-        with open(SUMMARY_FILE, 'r', encoding='utf-8') as f:
+        with open(SUMMARY_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return None
 
@@ -134,8 +188,8 @@ def create_trigger_file(trigger_path, label):
     """Cria trigger e mostra erro acionavel quando o volume esta sem permissao."""
     try:
         os.makedirs(TRIGGER_DIR, exist_ok=True)
-        with open(trigger_path, 'w', encoding='utf-8') as f:
-            f.write('start')
+        with open(trigger_path, "w", encoding="utf-8") as f:
+            f.write("start")
         return True
     except PermissionError:
         st.sidebar.error(
@@ -151,7 +205,7 @@ def load_json_file(path):
     """Carrega um JSON local de forma tolerante."""
     if os.path.exists(path):
         try:
-            with open(path, 'r', encoding='utf-8') as f:
+            with open(path, "r", encoding="utf-8") as f:
                 return json.load(f)
         except (OSError, json.JSONDecodeError):
             return None
@@ -201,10 +255,16 @@ def get_rag_db_counts():
 
     try:
         with sqlite3.connect(RAG_DB_FILE) as conn:
-            counts["documentos"] = conn.execute("SELECT COUNT(*) FROM documents").fetchone()[0]
+            counts["documentos"] = conn.execute(
+                "SELECT COUNT(*) FROM documents"
+            ).fetchone()[0]
             counts["chunks"] = conn.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]
-            counts["orgaos"] = conn.execute("SELECT COUNT(DISTINCT orgao) FROM documents").fetchone()[0]
-            counts["tipos"] = conn.execute("SELECT COUNT(DISTINCT tipo_documento) FROM documents").fetchone()[0]
+            counts["orgaos"] = conn.execute(
+                "SELECT COUNT(DISTINCT orgao) FROM documents"
+            ).fetchone()[0]
+            counts["tipos"] = conn.execute(
+                "SELECT COUNT(DISTINCT tipo_documento) FROM documents"
+            ).fetchone()[0]
     except Exception:
         return counts
     return counts
@@ -220,12 +280,16 @@ def get_rag_filter_options():
             with sqlite3.connect(RAG_DB_FILE) as conn:
                 orgaos = [
                     row[0]
-                    for row in conn.execute("SELECT DISTINCT orgao FROM documents WHERE orgao IS NOT NULL ORDER BY orgao").fetchall()
+                    for row in conn.execute(
+                        "SELECT DISTINCT orgao FROM documents WHERE orgao IS NOT NULL ORDER BY orgao"
+                    ).fetchall()
                     if row[0]
                 ]
                 tipos = [
                     row[0]
-                    for row in conn.execute("SELECT DISTINCT tipo_documento FROM documents WHERE tipo_documento IS NOT NULL ORDER BY tipo_documento").fetchall()
+                    for row in conn.execute(
+                        "SELECT DISTINCT tipo_documento FROM documents WHERE tipo_documento IS NOT NULL ORDER BY tipo_documento"
+                    ).fetchall()
                     if row[0]
                 ]
         except Exception:
@@ -233,9 +297,20 @@ def get_rag_filter_options():
             tipos = []
 
     if not orgaos:
-        for base_dir in (INPUT_CIG_DIR, INPUT_PG_DIR, INPUT_COMPLIANCE_DIR, INTEGRITY_DIR):
+        for base_dir in (
+            INPUT_CIG_DIR,
+            INPUT_PG_DIR,
+            INPUT_COMPLIANCE_DIR,
+            INTEGRITY_DIR,
+        ):
             if os.path.exists(base_dir):
-                orgaos.extend([name for name in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, name))])
+                orgaos.extend(
+                    [
+                        name
+                        for name in os.listdir(base_dir)
+                        if os.path.isdir(os.path.join(base_dir, name))
+                    ]
+                )
         orgaos = sorted(set(orgaos))
 
     if not tipos:
@@ -305,13 +380,15 @@ def build_evidence_context(evidencias):
     context_lines = []
     for index, evidence in enumerate(evidencias, start=1):
         context_lines.append(
-            "\n".join([
-                f"[{index}] Documento: {evidence.get('documento', '')}",
-                f"Órgão: {evidence.get('orgao', '')}",
-                f"Tipo: {evidence.get('tipo_documento', '')}",
-                f"Página: {evidence.get('pagina', '')}",
-                f"Trecho: {evidence.get('trecho', '')}",
-            ])
+            "\n".join(
+                [
+                    f"[{index}] Documento: {evidence.get('documento', '')}",
+                    f"Órgão: {evidence.get('orgao', '')}",
+                    f"Tipo: {evidence.get('tipo_documento', '')}",
+                    f"Página: {evidence.get('pagina', '')}",
+                    f"Trecho: {evidence.get('trecho', '')}",
+                ]
+            )
         )
     return "\n\n".join(context_lines)
 
@@ -341,7 +418,9 @@ def build_extractive_answer(pergunta, evidencias):
         )
 
     lines.append("")
-    lines.append("Como esta resposta não usou LLM, ela preserva os trechos principais em vez de gerar uma conclusão interpretativa.")
+    lines.append(
+        "Como esta resposta não usou LLM, ela preserva os trechos principais em vez de gerar uma conclusão interpretativa."
+    )
     return "\n".join(lines)
 
 
@@ -371,7 +450,9 @@ def call_gemini(prompt, model):
     model = resolve_gemini_model(api_key, model)
     candidate_models = [model]
     for preferred in PREFERRED_GEMINI_MODELS:
-        preferred_name = preferred if preferred.startswith("models/") else f"models/{preferred}"
+        preferred_name = (
+            preferred if preferred.startswith("models/") else f"models/{preferred}"
+        )
         if preferred_name not in candidate_models:
             candidate_models.append(preferred_name)
 
@@ -411,7 +492,9 @@ def resolve_gemini_model(api_key, model):
     """Resolve modelo Gemini configurado ou escolhe um disponivel para generateContent."""
     configured = (model or DEFAULT_GEMINI_MODEL).strip()
     if configured and configured.lower() != "auto":
-        return configured if configured.startswith("models/") else f"models/{configured}"
+        return (
+            configured if configured.startswith("models/") else f"models/{configured}"
+        )
 
     response = requests.get(
         "https://generativelanguage.googleapis.com/v1beta/models",
@@ -429,7 +512,9 @@ def resolve_gemini_model(api_key, model):
         if preferred in by_suffix:
             return by_suffix[preferred]
     if not models:
-        raise ValueError("Nenhum modelo Gemini com generateContent disponivel para esta chave.")
+        raise ValueError(
+            "Nenhum modelo Gemini com generateContent disponivel para esta chave."
+        )
     return models[0]
 
 
@@ -463,9 +548,12 @@ Evidências:
     return build_extractive_answer(pergunta, evidencias)
 
 
-def run_rag_classification(orgaos=None, tipos_documento=None, max_criterios=None, top_k=5):
+def run_rag_classification(
+    orgaos=None, tipos_documento=None, max_criterios=None, top_k=5
+):
     """Gera indicadores de conformidade documental a partir do dashboard."""
-    from core.services.rag_classification_service import RagClassificationService
+    from core.services.rag_classification_service import \
+        RagClassificationService
 
     criteria_path = PROJECT_ROOT / "estrutura_criterios.json"
     service = RagClassificationService(data_dir=DATA_DIR, evidence_top_k=top_k)
@@ -485,13 +573,25 @@ def classification_report_to_frames(report):
 
     if not classificacoes.empty:
         classificacoes["trecho_top"] = classificacoes["evidencias"].apply(
-            lambda evidencias: (evidencias or [{}])[0].get("trecho", "") if isinstance(evidencias, list) else ""
+            lambda evidencias: (
+                (evidencias or [{}])[0].get("trecho", "")
+                if isinstance(evidencias, list)
+                else ""
+            )
         )
         classificacoes["documento_top"] = classificacoes["evidencias"].apply(
-            lambda evidencias: (evidencias or [{}])[0].get("documento", "") if isinstance(evidencias, list) else ""
+            lambda evidencias: (
+                (evidencias or [{}])[0].get("documento", "")
+                if isinstance(evidencias, list)
+                else ""
+            )
         )
         classificacoes["pagina_top"] = classificacoes["evidencias"].apply(
-            lambda evidencias: (evidencias or [{}])[0].get("pagina", "") if isinstance(evidencias, list) else ""
+            lambda evidencias: (
+                (evidencias or [{}])[0].get("pagina", "")
+                if isinstance(evidencias, list)
+                else ""
+            )
         )
 
     return indicadores, classificacoes
@@ -500,7 +600,7 @@ def classification_report_to_frames(report):
 def load_keywords():
     """Carrega palavras-chave do arquivo."""
     if os.path.exists(KEYWORDS_FILE):
-        with open(KEYWORDS_FILE, 'r', encoding='utf-8') as f:
+        with open(KEYWORDS_FILE, "r", encoding="utf-8") as f:
             return [line.strip() for line in f if line.strip()]
     return []
 
@@ -508,8 +608,8 @@ def load_keywords():
 def save_keywords(keywords_list):
     """Salva palavras-chave no arquivo."""
     os.makedirs(os.path.dirname(KEYWORDS_FILE), exist_ok=True)
-    with open(KEYWORDS_FILE, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(keywords_list))
+    with open(KEYWORDS_FILE, "w", encoding="utf-8") as f:
+        f.write("\n".join(keywords_list))
 
 
 def clear_results():
@@ -545,7 +645,7 @@ def get_output_files():
         orgao_path = os.path.join(OUTPUT_DIR, orgao_dir)
         if os.path.isdir(orgao_path):
             for file in sorted(os.listdir(orgao_path)):
-                if file.endswith('.docx'):
+                if file.endswith(".docx"):
                     all_files.append((orgao_dir, file))
     return all_files
 
@@ -558,7 +658,9 @@ def _get_pdfs_por_orgao_em(base_dir: str) -> dict:
     for orgao in sorted(os.listdir(base_dir)):
         orgao_path = os.path.join(base_dir, orgao)
         if os.path.isdir(orgao_path):
-            pdfs = [f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith('.pdf')]
+            pdfs = [
+                f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith(".pdf")
+            ]
             if pdfs:
                 pdfs_por_orgao[orgao] = pdfs
     return pdfs_por_orgao
@@ -587,7 +689,9 @@ def get_pdf_output():
     for orgao in sorted(os.listdir(PDF_OUTPUT_DIR)):
         orgao_path = os.path.join(PDF_OUTPUT_DIR, orgao)
         if os.path.isdir(orgao_path):
-            pdfs = [f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith('.pdf')]
+            pdfs = [
+                f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith(".pdf")
+            ]
             if pdfs:
                 pdfs_por_orgao[orgao] = pdfs
     return pdfs_por_orgao
@@ -601,7 +705,9 @@ def get_pdf_integridade():
     for orgao in sorted(os.listdir(INTEGRITY_DIR)):
         orgao_path = os.path.join(INTEGRITY_DIR, orgao)
         if os.path.isdir(orgao_path):
-            pdfs = [f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith('.pdf')]
+            pdfs = [
+                f for f in sorted(os.listdir(orgao_path)) if f.lower().endswith(".pdf")
+            ]
             if pdfs:
                 pdfs_por_orgao[orgao] = pdfs
     return pdfs_por_orgao
@@ -610,13 +716,10 @@ def get_pdf_integridade():
 # ============================================
 # Configuração da Página
 # ============================================
-st.set_page_config(
-    page_title="Dashboard AGIR",
-    page_icon="📊",
-    layout="wide"
-)
+st.set_page_config(page_title="Dashboard AGIR", page_icon="📊", layout="wide")
 
-st.markdown("""
+st.markdown(
+    """
 <style>
     .block-container {padding-top: 1.4rem; padding-bottom: 2rem;}
     div[data-testid="stMetric"] {
@@ -647,7 +750,9 @@ st.markdown("""
         margin-bottom: 0.7rem;
     }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # ============================================
 # Sidebar - Painel de Controle
@@ -657,12 +762,16 @@ st.sidebar.title("Painel de Controle")
 # Status dos processos
 is_lara_running = os.path.exists(TRIGGER_LARA) or os.path.exists(RUNNING_LARA)
 is_dani_running = os.path.exists(TRIGGER_DANI) or os.path.exists(RUNNING_DANI)
-is_dani_integrity_running = os.path.exists(TRIGGER_DANI_INTEGRITY) or os.path.exists(RUNNING_DANI_INTEGRITY)
+is_dani_integrity_running = os.path.exists(TRIGGER_DANI_INTEGRITY) or os.path.exists(
+    RUNNING_DANI_INTEGRITY
+)
 is_lara_completed = os.path.exists(COMPLETED_LARA)
 is_dani_completed = os.path.exists(COMPLETED_DANI)
 is_dani_integrity_completed = os.path.exists(COMPLETED_DANI_INTEGRITY)
 is_process_running = is_lara_running or is_dani_running or is_dani_integrity_running
-is_process_completed = is_lara_completed or is_dani_completed or is_dani_integrity_completed
+is_process_completed = (
+    is_lara_completed or is_dani_completed or is_dani_integrity_completed
+)
 triggers_writable = can_write_trigger_dir()
 
 st.sidebar.subheader("Módulos")
@@ -712,13 +821,13 @@ current_keywords = load_keywords()
 with st.sidebar.expander("Editar Palavras-chave", expanded=False):
     keywords_text = st.text_area(
         "Uma palavra por linha:",
-        value='\n'.join(current_keywords),
+        value="\n".join(current_keywords),
         height=150,
-        key="keywords_input"
+        key="keywords_input",
     )
-    
+
     if st.button("Salvar", width="stretch"):
-        new_keywords = [k.strip() for k in keywords_text.split('\n') if k.strip()]
+        new_keywords = [k.strip() for k in keywords_text.split("\n") if k.strip()]
         save_keywords(new_keywords)
         st.success(f"{len(new_keywords)} palavras-chave salvas!")
         time.sleep(1)
@@ -735,7 +844,9 @@ if st.sidebar.button("Limpar Resultados", width="stretch"):
     if cleared:
         st.sidebar.success(f"Limpo: {', '.join(cleared)}")
     if clear_errors:
-        st.sidebar.error("Não foi possível limpar todos os resultados. Execute `make fix-data-permissions` e tente novamente.")
+        st.sidebar.error(
+            "Não foi possível limpar todos os resultados. Execute `make fix-data-permissions` e tente novamente."
+        )
         for error in clear_errors[:3]:
             st.sidebar.caption(error)
     if not cleared and not clear_errors:
@@ -753,14 +864,17 @@ if is_process_running:
         processo = "LARA-I (Coleta)"
     else:
         processo = "DANI (Análise)"
-    
+
     # Banner Customizado (Mais escuro que st.info)
-    st.markdown(f"""
+    st.markdown(
+        f"""
     <div style='background-color: #bbdefb; padding: 15px; border-radius: 5px; border-left: 5px solid #1976d2; color: #0d47a1;'>
         <h4>🔄 Processo em execução: {processo}</h4>
         <p>Aguarde, a página será atualizada automaticamente...</p>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
     time.sleep(3)
     st.rerun()
 
@@ -775,13 +889,20 @@ if is_process_completed:
         os.remove(COMPLETED_DANI) if os.path.exists(COMPLETED_DANI) else None
     if is_dani_integrity_completed:
         processos.append("DANI/IMGA")
-        os.remove(COMPLETED_DANI_INTEGRITY) if os.path.exists(COMPLETED_DANI_INTEGRITY) else None
-    
-    st.markdown(f"""
+        (
+            os.remove(COMPLETED_DANI_INTEGRITY)
+            if os.path.exists(COMPLETED_DANI_INTEGRITY)
+            else None
+        )
+
+    st.markdown(
+        f"""
     <div style='background-color: #c8e6c9; padding: 15px; border-radius: 5px; border-left: 5px solid #2e7d32; color: #1b5e20;'>
         <h4>✅ Concluído: {', '.join(processos)}</h4>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
     time.sleep(1)
     st.rerun()
 
@@ -789,7 +910,9 @@ if is_process_completed:
 # Conteúdo Principal
 # ============================================
 st.title("Dashboard AGIR")
-st.caption(f"Ambiente de Governança, Integridade e Resultados | Atualizado: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+st.caption(
+    f"Ambiente de Governança, Integridade e Resultados | Atualizado: {datetime.now().strftime('%d/%m/%Y %H:%M')}"
+)
 
 summary_data = load_data()
 rag_manifest = load_rag_manifest()
@@ -835,7 +958,9 @@ if main_section == "Coleta de Documentos":
 # ============================================
 if main_section == "Mapeamento de Termos":
     st.subheader("Mapeamento de Termos (DANI)")
-    st.caption("Analisa documentos com palavras-chave e consolida frequências e ocorrências.")
+    st.caption(
+        "Analisa documentos com palavras-chave e consolida frequências e ocorrências."
+    )
 
     if st.button(
         "Iniciar análise geral",
@@ -849,39 +974,49 @@ if main_section == "Mapeamento de Termos":
 
     if not summary_data:
         st.warning("Nenhum resultado disponível. Execute uma análise primeiro.")
-        st.info("Use o comando local do DANI ou habilite o worker para gerar os resultados.")
+        st.info(
+            "Use o comando local do DANI ou habilite o worker para gerar os resultados."
+        )
     else:
         # Métricas resumo
-        metadata = summary_data.get('metadata', {})
-        resumo = summary_data.get('resumo_geral', {})
-        tipo_analise = metadata.get('tipo_analise', 'N/A')
-        
+        metadata = summary_data.get("metadata", {})
+        resumo = summary_data.get("resumo_geral", {})
+        tipo_analise = metadata.get("tipo_analise", "N/A")
+
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Tipo de Análise", tipo_analise.title())
-        col2.metric("Documentos", resumo.get('total_documentos_lidos', 0))
-        col3.metric("Palavras", f"{resumo.get('total_palavras_lidas', 0):,}".replace(",", "."))
-        col4.metric("Ocorrências", resumo.get('total_ocorrencias', 0))
-        
+        col2.metric("Documentos", resumo.get("total_documentos_lidos", 0))
+        col3.metric(
+            "Palavras", f"{resumo.get('total_palavras_lidas', 0):,}".replace(",", ".")
+        )
+        col4.metric("Ocorrências", resumo.get("total_ocorrencias", 0))
+
         st.divider()
-        
-        imga_results = summary_data.get('imga_results', {})
+
+        imga_results = summary_data.get("imga_results", {})
 
         if imga_results:
-            st.info("O resultado carregado é de Integridade/IMGA. Acesse o módulo correspondente na sidebar.")
+            st.info(
+                "O resultado carregado é de Integridade/IMGA. Acesse o módulo correspondente na sidebar."
+            )
         else:
             # Análise normal (keywords)
             st.subheader("Frequência de Palavras-chave")
-            keyword_counts = summary_data.get('contagem_keywords_geral', {})
+            keyword_counts = summary_data.get("contagem_keywords_geral", {})
 
             if keyword_counts:
                 filtered_kw = {k: v for k, v in keyword_counts.items() if v > 0}
                 if filtered_kw:
-                    df = pd.DataFrame(list(filtered_kw.items()), columns=['Palavra', 'Ocorrências'])
-                    df = df.sort_values('Ocorrências', ascending=False).head(20)
-                    st.bar_chart(df.set_index('Palavra'))
+                    df = pd.DataFrame(
+                        list(filtered_kw.items()), columns=["Palavra", "Ocorrências"]
+                    )
+                    df = df.sort_values("Ocorrências", ascending=False).head(20)
+                    st.bar_chart(df.set_index("Palavra"))
                     st.dataframe(df, width="stretch", hide_index=True)
                 else:
-                    st.info("Nenhuma ocorrência encontrada com as palavras-chave configuradas")
+                    st.info(
+                        "Nenhuma ocorrência encontrada com as palavras-chave configuradas"
+                    )
             else:
                 st.info("Execute uma análise para ver os resultados")
 
@@ -903,249 +1038,312 @@ if main_section == "Indicadores de Integridade (IMGA)":
             time.sleep(1)
             st.rerun()
 
-    imga_results = (summary_data or {}).get('imga_results', {})
+    imga_results = (summary_data or {}).get("imga_results", {})
     if not summary_data:
-        st.warning("Nenhum resultado disponível. Execute a análise de Integridade/IMGA primeiro.")
+        st.warning(
+            "Nenhum resultado disponível. Execute a análise de Integridade/IMGA primeiro."
+        )
     elif not imga_results:
-        st.info("O resultado carregado não contém dados IMGA. Execute a análise de Integridade/IMGA.")
+        st.info(
+            "O resultado carregado não contém dados IMGA. Execute a análise de Integridade/IMGA."
+        )
     else:
-            st.subheader("Indice de Maturidade da Governanca Algoritmica (IMGA)")
-            
-            # Resumo IMGA
-            docs_count = len(imga_results)
-            avg_imga = sum(r.get('imga_global', 0) for r in imga_results.values()) / docs_count if docs_count else 0
-            
-            col1, col2 = st.columns(2)
-            col1.metric("Documentos Analisados", docs_count)
-            col2.metric("IMGA Medio", f"{avg_imga:.1f}")
-            
-            st.divider()
-            
-            # Quadro Consolidado de Termos (todas as empresas)
-            with st.expander("Quadro Consolidado - Termos Encontrados (Todas as Empresas)", expanded=True):
-                # Agregar todos os termos por eixo
-                termos_consolidados = {}
-                for eixo_id in EIXOS_IMGA.keys():
-                    termos_consolidados[eixo_id] = {
-                        'termos': set(),
-                        'total_ocorrencias': 0,
-                        'empresas_count': 0,
-                        'empresas': []
-                    }
-                
-                for filename, result in imga_results.items():
-                    estatisticas = result.get('estatisticas_eixos', {})
-                    for eixo_id, stats in estatisticas.items():
-                        if eixo_id in termos_consolidados:
-                            termos_lista = stats.get('termos_lista', [])
-                            if termos_lista:
-                                termos_consolidados[eixo_id]['termos'].update(termos_lista)
-                                termos_consolidados[eixo_id]['total_ocorrencias'] += stats.get('total_ocorrencias', 0)
-                                termos_consolidados[eixo_id]['empresas_count'] += 1
-                                termos_consolidados[eixo_id]['empresas'].append(filename)
-                
-                # Criar tabela consolidada
-                dados_consolidados = []
-                for eixo_id, dados in termos_consolidados.items():
-                    termos_unicos = sorted(list(dados['termos']))
-                    if termos_unicos:
-                        dados_consolidados.append({
+        st.subheader("Indice de Maturidade da Governanca Algoritmica (IMGA)")
+
+        # Resumo IMGA
+        docs_count = len(imga_results)
+        avg_imga = (
+            sum(r.get("imga_global", 0) for r in imga_results.values()) / docs_count
+            if docs_count
+            else 0
+        )
+
+        col1, col2 = st.columns(2)
+        col1.metric("Documentos Analisados", docs_count)
+        col2.metric("IMGA Medio", f"{avg_imga:.1f}")
+
+        st.divider()
+
+        # Quadro Consolidado de Termos (todas as empresas)
+        with st.expander(
+            "Quadro Consolidado - Termos Encontrados (Todas as Empresas)", expanded=True
+        ):
+            # Agregar todos os termos por eixo
+            termos_consolidados = {}
+            for eixo_id in EIXOS_IMGA.keys():
+                termos_consolidados[eixo_id] = {
+                    "termos": set(),
+                    "total_ocorrencias": 0,
+                    "empresas_count": 0,
+                    "empresas": [],
+                }
+
+            for filename, result in imga_results.items():
+                estatisticas = result.get("estatisticas_eixos", {})
+                for eixo_id, stats in estatisticas.items():
+                    if eixo_id in termos_consolidados:
+                        termos_lista = stats.get("termos_lista", [])
+                        if termos_lista:
+                            termos_consolidados[eixo_id]["termos"].update(termos_lista)
+                            termos_consolidados[eixo_id][
+                                "total_ocorrencias"
+                            ] += stats.get("total_ocorrencias", 0)
+                            termos_consolidados[eixo_id]["empresas_count"] += 1
+                            termos_consolidados[eixo_id]["empresas"].append(filename)
+
+            # Criar tabela consolidada
+            dados_consolidados = []
+            for eixo_id, dados in termos_consolidados.items():
+                termos_unicos = sorted(list(dados["termos"]))
+                if termos_unicos:
+                    dados_consolidados.append(
+                        {
                             "Eixo": eixo_id,
-                            "Nome": EIXOS_IMGA.get(eixo_id, {}).get('nome', eixo_id),
+                            "Nome": EIXOS_IMGA.get(eixo_id, {}).get("nome", eixo_id),
                             "Termos Unicos": len(termos_unicos),
-                            "Total Ocorr.": dados['total_ocorrencias'],
-                            "Empresas": dados['empresas_count'],
-                            "Termos Encontrados": ", ".join(termos_unicos)
-                        })
-                
-                if dados_consolidados:
-                    df_consolidado = pd.DataFrame(dados_consolidados)
-                    st.dataframe(
-                        df_consolidado,
-                        width="stretch",
-                        hide_index=True,
-                        column_config={
-                            "Termos Encontrados": st.column_config.TextColumn(
-                                "Termos Encontrados",
-                                width="large"
-                            )
+                            "Total Ocorr.": dados["total_ocorrencias"],
+                            "Empresas": dados["empresas_count"],
+                            "Termos Encontrados": ", ".join(termos_unicos),
                         }
                     )
+
+            if dados_consolidados:
+                df_consolidado = pd.DataFrame(dados_consolidados)
+                st.dataframe(
+                    df_consolidado,
+                    width="stretch",
+                    hide_index=True,
+                    column_config={
+                        "Termos Encontrados": st.column_config.TextColumn(
+                            "Termos Encontrados", width="large"
+                        )
+                    },
+                )
+            else:
+                st.info("Nenhum termo encontrado nos documentos analisados")
+
+        # Nuvens de Palavras por Eixo (Quadro Separado)
+        if WORDCLOUD_AVAILABLE:
+            with st.expander("Nuvens de Palavras por Eixo", expanded=True):
+                # Reagregar termos para o wordcloud
+                termos_para_nuvem = {}
+                for eixo_id in EIXOS_IMGA.keys():
+                    termos_para_nuvem[eixo_id] = set()
+
+                for filename, result in imga_results.items():
+                    estatisticas = result.get("estatisticas_eixos", {})
+                    for eixo_id, stats in estatisticas.items():
+                        if eixo_id in termos_para_nuvem:
+                            termos_lista = stats.get("termos_lista", [])
+                            termos_para_nuvem[eixo_id].update(termos_lista)
+
+                # Filtrar apenas eixos com termos
+                eixos_com_termos = [
+                    (eixo_id, termos)
+                    for eixo_id, termos in termos_para_nuvem.items()
+                    if termos
+                ]
+
+                if eixos_com_termos:
+                    # Criar colunas para exibir 2 wordclouds por linha
+                    for i in range(0, len(eixos_com_termos), 2):
+                        cols = st.columns(2)
+                        for j, col in enumerate(cols):
+                            if i + j < len(eixos_com_termos):
+                                eixo_id, termos = eixos_com_termos[i + j]
+                                termos_texto = " ".join(list(termos))
+
+                                if termos_texto.strip():
+                                    with col:
+                                        st.caption(
+                                            f"{eixo_id} - {EIXOS_IMGA.get(eixo_id, {}).get('nome', eixo_id)}"
+                                        )
+
+                                        try:
+                                            # Gerar wordcloud
+                                            wc = WordCloud(
+                                                width=400,
+                                                height=200,
+                                                background_color="white",
+                                                colormap="viridis",
+                                                max_words=50,
+                                            ).generate(termos_texto)
+
+                                            # Converter para imagem
+                                            fig, ax = plt.subplots(figsize=(6, 3))
+                                            ax.imshow(wc, interpolation="bilinear")
+                                            ax.axis("off")
+
+                                            # Salvar em buffer
+                                            buf = BytesIO()
+                                            fig.savefig(
+                                                buf,
+                                                format="png",
+                                                bbox_inches="tight",
+                                                pad_inches=0.1,
+                                            )
+                                            buf.seek(0)
+                                            plt.close(fig)
+
+                                            st.image(buf, width="stretch")
+                                        except Exception as e:
+                                            st.warning(f"Erro ao gerar nuvem: {e}")
                 else:
-                    st.info("Nenhum termo encontrado nos documentos analisados")
-            
-            # Nuvens de Palavras por Eixo (Quadro Separado)
-            if WORDCLOUD_AVAILABLE:
-                with st.expander("Nuvens de Palavras por Eixo", expanded=True):
-                    # Reagregar termos para o wordcloud
-                    termos_para_nuvem = {}
-                    for eixo_id in EIXOS_IMGA.keys():
-                        termos_para_nuvem[eixo_id] = set()
-                    
-                    for filename, result in imga_results.items():
-                        estatisticas = result.get('estatisticas_eixos', {})
-                        for eixo_id, stats in estatisticas.items():
-                            if eixo_id in termos_para_nuvem:
-                                termos_lista = stats.get('termos_lista', [])
-                                termos_para_nuvem[eixo_id].update(termos_lista)
-                    
-                    # Filtrar apenas eixos com termos
-                    eixos_com_termos = [(eixo_id, termos) for eixo_id, termos in termos_para_nuvem.items() if termos]
-                    
-                    if eixos_com_termos:
-                        # Criar colunas para exibir 2 wordclouds por linha
-                        for i in range(0, len(eixos_com_termos), 2):
-                            cols = st.columns(2)
-                            for j, col in enumerate(cols):
-                                if i + j < len(eixos_com_termos):
-                                    eixo_id, termos = eixos_com_termos[i + j]
-                                    termos_texto = " ".join(list(termos))
-                                    
-                                    if termos_texto.strip():
-                                        with col:
-                                            st.caption(f"{eixo_id} - {EIXOS_IMGA.get(eixo_id, {}).get('nome', eixo_id)}")
-                                            
-                                            try:
-                                                # Gerar wordcloud
-                                                wc = WordCloud(
-                                                    width=400,
-                                                    height=200,
-                                                    background_color='white',
-                                                    colormap='viridis',
-                                                    max_words=50
-                                                ).generate(termos_texto)
-                                                
-                                                # Converter para imagem
-                                                fig, ax = plt.subplots(figsize=(6, 3))
-                                                ax.imshow(wc, interpolation='bilinear')
-                                                ax.axis('off')
-                                                
-                                                # Salvar em buffer
-                                                buf = BytesIO()
-                                                fig.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.1)
-                                                buf.seek(0)
-                                                plt.close(fig)
-                                                
-                                                st.image(buf, width="stretch")
-                                            except Exception as e:
-                                                st.warning(f"Erro ao gerar nuvem: {e}")
-                    else:
-                        st.info("Nenhum termo encontrado para gerar nuvens de palavras")
-            
-            st.divider()
-            
-            # Resultados por documento
-            for filename, result in imga_results.items():
-                imga_global = result.get('imga_global', 0)
-                faixa = result.get('faixa', 'N/A')
-                faixa_info = FAIXAS_MATURIDADE.get(faixa, {})
-                
-                with st.expander(f"**{filename}** — IMGA: {imga_global} ({faixa})", expanded=True):
-                    col1, col2 = st.columns([1, 2])
-                    
-                    with col1:
-                        # Card de resultado
-                        st.markdown(f"""
+                    st.info("Nenhum termo encontrado para gerar nuvens de palavras")
+
+        st.divider()
+
+        # Resultados por documento
+        for filename, result in imga_results.items():
+            imga_global = result.get("imga_global", 0)
+            faixa = result.get("faixa", "N/A")
+            faixa_info = FAIXAS_MATURIDADE.get(faixa, {})
+
+            with st.expander(
+                f"**{filename}** — IMGA: {imga_global} ({faixa})", expanded=True
+            ):
+                col1, col2 = st.columns([1, 2])
+
+                with col1:
+                    # Card de resultado
+                    st.markdown(
+                        f"""
                         <div style='background: {faixa_info.get("cor", "#f5f5f5")}; padding: 1rem; border-radius: 10px; text-align: center;'>
                             <h1 style='margin: 0; color: #000; font-weight: 800;'>{imga_global}</h1>
                             <p style='margin: 0.5rem 0 0 0; font-weight: bold; color: #000;'>{faixa}</p>
                             <small>{faixa_info.get("range", "")}</small>
                         </div>
-                        """, unsafe_allow_html=True)
-                        
-                        # Metadados
-                        metadados = result.get('metadados', {})
-                        st.caption(f"{metadados.get('total_palavras', 0):,} palavras".replace(",", "."))
-                        st.caption(f"{metadados.get('segmentos_analisados', 0)} segmentos")
-                    
-                    with col2:
-                        # Índices por eixo com estatísticas
-                        indices = result.get('indices_eixos', {})
-                        estatisticas = result.get('estatisticas_eixos', {})
-                        
-                        if indices:
-                            dados_tabela = []
-                            for k, v in indices.items():
-                                stats = estatisticas.get(k, {})
-                                dados_tabela.append({
+                        """,
+                        unsafe_allow_html=True,
+                    )
+
+                    # Metadados
+                    metadados = result.get("metadados", {})
+                    st.caption(
+                        f"{metadados.get('total_palavras', 0):,} palavras".replace(
+                            ",", "."
+                        )
+                    )
+                    st.caption(f"{metadados.get('segmentos_analisados', 0)} segmentos")
+
+                with col2:
+                    # Índices por eixo com estatísticas
+                    indices = result.get("indices_eixos", {})
+                    estatisticas = result.get("estatisticas_eixos", {})
+
+                    if indices:
+                        dados_tabela = []
+                        for k, v in indices.items():
+                            stats = estatisticas.get(k, {})
+                            dados_tabela.append(
+                                {
                                     "Eixo": f"{EIXOS_IMGA.get(k, {}).get('icone', '')} {k}",
-                                    "Nome": EIXOS_IMGA.get(k, {}).get('nome', k),
+                                    "Nome": EIXOS_IMGA.get(k, {}).get("nome", k),
                                     "Índice": v,
-                                    "Termos": stats.get('termos_encontrados', 0),
-                                    "Ocorr.": stats.get('total_ocorrencias', 0),
-                                })
-                            df = pd.DataFrame(dados_tabela)
-                            st.dataframe(df, width="stretch", hide_index=True)
-                    
-                    # Detalhes de termos encontrados
-                    estatisticas_doc = result.get('estatisticas_eixos', {})
-                    if estatisticas_doc:
-                        with st.expander("Detalhes dos Termos Encontrados", expanded=False):
-                            termos_data = []
-                            for eixo_id, stats in estatisticas_doc.items():
-                                if stats.get('termos_encontrados', 0) > 0:
-                                    termos_lista = stats.get('termos_lista', [])
-                                    boosters = stats.get('boosters', {})
-                                    boosters_ativos = [b.replace('B1_', '').replace('B2_', '').replace('B3_', '').replace('B4_', '') 
-                                                       for b, c in boosters.items() if c > 0]
-                                    
-                                    termos_data.append({
+                                    "Termos": stats.get("termos_encontrados", 0),
+                                    "Ocorr.": stats.get("total_ocorrencias", 0),
+                                }
+                            )
+                        df = pd.DataFrame(dados_tabela)
+                        st.dataframe(df, width="stretch", hide_index=True)
+
+                # Detalhes de termos encontrados
+                estatisticas_doc = result.get("estatisticas_eixos", {})
+                if estatisticas_doc:
+                    with st.expander("Detalhes dos Termos Encontrados", expanded=False):
+                        termos_data = []
+                        for eixo_id, stats in estatisticas_doc.items():
+                            if stats.get("termos_encontrados", 0) > 0:
+                                termos_lista = stats.get("termos_lista", [])
+                                boosters = stats.get("boosters", {})
+                                boosters_ativos = [
+                                    b.replace("B1_", "")
+                                    .replace("B2_", "")
+                                    .replace("B3_", "")
+                                    .replace("B4_", "")
+                                    for b, c in boosters.items()
+                                    if c > 0
+                                ]
+
+                                termos_data.append(
+                                    {
                                         "Eixo": eixo_id,
-                                        "Nome": EIXOS_IMGA.get(eixo_id, {}).get('nome', eixo_id),
+                                        "Nome": EIXOS_IMGA.get(eixo_id, {}).get(
+                                            "nome", eixo_id
+                                        ),
                                         "Qtd. Termos": len(termos_lista),
-                                        "Termos Encontrados": ", ".join(sorted(termos_lista)),
-                                        "Boosters Ativos": ", ".join(boosters_ativos) if boosters_ativos else "-"
-                                    })
-                            
-                            if termos_data:
-                                df_termos = pd.DataFrame(termos_data)
-                                st.dataframe(
-                                    df_termos,
-                                    width="stretch",
-                                    hide_index=True,
-                                    column_config={
-                                        "Termos Encontrados": st.column_config.TextColumn(
-                                            "Termos Encontrados",
-                                            width="large"
-                                        )
+                                        "Termos Encontrados": ", ".join(
+                                            sorted(termos_lista)
+                                        ),
+                                        "Boosters Ativos": (
+                                            ", ".join(boosters_ativos)
+                                            if boosters_ativos
+                                            else "-"
+                                        ),
                                     }
                                 )
-                    
-                    # Auditoria de Cálculo
-                    auditoria = result.get('auditoria', {})
-                    if auditoria:
-                        with st.expander("Auditoria de Cálculo", expanded=False):
-                            st.markdown("**Fórmulas Utilizadas:**")
-                            st.code(auditoria.get('formula', 'N/A'), language=None)
-                            st.code(auditoria.get('formula_imga', 'N/A'), language=None)
-                            st.caption(f"Fator de Normalização: {auditoria.get('fator_normalizacao', 0)} (Total Palavras / 100)")
-                            
-                            st.markdown("**Detalhamento por Eixo:**")
-                            audit_data = []
-                            for eixo_id, dados in auditoria.get('eixos', {}).items():
-                                audit_data.append({
+
+                        if termos_data:
+                            df_termos = pd.DataFrame(termos_data)
+                            st.dataframe(
+                                df_termos,
+                                width="stretch",
+                                hide_index=True,
+                                column_config={
+                                    "Termos Encontrados": st.column_config.TextColumn(
+                                        "Termos Encontrados", width="large"
+                                    )
+                                },
+                            )
+
+                # Auditoria de Cálculo
+                auditoria = result.get("auditoria", {})
+                if auditoria:
+                    with st.expander("Auditoria de Cálculo", expanded=False):
+                        st.markdown("**Fórmulas Utilizadas:**")
+                        st.code(auditoria.get("formula", "N/A"), language=None)
+                        st.code(auditoria.get("formula_imga", "N/A"), language=None)
+                        st.caption(
+                            f"Fator de Normalização: {auditoria.get('fator_normalizacao', 0)} (Total Palavras / 100)"
+                        )
+
+                        st.markdown("**Detalhamento por Eixo:**")
+                        audit_data = []
+                        for eixo_id, dados in auditoria.get("eixos", {}).items():
+                            audit_data.append(
+                                {
                                     "Eixo": eixo_id,
-                                    "Soma Bruta": dados.get('soma_bruta', 0),
-                                    "Segmentos": dados.get('num_segmentos_pontuados', 0),
-                                    "Densidade": dados.get('densidade', 0),
-                                    "Índice (pré-cap)": dados.get('indice_pre_cap', 0),
-                                    "Índice Final": dados.get('indice_final', 0),
+                                    "Soma Bruta": dados.get("soma_bruta", 0),
+                                    "Segmentos": dados.get(
+                                        "num_segmentos_pontuados", 0
+                                    ),
+                                    "Densidade": dados.get("densidade", 0),
+                                    "Índice (pré-cap)": dados.get("indice_pre_cap", 0),
+                                    "Índice Final": dados.get("indice_final", 0),
                                     "Peso": f"{int(dados.get('peso_metodologia', 0)*100)}%",
-                                    "Contribuição": dados.get('contribuicao_imga', 0)
-                                })
-                            if audit_data:
-                                df_audit = pd.DataFrame(audit_data)
-                                st.dataframe(df_audit, width="stretch", hide_index=True)
-                                
-                                # Soma das contribuições = IMGA Global
-                                total_contrib = sum(d.get('contribuicao_imga', 0) for d in auditoria.get('eixos', {}).values())
-                                st.markdown(f"**IMGA Global = Σ Contribuições = {round(total_contrib, 2)}**")
+                                    "Contribuição": dados.get("contribuicao_imga", 0),
+                                }
+                            )
+                        if audit_data:
+                            df_audit = pd.DataFrame(audit_data)
+                            st.dataframe(df_audit, width="stretch", hide_index=True)
+
+                            # Soma das contribuições = IMGA Global
+                            total_contrib = sum(
+                                d.get("contribuicao_imga", 0)
+                                for d in auditoria.get("eixos", {}).values()
+                            )
+                            st.markdown(
+                                f"**IMGA Global = Σ Contribuições = {round(total_contrib, 2)}**"
+                            )
 # ============================================
 # Seção: Análise com inteligência artificial
 # ============================================
 if main_section == "Auditoria Inteligente (IA)":
     st.subheader("Auditoria Inteligente (IA)")
-    st.caption("AGIR-RAG Lite transforma documentos públicos em respostas citáveis, evidências revisáveis e indicadores de conformidade.")
+    st.caption(
+        "AGIR-RAG Lite transforma documentos públicos em respostas citáveis, evidências revisáveis e indicadores de conformidade."
+    )
 
     orgaos_rag, tipos_rag = get_rag_filter_options()
     sprint7_indicators = load_csv_if_exists(RAG_INDICATORS_FILE)
@@ -1155,12 +1353,15 @@ if main_section == "Auditoria Inteligente (IA)":
     value_cols = st.columns(3)
     for col, item in zip(value_cols, get_rag_value_items()):
         with col:
-            st.markdown(f"""
+            st.markdown(
+                f"""
             <div class="agir-status-card">
                 <strong>{escape_html(item["titulo"])}</strong>
                 <div class="agir-muted">{escape_html(item["descricao"])}</div>
             </div>
-            """, unsafe_allow_html=True)
+            """,
+                unsafe_allow_html=True,
+            )
 
     st.divider()
 
@@ -1173,50 +1374,67 @@ if main_section == "Auditoria Inteligente (IA)":
     status_cols = st.columns(3)
     with status_cols[0]:
         sqlite_status = "Pronto" if rag_counts["chunks"] > 0 else "Vazio"
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div class="agir-status-card">
             <strong>Base auditável</strong>
             <div>{sqlite_status}</div>
             <div class="agir-muted">{RAG_DB_FILE}</div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
     with status_cols[1]:
         qdrant_status, qdrant_detail = get_vector_index_status(rag_manifest)
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div class="agir-status-card">
             <strong>Índice vetorial</strong>
             <div>{qdrant_status}</div>
             <div class="agir-muted">{qdrant_detail}</div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
     with status_cols[2]:
         report_status = "Gerado" if not sprint7_indicators.empty else "Pendente"
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div class="agir-status-card">
             <strong>Indicadores de conformidade</strong>
             <div>{report_status}</div>
             <div class="agir-muted">Classificações, matriz comparativa e amostra de validação</div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
     st.divider()
 
-    qa_tab, search_tab, classify_tab, indicators_tab = st.tabs([
-        "Perguntar ao acervo",
-        "Buscar evidências",
-        "Gerar conformidade",
-        "Indicadores",
-    ])
+    qa_tab, search_tab, classify_tab, indicators_tab = st.tabs(
+        [
+            "Perguntar ao acervo",
+            "Buscar evidências",
+            "Gerar conformidade",
+            "Indicadores",
+        ]
+    )
 
     with qa_tab:
         st.markdown("#### Pergunte aos documentos")
-        st.caption("Use para responder perguntas de auditoria com evidências rastreáveis. Gemini é o modo atual quando a chave estiver configurada.")
+        st.caption(
+            "Use para responder perguntas de auditoria com evidências rastreáveis. Gemini é o modo atual quando a chave estiver configurada."
+        )
 
         if "rag_chat_history" not in st.session_state:
             st.session_state["rag_chat_history"] = []
 
         gemini_available = bool(os.getenv("GEMINI_API_KEY", "").strip())
-        provider_options = ["Gemini", "Sem LLM", "Ollama"] if gemini_available else ["Sem LLM", "Ollama"]
+        provider_options = (
+            ["Gemini", "Sem LLM", "Ollama"]
+            if gemini_available
+            else ["Sem LLM", "Ollama"]
+        )
         llm_status = (
             f"Gemini ativo como padrão ({DEFAULT_GEMINI_MODEL})."
             if gemini_available
@@ -1247,13 +1465,24 @@ if main_section == "Auditoria Inteligente (IA)":
                     key="rag_qa_tipos",
                 )
             with col3:
-                top_k_chat = st.number_input("Fontes", min_value=1, max_value=10, value=5, step=1, key="rag_qa_top_k")
+                top_k_chat = st.number_input(
+                    "Fontes",
+                    min_value=1,
+                    max_value=10,
+                    value=5,
+                    step=1,
+                    key="rag_qa_top_k",
+                )
 
             col1, col2 = st.columns([1, 2])
             with col1:
-                provider = st.selectbox("Modo de resposta", provider_options, key="rag_qa_provider")
+                provider = st.selectbox(
+                    "Modo de resposta", provider_options, key="rag_qa_provider"
+                )
             with col2:
-                default_model = "llama3.1" if provider == "Ollama" else DEFAULT_GEMINI_MODEL
+                default_model = (
+                    "llama3.1" if provider == "Ollama" else DEFAULT_GEMINI_MODEL
+                )
                 model = st.text_input(
                     "Modelo",
                     value=default_model,
@@ -1261,13 +1490,17 @@ if main_section == "Auditoria Inteligente (IA)":
                     key="rag_qa_model",
                 )
 
-            ask_submitted = st.form_submit_button("Responder com evidências", width="stretch")
+            ask_submitted = st.form_submit_button(
+                "Responder com evidências", width="stretch"
+            )
 
         if ask_submitted:
             if not pergunta_chat.strip():
                 st.warning("Informe uma pergunta para consultar o acervo.")
             elif rag_counts["chunks"] == 0:
-                st.warning("A base RAG está vazia. Execute a indexação antes de perguntar ao acervo.")
+                st.warning(
+                    "A base RAG está vazia. Execute a indexação antes de perguntar ao acervo."
+                )
             else:
                 with st.spinner("Recuperando evidências e preparando resposta..."):
                     try:
@@ -1290,7 +1523,9 @@ if main_section == "Auditoria Inteligente (IA)":
                                 "pergunta": pergunta_chat,
                                 "resposta": answer,
                                 "provider": provider,
-                                "modelo": model if provider != "Sem LLM" else "extrativo",
+                                "modelo": (
+                                    model if provider != "Sem LLM" else "extrativo"
+                                ),
                                 "evidencias": evidencias,
                                 "diagnostico": search_result.get("diagnostico", {}),
                             },
@@ -1299,20 +1534,29 @@ if main_section == "Auditoria Inteligente (IA)":
                         st.error(f"Erro ao responder com RAG: {exc}")
 
         if not st.session_state["rag_chat_history"]:
-            st.info("Faça uma pergunta para iniciar a interação com o acervo documental.")
+            st.info(
+                "Faça uma pergunta para iniciar a interação com o acervo documental."
+            )
         else:
-            for item_index, item in enumerate(st.session_state["rag_chat_history"], start=1):
+            for item_index, item in enumerate(
+                st.session_state["rag_chat_history"], start=1
+            ):
                 with st.container():
                     st.markdown(f"**Pergunta {item_index}:** {item['pergunta']}")
                     st.markdown(item["resposta"])
-                    st.caption(f"Modo: {item['provider']} · Modelo: {item['modelo']} · Fontes: {len(item['evidencias'])}")
+                    st.caption(
+                        f"Modo: {item['provider']} · Modelo: {item['modelo']} · Fontes: {len(item['evidencias'])}"
+                    )
                     show_semantic_diagnostic(item.get("diagnostico"))
 
                     with st.expander("Ver evidências usadas", expanded=item_index == 1):
                         if not item["evidencias"]:
-                            st.info("Nenhuma evidência foi recuperada para esta resposta.")
+                            st.info(
+                                "Nenhuma evidência foi recuperada para esta resposta."
+                            )
                         for idx, evidencia in enumerate(item["evidencias"], start=1):
-                            st.markdown(f"""
+                            st.markdown(
+                                f"""
                             <div class="agir-evidence">
                                 <strong>{idx}. {escape_html(evidencia.get('documento', ''))}</strong>
                                 <div class="agir-muted">
@@ -1322,7 +1566,9 @@ if main_section == "Auditoria Inteligente (IA)":
                                 </div>
                                 <p>{escape_html(evidencia.get('trecho', ''))}</p>
                             </div>
-                            """, unsafe_allow_html=True)
+                            """,
+                                unsafe_allow_html=True,
+                            )
 
                     st.divider()
 
@@ -1349,7 +1595,9 @@ if main_section == "Auditoria Inteligente (IA)":
                     key="rag_search_tipos",
                 )
             with col3:
-                top_k = st.number_input("Evidências", min_value=1, max_value=20, value=5, step=1)
+                top_k = st.number_input(
+                    "Evidências", min_value=1, max_value=20, value=5, step=1
+                )
 
             submitted = st.form_submit_button("Buscar evidências", width="stretch")
 
@@ -1357,13 +1605,19 @@ if main_section == "Auditoria Inteligente (IA)":
             if not pergunta.strip():
                 st.warning("Informe uma pergunta normativa.")
             elif rag_counts["chunks"] == 0:
-                st.warning("A base RAG está vazia. Execute a indexação da Sprint 5 antes da busca.")
+                st.warning(
+                    "A base RAG está vazia. Execute a indexação da Sprint 5 antes da busca."
+                )
             else:
                 with st.spinner("Executando recuperação híbrida..."):
                     try:
                         result = run_rag_search(
                             pergunta=pergunta,
-                            orgao=None if orgao_selecionado == "Todos" else orgao_selecionado,
+                            orgao=(
+                                None
+                                if orgao_selecionado == "Todos"
+                                else orgao_selecionado
+                            ),
                             tipos_documento=tipos_selecionados,
                             top_k=int(top_k),
                         )
@@ -1385,7 +1639,8 @@ if main_section == "Auditoria Inteligente (IA)":
                 st.info("Nenhuma evidência encontrada para a consulta.")
             show_semantic_diagnostic(diagnostico)
             for idx, evidencia in enumerate(evidencias, start=1):
-                st.markdown(f"""
+                st.markdown(
+                    f"""
                 <div class="agir-evidence">
                     <strong>{idx}. {escape_html(evidencia.get('documento', ''))}</strong>
                     <div class="agir-muted">
@@ -1395,11 +1650,15 @@ if main_section == "Auditoria Inteligente (IA)":
                     </div>
                     <p>{escape_html(evidencia.get('trecho', ''))}</p>
                 </div>
-                """, unsafe_allow_html=True)
+                """,
+                    unsafe_allow_html=True,
+                )
 
     with classify_tab:
         st.markdown("#### Gerar conformidade documental")
-        st.caption("Avalia os critérios normativos com base nas evidências recuperadas e calcula indicadores auditáveis por órgão.")
+        st.caption(
+            "Avalia os critérios normativos com base nas evidências recuperadas e calcula indicadores auditáveis por órgão."
+        )
 
         with st.form("rag_classification_form"):
             col1, col2, col3 = st.columns([2, 2, 1])
@@ -1427,12 +1686,18 @@ if main_section == "Auditoria Inteligente (IA)":
                     help="Limite de critérios para execução controlada.",
                 )
 
-            top_k_classificacao = st.slider("Evidências por critério", min_value=1, max_value=10, value=5)
-            run_classification = st.form_submit_button("Calcular conformidade", width="stretch")
+            top_k_classificacao = st.slider(
+                "Evidências por critério", min_value=1, max_value=10, value=5
+            )
+            run_classification = st.form_submit_button(
+                "Calcular conformidade", width="stretch"
+            )
 
         if run_classification:
             if rag_counts["chunks"] == 0:
-                st.warning("A base RAG está vazia. Execute a indexação da Sprint 5 antes da classificação.")
+                st.warning(
+                    "A base RAG está vazia. Execute a indexação da Sprint 5 antes da classificação."
+                )
             elif not orgaos_classificacao:
                 st.warning("Selecione ao menos um órgão.")
             else:
@@ -1454,7 +1719,9 @@ if main_section == "Auditoria Inteligente (IA)":
 
         report = st.session_state.get("rag_classification_report")
         if report:
-            indicadores_report, classificacoes_report = classification_report_to_frames(report)
+            indicadores_report, classificacoes_report = classification_report_to_frames(
+                report
+            )
             parametros = report.get("parametros", {})
             arquivos = report.get("arquivos", {})
 
@@ -1469,10 +1736,15 @@ if main_section == "Auditoria Inteligente (IA)":
             )
             col4.metric(
                 "IMGA médio",
-                format_score(indicadores_report.get("imga_global", pd.Series([0])).mean()),
+                format_score(
+                    indicadores_report.get("imga_global", pd.Series([0])).mean()
+                ),
             )
 
-            if not classificacoes_report.empty and "classificacao" in classificacoes_report.columns:
+            if (
+                not classificacoes_report.empty
+                and "classificacao" in classificacoes_report.columns
+            ):
                 distribuicao = (
                     classificacoes_report["classificacao"]
                     .value_counts()
@@ -1500,8 +1772,12 @@ if main_section == "Auditoria Inteligente (IA)":
                     width="stretch",
                     hide_index=True,
                     column_config={
-                        "conformidade_percentual": st.column_config.NumberColumn("Conformidade", format="%.1f%%"),
-                        "imga_global": st.column_config.NumberColumn("IMGA", format="%.2f"),
+                        "conformidade_percentual": st.column_config.NumberColumn(
+                            "Conformidade", format="%.1f%%"
+                        ),
+                        "imga_global": st.column_config.NumberColumn(
+                            "IMGA", format="%.2f"
+                        ),
                     },
                 )
 
@@ -1527,9 +1803,15 @@ if main_section == "Auditoria Inteligente (IA)":
                     width="stretch",
                     hide_index=True,
                     column_config={
-                        "score_recuperacao": st.column_config.NumberColumn("Score", format="%.3f"),
-                        "justificativa": st.column_config.TextColumn("Justificativa", width="large"),
-                        "trecho_top": st.column_config.TextColumn("Trecho principal", width="large"),
+                        "score_recuperacao": st.column_config.NumberColumn(
+                            "Score", format="%.3f"
+                        ),
+                        "justificativa": st.column_config.TextColumn(
+                            "Justificativa", width="large"
+                        ),
+                        "trecho_top": st.column_config.TextColumn(
+                            "Trecho principal", width="large"
+                        ),
                     },
                 )
 
@@ -1542,24 +1824,34 @@ if main_section == "Auditoria Inteligente (IA)":
         st.markdown("#### Indicadores de conformidade documental")
 
         if sprint7_indicators.empty:
-            st.info("Nenhum indicador de conformidade encontrado. Gere os resultados em Conformidade.")
+            st.info(
+                "Nenhum indicador de conformidade encontrado. Gere os resultados em Conformidade."
+            )
         else:
             display_indicators = sprint7_indicators.copy()
             if "imga_global" in display_indicators.columns:
-                display_indicators = display_indicators.sort_values("imga_global", ascending=False)
+                display_indicators = display_indicators.sort_values(
+                    "imga_global", ascending=False
+                )
 
             col1, col2, col3 = st.columns(3)
             col1.metric("Órgãos avaliados", len(display_indicators))
             col2.metric(
                 "IMGA médio",
-                format_score(display_indicators.get("imga_global", pd.Series([0])).mean()),
+                format_score(
+                    display_indicators.get("imga_global", pd.Series([0])).mean()
+                ),
             )
             col3.metric(
                 "Conformidade média",
                 f"{format_score(display_indicators.get('conformidade_percentual', pd.Series([0])).mean())}%",
             )
 
-            chart_cols = [col for col in ["orgao", "imga_global", "conformidade_percentual"] if col in display_indicators.columns]
+            chart_cols = [
+                col
+                for col in ["orgao", "imga_global", "conformidade_percentual"]
+                if col in display_indicators.columns
+            ]
             if len(chart_cols) >= 2:
                 chart_df = display_indicators[chart_cols].set_index("orgao")
                 st.bar_chart(chart_df)
@@ -1568,35 +1860,53 @@ if main_section == "Auditoria Inteligente (IA)":
 
         st.markdown("#### Matriz órgão x critério")
         if sprint7_matrix.empty:
-            st.caption("A matriz será exibida após o cálculo dos indicadores de conformidade.")
+            st.caption(
+                "A matriz será exibida após o cálculo dos indicadores de conformidade."
+            )
         else:
             filtros_col1, filtros_col2 = st.columns(2)
             with filtros_col1:
                 filtro_orgao = st.multiselect(
                     "Filtrar órgãos",
-                    sorted(sprint7_matrix["orgao"].dropna().unique()) if "orgao" in sprint7_matrix.columns else [],
+                    (
+                        sorted(sprint7_matrix["orgao"].dropna().unique())
+                        if "orgao" in sprint7_matrix.columns
+                        else []
+                    ),
                     key="rag_report_orgao_filter",
                 )
             with filtros_col2:
                 filtro_classificacao = st.multiselect(
                     "Filtrar classificações",
-                    sorted(sprint7_matrix["classificacao"].dropna().unique()) if "classificacao" in sprint7_matrix.columns else [],
+                    (
+                        sorted(sprint7_matrix["classificacao"].dropna().unique())
+                        if "classificacao" in sprint7_matrix.columns
+                        else []
+                    ),
                     key="rag_report_class_filter",
                 )
 
             filtered_matrix = sprint7_matrix.copy()
             if filtro_orgao and "orgao" in filtered_matrix.columns:
-                filtered_matrix = filtered_matrix[filtered_matrix["orgao"].isin(filtro_orgao)]
+                filtered_matrix = filtered_matrix[
+                    filtered_matrix["orgao"].isin(filtro_orgao)
+                ]
             if filtro_classificacao and "classificacao" in filtered_matrix.columns:
-                filtered_matrix = filtered_matrix[filtered_matrix["classificacao"].isin(filtro_classificacao)]
+                filtered_matrix = filtered_matrix[
+                    filtered_matrix["classificacao"].isin(filtro_classificacao)
+                ]
 
             st.dataframe(
                 filtered_matrix,
                 width="stretch",
                 hide_index=True,
                 column_config={
-                    "trecho_top": st.column_config.TextColumn("Trecho principal", width="large"),
-                    "score_recuperacao": st.column_config.NumberColumn("Score", format="%.3f"),
+                    "trecho_top": st.column_config.TextColumn(
+                        "Trecho principal", width="large"
+                    ),
+                    "score_recuperacao": st.column_config.NumberColumn(
+                        "Score", format="%.3f"
+                    ),
                 },
             )
 
@@ -1616,108 +1926,137 @@ if main_section == "Auditoria Inteligente (IA)":
 # ============================================
 if main_section == "Monitor de Ausência Documental":
     st.subheader("Monitor de Ausência Documental")
-    st.caption("Painel de Transparência: Identifica órgãos que não publicaram documentos obrigatórios (Atas, Programa de Integridade ou Compliance).")
-    
+    st.caption(
+        "Painel de Transparência: Identifica órgãos que não publicaram documentos obrigatórios (Atas, Programa de Integridade ou Compliance)."
+    )
+
     orgaos_rag, _ = get_rag_filter_options()
-    
+
     # Vamos verificar quais orgãos NÃO possuem cig, pg ou compliance
     ausencias = []
-    
+
     # Orgaos detectados nas pastas ou base
     todos_orgaos = sorted(set(orgaos_rag))
-    
+
     if not todos_orgaos:
-        st.info("Nenhum órgão indexado ou encontrado nas pastas locais. Execute a coleta primeiro.")
+        st.info(
+            "Nenhum órgão indexado ou encontrado nas pastas locais. Execute a coleta primeiro."
+        )
     else:
         # Busca no banco de dados
         try:
             with sqlite3.connect(RAG_DB_FILE) as conn:
                 for orgao in todos_orgaos:
-                    rows = conn.execute("SELECT DISTINCT tipo_documento FROM documents WHERE orgao = ?", (orgao,)).fetchall()
+                    rows = conn.execute(
+                        "SELECT DISTINCT tipo_documento FROM documents WHERE orgao = ?",
+                        (orgao,),
+                    ).fetchall()
                     tipos_encontrados = {row[0] for row in rows}
-                    
+
                     # Checando
                     falta_cig = "cig" not in tipos_encontrados
                     falta_pg = "pg" not in tipos_encontrados
                     falta_compliance = "compliance" not in tipos_encontrados
-                    
+
                     if falta_cig or falta_pg or falta_compliance:
-                        ausencias.append({
-                            "Órgão": orgao,
-                            "Falta Atas (CIG)": "❌ Sim" if falta_cig else "✅ Ok",
-                            "Falta Prog. de Integridade": "❌ Sim" if falta_pg else "✅ Ok",
-                            "Falta Compliance": "❌ Sim" if falta_compliance else "✅ Ok",
-                            "Status de Transparência": "🔴 Risco Alto" if (falta_pg and falta_cig) else "⚠️ Risco Moderado"
-                        })
+                        ausencias.append(
+                            {
+                                "Órgão": orgao,
+                                "Falta Atas (CIG)": "❌ Sim" if falta_cig else "✅ Ok",
+                                "Falta Prog. de Integridade": (
+                                    "❌ Sim" if falta_pg else "✅ Ok"
+                                ),
+                                "Falta Compliance": (
+                                    "❌ Sim" if falta_compliance else "✅ Ok"
+                                ),
+                                "Status de Transparência": (
+                                    "🔴 Risco Alto"
+                                    if (falta_pg and falta_cig)
+                                    else "⚠️ Risco Moderado"
+                                ),
+                            }
+                        )
         except Exception as e:
             st.error(f"Não foi possível carregar a base de dados: {e}")
-        
+
         col1, col2 = st.columns(2)
         col1.metric("Órgãos mapeados", len(todos_orgaos))
         col2.metric("Órgãos com pendências documentais", len(ausencias))
-        
+
         st.divider()
-        
+
         if ausencias:
-            st.error("Os órgãos abaixo possuem pendências de publicação documental (falta do Plano de Integridade, Atas ou Compliance).")
+            st.error(
+                "Os órgãos abaixo possuem pendências de publicação documental (falta do Plano de Integridade, Atas ou Compliance)."
+            )
             df_ausencias = pd.DataFrame(ausencias)
             st.dataframe(df_ausencias, width="stretch", hide_index=True)
         else:
-            st.success("Excelente! Todos os órgãos mapeados possuem Atas CIG, Programa de Integridade e Plano de Compliance.")
+            st.success(
+                "Excelente! Todos os órgãos mapeados possuem Atas CIG, Programa de Integridade e Plano de Compliance."
+            )
 
 # ============================================
 # Seção: Eixos Analíticos
 # ============================================
 if main_section == "Eixos de Avaliação":
     st.subheader("Taxonomia Analítica IMGA")
-    st.caption("Eixos utilizados na classificação automatizada dos relatórios de integridade")
-    
+    st.caption(
+        "Eixos utilizados na classificação automatizada dos relatórios de integridade"
+    )
+
     # Exibir eixos em cards
     for eixo_id, info in EIXOS_IMGA.items():
         with st.container():
             col1, col2, col3 = st.columns([1, 4, 1])
-            
+
             with col1:
                 st.markdown(f"### {eixo_id}")
                 st.caption(eixo_id)
-            
+
             with col2:
                 st.markdown(f"**{info['nome']}**")
-                st.caption(info['descricao'])
-            
+                st.caption(info["descricao"])
+
             with col3:
                 st.metric("Peso", f"{info['peso']}%")
-            
+
             st.divider()
-    
+
     # Faixas de maturidade
     st.subheader("Faixas de Maturidade")
-    
+
     cols = st.columns(4)
     for i, (faixa, info) in enumerate(FAIXAS_MATURIDADE.items()):
         with cols[i]:
-            st.markdown(f"""
+            st.markdown(
+                f"""
             <div style='background: {info["cor"]}; padding: 1rem; border-radius: 8px; text-align: center;'>
                 <strong>{faixa}</strong><br>
                 <small>{info["range"]}</small><br>
                 <small>{info["descricao"]}</small>
             </div>
-            """, unsafe_allow_html=True)
+            """,
+                unsafe_allow_html=True,
+            )
 
 # ============================================
 # Seção: Documentos
 # ============================================
 if main_section == "Visualizador de Documentos":
     st.subheader("Visualizador de Documentos")
-    
-    doc_type = st.selectbox("Selecione o tipo:", [
-        "Atas CIG (Input)",
-        "Programa de integridade (Input)",
-        "Plano de compliance (Input)",
-        "Planos de Integridade (Input IMGA)",
-        "Resultados DANI (Output)"
-    ])
-    
+
+    doc_type = st.selectbox(
+        "Selecione o tipo:",
+        [
+            "Atas CIG (Input)",
+            "Programa de integridade (Input)",
+            "Plano de compliance (Input)",
+            "Planos de Integridade (Input IMGA)",
+            "Resultados DANI (Output)",
+        ],
+    )
+
     if doc_type == "Atas CIG (Input)":
         pdfs = get_pdf_CIG()
         base_dir = INPUT_CIG_DIR
@@ -1733,29 +2072,29 @@ if main_section == "Visualizador de Documentos":
     else:
         pdfs = get_pdf_output()
         base_dir = PDF_OUTPUT_DIR
-    
+
     if not pdfs:
         st.info("Nenhum documento disponível nesta categoria")
     else:
         col1, col2 = st.columns(2)
-        
+
         with col1:
             orgao = st.selectbox("Órgão:", list(pdfs.keys()))
-        
+
         with col2:
             if orgao:
                 arquivo = st.selectbox("Arquivo:", pdfs[orgao])
-        
+
         if orgao and arquivo:
             pdf_path = os.path.join(base_dir, orgao, arquivo)
-            
+
             try:
                 with open(pdf_path, "rb") as f:
-                    pdf_data = base64.b64encode(f.read()).decode('utf-8')
-                
+                    pdf_data = base64.b64encode(f.read()).decode("utf-8")
+
                 st.markdown(
                     f'<iframe src="data:application/pdf;base64,{pdf_data}" width="100%" height="700" type="application/pdf"></iframe>',
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )
             except Exception as e:
                 st.error(f"Erro ao carregar PDF: {e}")

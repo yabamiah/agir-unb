@@ -4,7 +4,8 @@ Substitui embeddings por regras explícitas para garantir explicabilidade e audi
 """
 
 import re
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
+
 
 class ClassificadorEixos:
     """
@@ -32,20 +33,20 @@ class ClassificadorEixos:
         print("Processando dicionário analítico...")
 
         for item in dicionario:
-            eixo_id = item.get('axis_id')
-            self.eixos_nomes[eixo_id] = item.get('axis_name', eixo_id)
+            eixo_id = item.get("axis_id")
+            self.eixos_nomes[eixo_id] = item.get("axis_name", eixo_id)
 
             # Organiza sinais por peso conforme a metodologia
             sinais = {
-                "termos": [],      # Peso 1
-                "expressoes": [],   # Peso 2
-                "subsignals": []    # Peso 3
+                "termos": [],  # Peso 1
+                "expressoes": [],  # Peso 2
+                "subsignals": [],  # Peso 3
             }
 
-            for cat in item.get('categories', []):
-                sinais["termos"].extend(cat.get('terms', []))
-                sinais["expressoes"].extend(cat.get('expressions', []))
-                sinais["subsignals"].extend(cat.get('subsignals', []))
+            for cat in item.get("categories", []):
+                sinais["termos"].extend(cat.get("terms", []))
+                sinais["expressoes"].extend(cat.get("expressions", []))
+                sinais["subsignals"].extend(cat.get("subsignals", []))
 
             self.dicionario_eixos[eixo_id] = sinais
             print(f"✓ {eixo_id} ({self.eixos_nomes[eixo_id]}) carregado.")
