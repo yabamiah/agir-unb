@@ -11,7 +11,7 @@ cache:
 
 lint-job:
   stage: lint
-  image: python:3.10-slim
+  image: python:3.11-slim
   before_script:
     - pip install flake8 black
   script:
@@ -21,7 +21,7 @@ lint-job:
 
 check-job:
   stage: check
-  image: python:3.10-slim
+  image: python:3.11-slim
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends gcc libsqlite3-dev
     - pip install -r requirements.txt
