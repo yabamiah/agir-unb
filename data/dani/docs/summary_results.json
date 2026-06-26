@@ -1,0 +1,1036 @@
+{
+    "metadata": {
+        "data_analise": "2026-06-25T22:10:57.130882",
+        "versao_dani": "2.0",
+        "tipo_analise": "integridade",
+        "orgao_especifico": null
+    },
+    "resumo_geral": {
+        "orgaos_analisados": [
+            "NOVACAP",
+            "TERRACAP",
+            "BRB"
+        ],
+        "total_documentos_lidos": 4,
+        "total_palavras_lidas": 34506,
+        "total_keywords_encontradas": 0,
+        "total_ocorrencias": 0,
+        "media_ocorrencias_por_documento": 0.0
+    },
+    "contagem_keywords_geral": {},
+    "porcentagem_keywords_geral": {},
+    "top_keywords_geral": [],
+    "estatisticas_por_orgao": {
+        "OUTROS": {
+            "documentos_processados": 3,
+            "total_palavras_lidas": 25879,
+            "contagem_keywords": {},
+            "porcentagem_keywords": {},
+            "top_keywords": [],
+            "total_ocorrencias": 0,
+            "media_ocorrencias_por_documento": 0.0
+        },
+        "0 BRB.PDF": {
+            "documentos_processados": 1,
+            "total_palavras_lidas": 8626,
+            "contagem_keywords": {},
+            "porcentagem_keywords": {},
+            "top_keywords": [],
+            "total_ocorrencias": 0,
+            "media_ocorrencias_por_documento": 0.0
+        }
+    },
+    "documentos_lidos": [
+        "0 Novacap.pdf",
+        "0 Terracap.pdf",
+        "0 BRB.pdf",
+        "0 BRB Seguros.pdf"
+    ],
+    "imga_results": {
+        "0 Novacap.pdf": {
+            "imga_global": 71.32,
+            "faixa": "Intermediaria",
+            "indices_eixos": {
+                "E1": 4.83,
+                "E2": 14.85,
+                "E3": 8.66,
+                "E4": 2.47,
+                "E5": 7.42,
+                "E6": 10.52,
+                "E7": 9.03,
+                "E8": 1.48
+            },
+            "metadados": {
+                "total_palavras": 8081,
+                "segmentos_analisados": 148
+            },
+            "auditoria": {
+                "formula": "I_Ei = min((Soma_Bruta / (Total_Palavras/100)) * 10, 100)",
+                "formula_imga": "IMGA = Σ(I_Ei × Peso_Ei)",
+                "fator_normalizacao": 80.81,
+                "eixos": {
+                    "E1": {
+                        "soma_bruta": 39,
+                        "num_segmentos_pontuados": 13,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 0.4826,
+                        "indice_pre_cap": 4.83,
+                        "indice_final": 4.83,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.483
+                    },
+                    "E2": {
+                        "soma_bruta": 120,
+                        "num_segmentos_pontuados": 56,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 1.485,
+                        "indice_pre_cap": 14.85,
+                        "indice_final": 14.85,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 1.485
+                    },
+                    "E3": {
+                        "soma_bruta": 70,
+                        "num_segmentos_pontuados": 24,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 0.8662,
+                        "indice_pre_cap": 8.66,
+                        "indice_final": 8.66,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 1.299
+                    },
+                    "E4": {
+                        "soma_bruta": 20,
+                        "num_segmentos_pontuados": 8,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 0.2475,
+                        "indice_pre_cap": 2.47,
+                        "indice_final": 2.47,
+                        "peso_metodologia": 0.2,
+                        "contribuicao_imga": 0.494
+                    },
+                    "E5": {
+                        "soma_bruta": 60,
+                        "num_segmentos_pontuados": 20,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 0.7425,
+                        "indice_pre_cap": 7.42,
+                        "indice_final": 7.42,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.742
+                    },
+                    "E6": {
+                        "soma_bruta": 85,
+                        "num_segmentos_pontuados": 36,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 1.0519,
+                        "indice_pre_cap": 10.52,
+                        "indice_final": 10.52,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 1.578
+                    },
+                    "E7": {
+                        "soma_bruta": 73,
+                        "num_segmentos_pontuados": 31,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 0.9034,
+                        "indice_pre_cap": 9.03,
+                        "indice_final": 9.03,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.903
+                    },
+                    "E8": {
+                        "soma_bruta": 12,
+                        "num_segmentos_pontuados": 6,
+                        "fator_normalizacao": 80.81,
+                        "densidade": 0.1485,
+                        "indice_pre_cap": 1.48,
+                        "indice_final": 1.48,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.148
+                    }
+                }
+            },
+            "estatisticas_eixos": {
+                "E1": {
+                    "termos_encontrados": 3,
+                    "termos_lista": [
+                        "conselho",
+                        "diretoria",
+                        "conselho fiscal"
+                    ],
+                    "total_ocorrencias": 18,
+                    "boosters": {
+                        "B1_ACAO": 5,
+                        "B2_PERIODICIDADE": 1,
+                        "B3_RESPONSAVEL": 13,
+                        "B4_ARTEFATO": 5
+                    }
+                },
+                "E2": {
+                    "termos_encontrados": 8,
+                    "termos_lista": [
+                        "fazer a coisa certa",
+                        "integridade",
+                        "cultura de integridade",
+                        "valores",
+                        "conduta",
+                        "ética",
+                        "código de ética e conduta",
+                        "comportamento ético"
+                    ],
+                    "total_ocorrencias": 85,
+                    "boosters": {
+                        "B1_ACAO": 16,
+                        "B2_PERIODICIDADE": 4,
+                        "B3_RESPONSAVEL": 14,
+                        "B4_ARTEFATO": 17
+                    }
+                },
+                "E3": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "aderência",
+                        "controles",
+                        "conformidade",
+                        "normativos",
+                        "política de transações com partes relacionadas"
+                    ],
+                    "total_ocorrencias": 29,
+                    "boosters": {
+                        "B1_ACAO": 12,
+                        "B2_PERIODICIDADE": 2,
+                        "B3_RESPONSAVEL": 11,
+                        "B4_ARTEFATO": 16
+                    }
+                },
+                "E4": {
+                    "termos_encontrados": 2,
+                    "termos_lista": [
+                        "terceiros",
+                        "fornecedores"
+                    ],
+                    "total_ocorrencias": 9,
+                    "boosters": {
+                        "B1_ACAO": 3,
+                        "B2_PERIODICIDADE": 2,
+                        "B3_RESPONSAVEL": 2,
+                        "B4_ARTEFATO": 5
+                    }
+                },
+                "E5": {
+                    "termos_encontrados": 6,
+                    "termos_lista": [
+                        "treinamento",
+                        "plano de comunicação",
+                        "divulgação",
+                        "capacitação",
+                        "comunicação",
+                        "monitoramento contínuo"
+                    ],
+                    "total_ocorrencias": 25,
+                    "boosters": {
+                        "B1_ACAO": 9,
+                        "B2_PERIODICIDADE": 3,
+                        "B3_RESPONSAVEL": 7,
+                        "B4_ARTEFATO": 12
+                    }
+                },
+                "E6": {
+                    "termos_encontrados": 6,
+                    "termos_lista": [
+                        "controles",
+                        "matriz de riscos",
+                        "auditoria interna",
+                        "riscos",
+                        "mapeamento",
+                        "auditoria"
+                    ],
+                    "total_ocorrencias": 46,
+                    "boosters": {
+                        "B1_ACAO": 11,
+                        "B2_PERIODICIDADE": 3,
+                        "B3_RESPONSAVEL": 11,
+                        "B4_ARTEFATO": 15
+                    }
+                },
+                "E7": {
+                    "termos_encontrados": 6,
+                    "termos_lista": [
+                        "acesso",
+                        "transparência",
+                        "divulgação",
+                        "acesso à informação",
+                        "prestação de contas",
+                        "auditoria independente"
+                    ],
+                    "total_ocorrencias": 36,
+                    "boosters": {
+                        "B1_ACAO": 8,
+                        "B2_PERIODICIDADE": 1,
+                        "B3_RESPONSAVEL": 12,
+                        "B4_ARTEFATO": 14
+                    }
+                },
+                "E8": {
+                    "termos_encontrados": 2,
+                    "termos_lista": [
+                        "efetividade",
+                        "resultados"
+                    ],
+                    "total_ocorrencias": 6,
+                    "boosters": {
+                        "B1_ACAO": 3,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 1,
+                        "B4_ARTEFATO": 2
+                    }
+                }
+            }
+        },
+        "0 Terracap.pdf": {
+            "imga_global": 64.67,
+            "faixa": "Intermediaria",
+            "indices_eixos": {
+                "E1": 8.58,
+                "E2": 11.61,
+                "E3": 7.1,
+                "E4": 0.99,
+                "E5": 5.62,
+                "E6": 10.37,
+                "E7": 8.52,
+                "E8": 2.16
+            },
+            "metadados": {
+                "total_palavras": 16198,
+                "segmentos_analisados": 346
+            },
+            "auditoria": {
+                "formula": "I_Ei = min((Soma_Bruta / (Total_Palavras/100)) * 10, 100)",
+                "formula_imga": "IMGA = Σ(I_Ei × Peso_Ei)",
+                "fator_normalizacao": 161.98,
+                "eixos": {
+                    "E1": {
+                        "soma_bruta": 139,
+                        "num_segmentos_pontuados": 51,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 0.8581,
+                        "indice_pre_cap": 8.58,
+                        "indice_final": 8.58,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.858
+                    },
+                    "E2": {
+                        "soma_bruta": 188,
+                        "num_segmentos_pontuados": 107,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 1.1606,
+                        "indice_pre_cap": 11.61,
+                        "indice_final": 11.61,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 1.161
+                    },
+                    "E3": {
+                        "soma_bruta": 115,
+                        "num_segmentos_pontuados": 55,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 0.71,
+                        "indice_pre_cap": 7.1,
+                        "indice_final": 7.1,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 1.065
+                    },
+                    "E4": {
+                        "soma_bruta": 16,
+                        "num_segmentos_pontuados": 11,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 0.0988,
+                        "indice_pre_cap": 0.99,
+                        "indice_final": 0.99,
+                        "peso_metodologia": 0.2,
+                        "contribuicao_imga": 0.198
+                    },
+                    "E5": {
+                        "soma_bruta": 91,
+                        "num_segmentos_pontuados": 41,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 0.5618,
+                        "indice_pre_cap": 5.62,
+                        "indice_final": 5.62,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.562
+                    },
+                    "E6": {
+                        "soma_bruta": 168,
+                        "num_segmentos_pontuados": 71,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 1.0372,
+                        "indice_pre_cap": 10.37,
+                        "indice_final": 10.37,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 1.5555
+                    },
+                    "E7": {
+                        "soma_bruta": 138,
+                        "num_segmentos_pontuados": 66,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 0.852,
+                        "indice_pre_cap": 8.52,
+                        "indice_final": 8.52,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.852
+                    },
+                    "E8": {
+                        "soma_bruta": 35,
+                        "num_segmentos_pontuados": 19,
+                        "fator_normalizacao": 161.98,
+                        "densidade": 0.2161,
+                        "indice_pre_cap": 2.16,
+                        "indice_final": 2.16,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.216
+                    }
+                }
+            },
+            "estatisticas_eixos": {
+                "E1": {
+                    "termos_encontrados": 8,
+                    "termos_lista": [
+                        "comitê de integridade",
+                        "comprometimento da alta administração",
+                        "conselho fiscal",
+                        "alta administração",
+                        "deliberação colegiada",
+                        "conselho",
+                        "diretoria",
+                        "comitê de auditoria"
+                    ],
+                    "total_ocorrencias": 68,
+                    "boosters": {
+                        "B1_ACAO": 6,
+                        "B2_PERIODICIDADE": 3,
+                        "B3_RESPONSAVEL": 39,
+                        "B4_ARTEFATO": 18
+                    }
+                },
+                "E2": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "integridade",
+                        "cultura de integridade",
+                        "valores",
+                        "conduta",
+                        "ética"
+                    ],
+                    "total_ocorrencias": 157,
+                    "boosters": {
+                        "B1_ACAO": 26,
+                        "B2_PERIODICIDADE": 4,
+                        "B3_RESPONSAVEL": 18,
+                        "B4_ARTEFATO": 30
+                    }
+                },
+                "E3": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "aderência",
+                        "controles",
+                        "conformidade",
+                        "normativos",
+                        "política de transações com partes relacionadas"
+                    ],
+                    "total_ocorrencias": 62,
+                    "boosters": {
+                        "B1_ACAO": 13,
+                        "B2_PERIODICIDADE": 5,
+                        "B3_RESPONSAVEL": 10,
+                        "B4_ARTEFATO": 22
+                    }
+                },
+                "E4": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "due diligence de integridade",
+                        "fornecedores",
+                        "terceiros",
+                        "parceiros",
+                        "diligência"
+                    ],
+                    "total_ocorrencias": 12,
+                    "boosters": {
+                        "B1_ACAO": 1,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 0,
+                        "B4_ARTEFATO": 2
+                    }
+                },
+                "E5": {
+                    "termos_encontrados": 7,
+                    "termos_lista": [
+                        "treinamento",
+                        "plano de comunicação",
+                        "divulgação",
+                        "capacitação",
+                        "comunicação",
+                        "conscientização",
+                        "monitoramento contínuo"
+                    ],
+                    "total_ocorrencias": 44,
+                    "boosters": {
+                        "B1_ACAO": 8,
+                        "B2_PERIODICIDADE": 4,
+                        "B3_RESPONSAVEL": 5,
+                        "B4_ARTEFATO": 20
+                    }
+                },
+                "E6": {
+                    "termos_encontrados": 7,
+                    "termos_lista": [
+                        "controles",
+                        "sistema de controles internos",
+                        "matriz de riscos",
+                        "auditoria interna",
+                        "riscos",
+                        "auditoria",
+                        "três linhas de defesa"
+                    ],
+                    "total_ocorrencias": 84,
+                    "boosters": {
+                        "B1_ACAO": 20,
+                        "B2_PERIODICIDADE": 3,
+                        "B3_RESPONSAVEL": 27,
+                        "B4_ARTEFATO": 26
+                    }
+                },
+                "E7": {
+                    "termos_encontrados": 6,
+                    "termos_lista": [
+                        "acesso",
+                        "transparência",
+                        "divulgação",
+                        "acesso à informação",
+                        "prestação de contas",
+                        "auditoria independente"
+                    ],
+                    "total_ocorrencias": 76,
+                    "boosters": {
+                        "B1_ACAO": 9,
+                        "B2_PERIODICIDADE": 4,
+                        "B3_RESPONSAVEL": 12,
+                        "B4_ARTEFATO": 30
+                    }
+                },
+                "E8": {
+                    "termos_encontrados": 4,
+                    "termos_lista": [
+                        "maturidade",
+                        "impacto",
+                        "efetividade",
+                        "resultados"
+                    ],
+                    "total_ocorrencias": 20,
+                    "boosters": {
+                        "B1_ACAO": 5,
+                        "B2_PERIODICIDADE": 2,
+                        "B3_RESPONSAVEL": 3,
+                        "B4_ARTEFATO": 6
+                    }
+                }
+            }
+        },
+        "0 BRB.pdf": {
+            "imga_global": 70.9,
+            "faixa": "Intermediaria",
+            "indices_eixos": {
+                "E1": 9.32,
+                "E2": 22.49,
+                "E3": 4.09,
+                "E4": 3.18,
+                "E5": 4.32,
+                "E6": 10.91,
+                "E7": 2.5,
+                "E8": 3.41
+            },
+            "metadados": {
+                "total_palavras": 4401,
+                "segmentos_analisados": 135
+            },
+            "auditoria": {
+                "formula": "I_Ei = min((Soma_Bruta / (Total_Palavras/100)) * 10, 100)",
+                "formula_imga": "IMGA = Σ(I_Ei × Peso_Ei)",
+                "fator_normalizacao": 44.01,
+                "eixos": {
+                    "E1": {
+                        "soma_bruta": 41,
+                        "num_segmentos_pontuados": 18,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 0.9316,
+                        "indice_pre_cap": 9.32,
+                        "indice_final": 9.32,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.932
+                    },
+                    "E2": {
+                        "soma_bruta": 99,
+                        "num_segmentos_pontuados": 66,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 2.2495,
+                        "indice_pre_cap": 22.49,
+                        "indice_final": 22.49,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 2.249
+                    },
+                    "E3": {
+                        "soma_bruta": 18,
+                        "num_segmentos_pontuados": 11,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 0.409,
+                        "indice_pre_cap": 4.09,
+                        "indice_final": 4.09,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 0.6135
+                    },
+                    "E4": {
+                        "soma_bruta": 14,
+                        "num_segmentos_pontuados": 10,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 0.3181,
+                        "indice_pre_cap": 3.18,
+                        "indice_final": 3.18,
+                        "peso_metodologia": 0.2,
+                        "contribuicao_imga": 0.636
+                    },
+                    "E5": {
+                        "soma_bruta": 19,
+                        "num_segmentos_pontuados": 9,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 0.4317,
+                        "indice_pre_cap": 4.32,
+                        "indice_final": 4.32,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.432
+                    },
+                    "E6": {
+                        "soma_bruta": 48,
+                        "num_segmentos_pontuados": 21,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 1.0907,
+                        "indice_pre_cap": 10.91,
+                        "indice_final": 10.91,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 1.6365
+                    },
+                    "E7": {
+                        "soma_bruta": 11,
+                        "num_segmentos_pontuados": 7,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 0.2499,
+                        "indice_pre_cap": 2.5,
+                        "indice_final": 2.5,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.25
+                    },
+                    "E8": {
+                        "soma_bruta": 15,
+                        "num_segmentos_pontuados": 7,
+                        "fator_normalizacao": 44.01,
+                        "densidade": 0.3408,
+                        "indice_pre_cap": 3.41,
+                        "indice_final": 3.41,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.341
+                    }
+                }
+            },
+            "estatisticas_eixos": {
+                "E1": {
+                    "termos_encontrados": 6,
+                    "termos_lista": [
+                        "aprovado pelo conselho",
+                        "comprometimento da alta administração",
+                        "alta administração",
+                        "conselho",
+                        "diretoria",
+                        "comitê de auditoria"
+                    ],
+                    "total_ocorrencias": 23,
+                    "boosters": {
+                        "B1_ACAO": 4,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 12,
+                        "B4_ARTEFATO": 3
+                    }
+                },
+                "E2": {
+                    "termos_encontrados": 6,
+                    "termos_lista": [
+                        "integridade",
+                        "cultura de integridade",
+                        "valores",
+                        "conduta",
+                        "ética",
+                        "ações de aculturamento"
+                    ],
+                    "total_ocorrencias": 89,
+                    "boosters": {
+                        "B1_ACAO": 13,
+                        "B2_PERIODICIDADE": 3,
+                        "B3_RESPONSAVEL": 7,
+                        "B4_ARTEFATO": 6
+                    }
+                },
+                "E3": {
+                    "termos_encontrados": 3,
+                    "termos_lista": [
+                        "conformidade",
+                        "normativos",
+                        "controles"
+                    ],
+                    "total_ocorrencias": 13,
+                    "boosters": {
+                        "B1_ACAO": 3,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 2,
+                        "B4_ARTEFATO": 2
+                    }
+                },
+                "E4": {
+                    "termos_encontrados": 2,
+                    "termos_lista": [
+                        "terceiros",
+                        "fornecedores"
+                    ],
+                    "total_ocorrencias": 13,
+                    "boosters": {
+                        "B1_ACAO": 2,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 1,
+                        "B4_ARTEFATO": 1
+                    }
+                },
+                "E5": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "treinamento",
+                        "divulgação",
+                        "comunicação",
+                        "capacitação",
+                        "monitoramento contínuo"
+                    ],
+                    "total_ocorrencias": 15,
+                    "boosters": {
+                        "B1_ACAO": 4,
+                        "B2_PERIODICIDADE": 1,
+                        "B3_RESPONSAVEL": 1,
+                        "B4_ARTEFATO": 2
+                    }
+                },
+                "E6": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "controles",
+                        "matriz de riscos",
+                        "auditoria interna",
+                        "riscos",
+                        "auditoria"
+                    ],
+                    "total_ocorrencias": 25,
+                    "boosters": {
+                        "B1_ACAO": 10,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 6,
+                        "B4_ARTEFATO": 5
+                    }
+                },
+                "E7": {
+                    "termos_encontrados": 3,
+                    "termos_lista": [
+                        "transparência",
+                        "acesso",
+                        "divulgação"
+                    ],
+                    "total_ocorrencias": 8,
+                    "boosters": {
+                        "B1_ACAO": 1,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 2,
+                        "B4_ARTEFATO": 1
+                    }
+                },
+                "E8": {
+                    "termos_encontrados": 3,
+                    "termos_lista": [
+                        "fortalecimento da governança",
+                        "efetividade",
+                        "resultados"
+                    ],
+                    "total_ocorrencias": 7,
+                    "boosters": {
+                        "B1_ACAO": 4,
+                        "B2_PERIODICIDADE": 0,
+                        "B3_RESPONSAVEL": 2,
+                        "B4_ARTEFATO": 1
+                    }
+                }
+            }
+        },
+        "0 BRB Seguros.pdf": {
+            "imga_global": 82.82,
+            "faixa": "Avancada",
+            "indices_eixos": {
+                "E1": 9.96,
+                "E2": 13.9,
+                "E3": 10.3,
+                "E4": 5.84,
+                "E5": 5.49,
+                "E6": 9.44,
+                "E7": 5.49,
+                "E8": 6.69
+            },
+            "metadados": {
+                "total_palavras": 5826,
+                "segmentos_analisados": 31
+            },
+            "auditoria": {
+                "formula": "I_Ei = min((Soma_Bruta / (Total_Palavras/100)) * 10, 100)",
+                "formula_imga": "IMGA = Σ(I_Ei × Peso_Ei)",
+                "fator_normalizacao": 58.26,
+                "eixos": {
+                    "E1": {
+                        "soma_bruta": 58,
+                        "num_segmentos_pontuados": 15,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 0.9955,
+                        "indice_pre_cap": 9.96,
+                        "indice_final": 9.96,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.996
+                    },
+                    "E2": {
+                        "soma_bruta": 81,
+                        "num_segmentos_pontuados": 25,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 1.3903,
+                        "indice_pre_cap": 13.9,
+                        "indice_final": 13.9,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 1.39
+                    },
+                    "E3": {
+                        "soma_bruta": 60,
+                        "num_segmentos_pontuados": 15,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 1.0299,
+                        "indice_pre_cap": 10.3,
+                        "indice_final": 10.3,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 1.545
+                    },
+                    "E4": {
+                        "soma_bruta": 34,
+                        "num_segmentos_pontuados": 9,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 0.5836,
+                        "indice_pre_cap": 5.84,
+                        "indice_final": 5.84,
+                        "peso_metodologia": 0.2,
+                        "contribuicao_imga": 1.168
+                    },
+                    "E5": {
+                        "soma_bruta": 32,
+                        "num_segmentos_pontuados": 8,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 0.5493,
+                        "indice_pre_cap": 5.49,
+                        "indice_final": 5.49,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.549
+                    },
+                    "E6": {
+                        "soma_bruta": 55,
+                        "num_segmentos_pontuados": 14,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 0.944,
+                        "indice_pre_cap": 9.44,
+                        "indice_final": 9.44,
+                        "peso_metodologia": 0.15,
+                        "contribuicao_imga": 1.416
+                    },
+                    "E7": {
+                        "soma_bruta": 32,
+                        "num_segmentos_pontuados": 9,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 0.5493,
+                        "indice_pre_cap": 5.49,
+                        "indice_final": 5.49,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.549
+                    },
+                    "E8": {
+                        "soma_bruta": 39,
+                        "num_segmentos_pontuados": 10,
+                        "fator_normalizacao": 58.26,
+                        "densidade": 0.6694,
+                        "indice_pre_cap": 6.69,
+                        "indice_final": 6.69,
+                        "peso_metodologia": 0.1,
+                        "contribuicao_imga": 0.669
+                    }
+                }
+            },
+            "estatisticas_eixos": {
+                "E1": {
+                    "termos_encontrados": 8,
+                    "termos_lista": [
+                        "aprovado pelo conselho",
+                        "conselho fiscal",
+                        "alta administração",
+                        "conselho",
+                        "diretoria",
+                        "diretoria estatutária",
+                        "apoio da alta administração",
+                        "comitê de auditoria"
+                    ],
+                    "total_ocorrencias": 21,
+                    "boosters": {
+                        "B1_ACAO": 10,
+                        "B2_PERIODICIDADE": 3,
+                        "B3_RESPONSAVEL": 12,
+                        "B4_ARTEFATO": 11
+                    }
+                },
+                "E2": {
+                    "termos_encontrados": 10,
+                    "termos_lista": [
+                        "pacto empresarial pela integridade",
+                        "integridade",
+                        "liderar pelo exemplo",
+                        "cultura de integridade",
+                        "valores",
+                        "conduta",
+                        "ética",
+                        "semana da integridade",
+                        "código de ética e conduta",
+                        "ações de aculturamento"
+                    ],
+                    "total_ocorrencias": 37,
+                    "boosters": {
+                        "B1_ACAO": 15,
+                        "B2_PERIODICIDADE": 5,
+                        "B3_RESPONSAVEL": 14,
+                        "B4_ARTEFATO": 15
+                    }
+                },
+                "E3": {
+                    "termos_encontrados": 9,
+                    "termos_lista": [
+                        "política de conflito de interesses",
+                        "conformidade legal",
+                        "compliance officer",
+                        "controles",
+                        "conformidade",
+                        "normativos",
+                        "política de transações com partes relacionadas",
+                        "procedimentos internos de compliance",
+                        "manual de alçadas"
+                    ],
+                    "total_ocorrencias": 21,
+                    "boosters": {
+                        "B1_ACAO": 11,
+                        "B2_PERIODICIDADE": 3,
+                        "B3_RESPONSAVEL": 11,
+                        "B4_ARTEFATO": 12
+                    }
+                },
+                "E4": {
+                    "termos_encontrados": 4,
+                    "termos_lista": [
+                        "terceiros",
+                        "due diligence de integridade",
+                        "fornecedores",
+                        "parceiros"
+                    ],
+                    "total_ocorrencias": 14,
+                    "boosters": {
+                        "B1_ACAO": 8,
+                        "B2_PERIODICIDADE": 1,
+                        "B3_RESPONSAVEL": 6,
+                        "B4_ARTEFATO": 9
+                    }
+                },
+                "E5": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "treinamento",
+                        "divulgação",
+                        "universidade corporativa",
+                        "comunicação",
+                        "conscientização"
+                    ],
+                    "total_ocorrencias": 13,
+                    "boosters": {
+                        "B1_ACAO": 8,
+                        "B2_PERIODICIDADE": 4,
+                        "B3_RESPONSAVEL": 5,
+                        "B4_ARTEFATO": 6
+                    }
+                },
+                "E6": {
+                    "termos_encontrados": 5,
+                    "termos_lista": [
+                        "controles",
+                        "auditoria interna",
+                        "riscos",
+                        "coso erm",
+                        "auditoria"
+                    ],
+                    "total_ocorrencias": 24,
+                    "boosters": {
+                        "B1_ACAO": 12,
+                        "B2_PERIODICIDADE": 4,
+                        "B3_RESPONSAVEL": 10,
+                        "B4_ARTEFATO": 12
+                    }
+                },
+                "E7": {
+                    "termos_encontrados": 4,
+                    "termos_lista": [
+                        "transparência",
+                        "acesso",
+                        "auditoria independente",
+                        "divulgação"
+                    ],
+                    "total_ocorrencias": 10,
+                    "boosters": {
+                        "B1_ACAO": 7,
+                        "B2_PERIODICIDADE": 2,
+                        "B3_RESPONSAVEL": 6,
+                        "B4_ARTEFATO": 7
+                    }
+                },
+                "E8": {
+                    "termos_encontrados": 2,
+                    "termos_lista": [
+                        "efetividade",
+                        "resultados"
+                    ],
+                    "total_ocorrencias": 11,
+                    "boosters": {
+                        "B1_ACAO": 9,
+                        "B2_PERIODICIDADE": 4,
+                        "B3_RESPONSAVEL": 8,
+                        "B4_ARTEFATO": 8
+                    }
+                }
+            }
+        }
+    },
+    "otimizacoes": {
+        "workers_utilizados": 10,
+        "batch_size": 50,
+        "snippets_cache_size": 0,
+        "paralelismo_ativo": true,
+        "controle_memoria_ativo": true,
+        "tempo_processamento": "calculado_em_runtime"
+    }
+}
