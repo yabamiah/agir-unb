@@ -519,7 +519,7 @@ def resolve_gemini_model(api_key, model):
 
 
 def answer_rag_question(pergunta, evidencias, provider="Sem LLM", model=None):
-    """Gera uma resposta rastreavel usando modo extrativo, Ollama ou Gemini."""
+    """Gera uma resposta rastreável usando modo extrativo ou Gemini."""
     if provider == "Sem LLM":
         return build_extractive_answer(pergunta, evidencias)
 
@@ -528,7 +528,7 @@ def answer_rag_question(pergunta, evidencias, provider="Sem LLM", model=None):
 
     context = build_evidence_context(evidencias)
     prompt = f"""
-Você é um assistente documental do projeto AGIR-RAG.
+Você é um Assistente de Governança AGIR.
 Responda em português do Brasil, de forma objetiva e auditável.
 Use somente as evidências fornecidas. Não invente fatos.
 Quando fizer uma afirmação, cite a fonte no formato: documento, página.
@@ -541,8 +541,6 @@ Evidências:
 {context}
 """.strip()
 
-    if provider == "Ollama":
-        return call_ollama(prompt, model or "llama3.1")
     if provider == "Gemini":
         return call_gemini(prompt, model or DEFAULT_GEMINI_MODEL)
     return build_extractive_answer(pergunta, evidencias)
@@ -779,11 +777,12 @@ st.sidebar.subheader("Módulos")
 main_modules = [
     "Coleta de Documentos",
     "Mapeamento de Termos",
-    "Indicadores de Integridade (IMGA)",
-    "Auditoria Inteligente (IA)",
+    "Indicadores de Integridade",
+    "Assistente de Inteligência Artificial",
     "Monitor de Ausência Documental",
     "Eixos de Avaliação",
     "Visualizador de Documentos",
+    "Sobre o Projeto",
 ]
 
 if "main_section" not in st.session_state:
@@ -1023,8 +1022,8 @@ if main_section == "Mapeamento de Termos":
 # ============================================
 # Seção: Análise de Integridade/IMGA
 # ============================================
-if main_section == "Indicadores de Integridade (IMGA)":
-    st.subheader("Indicadores de Integridade (IMGA)")
+if main_section == "Indicadores de Integridade":
+    st.subheader("Indicadores de Integridade")
     st.caption("Avalia maturidade de governança e integridade com base nos eixos IMGA.")
 
     if st.button(
@@ -1339,10 +1338,10 @@ if main_section == "Indicadores de Integridade (IMGA)":
 # ============================================
 # Seção: Análise com inteligência artificial
 # ============================================
-if main_section == "Auditoria Inteligente (IA)":
-    st.subheader("Auditoria Inteligente (IA)")
+if main_section == "Assistente de Inteligência Artificial":
+    st.subheader("Assistente de Inteligência Artificial")
     st.caption(
-        "AGIR-RAG Lite transforma documentos públicos em respostas citáveis, evidências revisáveis e indicadores de conformidade."
+        "Assistente de Governança AGIR transforma documentos públicos em respostas fundamentadas e indicadores de conformidade."
     )
 
     orgaos_rag, tipos_rag = get_rag_filter_options()
@@ -1365,38 +1364,24 @@ if main_section == "Auditoria Inteligente (IA)":
 
     st.divider()
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Documentos", rag_counts["documentos"])
-    col2.metric("Chunks", rag_counts["chunks"])
-    col3.metric("Órgãos", rag_counts["orgaos"])
-    col4.metric("Classificações", len(sprint7_classifications))
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Total de Documentos", rag_counts["documentos"])
+    col2.metric("Órgãos Analisados", rag_counts["orgaos"])
+    col3.metric("Classificações Realizadas", len(sprint7_classifications))
 
-    status_cols = st.columns(3)
+    status_cols = st.columns(2)
     with status_cols[0]:
-        sqlite_status = "Pronto" if rag_counts["chunks"] > 0 else "Vazio"
+        sqlite_status = "Pronto" if rag_counts["documentos"] > 0 else "Vazio"
         st.markdown(
             f"""
         <div class="agir-status-card">
-            <strong>Base auditável</strong>
+            <strong>Acervo de Dados</strong>
             <div>{sqlite_status}</div>
-            <div class="agir-muted">{RAG_DB_FILE}</div>
         </div>
         """,
             unsafe_allow_html=True,
         )
     with status_cols[1]:
-        qdrant_status, qdrant_detail = get_vector_index_status(rag_manifest)
-        st.markdown(
-            f"""
-        <div class="agir-status-card">
-            <strong>Índice vetorial</strong>
-            <div>{qdrant_status}</div>
-            <div class="agir-muted">{qdrant_detail}</div>
-        </div>
-        """,
-            unsafe_allow_html=True,
-        )
-    with status_cols[2]:
         report_status = "Gerado" if not sprint7_indicators.empty else "Pendente"
         st.markdown(
             f"""
@@ -1430,17 +1415,8 @@ if main_section == "Auditoria Inteligente (IA)":
             st.session_state["rag_chat_history"] = []
 
         gemini_available = bool(os.getenv("GEMINI_API_KEY", "").strip())
-        provider_options = (
-            ["Gemini", "Sem LLM", "Ollama"]
-            if gemini_available
-            else ["Sem LLM", "Ollama"]
-        )
-        llm_status = (
-            f"Gemini ativo como padrão ({DEFAULT_GEMINI_MODEL})."
-            if gemini_available
-            else "Configure GEMINI_API_KEY para ativar Gemini como modo padrão."
-        )
-        st.caption(f"{llm_status} Ollama permanece disponível via OLLAMA_BASE_URL.")
+        if not gemini_available:
+            st.warning("Configure GEMINI_API_KEY para utilizar o Assistente de IA.")
 
         with st.form("rag_qa_form"):
             pergunta_chat = st.text_area(
@@ -1474,32 +1450,16 @@ if main_section == "Auditoria Inteligente (IA)":
                     key="rag_qa_top_k",
                 )
 
-            col1, col2 = st.columns([1, 2])
-            with col1:
-                provider = st.selectbox(
-                    "Modo de resposta", provider_options, key="rag_qa_provider"
-                )
-            with col2:
-                default_model = (
-                    "llama3.1" if provider == "Ollama" else DEFAULT_GEMINI_MODEL
-                )
-                model = st.text_input(
-                    "Modelo",
-                    value=default_model,
-                    disabled=provider == "Sem LLM",
-                    key="rag_qa_model",
-                )
-
             ask_submitted = st.form_submit_button(
-                "Responder com evidências", width="stretch"
+                "Responder com evidências", width="stretch", disabled=not gemini_available
             )
 
         if ask_submitted:
             if not pergunta_chat.strip():
                 st.warning("Informe uma pergunta para consultar o acervo.")
-            elif rag_counts["chunks"] == 0:
+            elif rag_counts["documentos"] == 0:
                 st.warning(
-                    "A base RAG está vazia. Execute a indexação antes de perguntar ao acervo."
+                    "O acervo de dados está vazio. Aguarde os documentos."
                 )
             else:
                 with st.spinner("Recuperando evidências e preparando resposta..."):
@@ -1514,24 +1474,22 @@ if main_section == "Auditoria Inteligente (IA)":
                         answer = answer_rag_question(
                             pergunta=pergunta_chat,
                             evidencias=evidencias,
-                            provider=provider,
-                            model=model,
+                            provider="Gemini",
+                            model=DEFAULT_GEMINI_MODEL,
                         )
                         st.session_state["rag_chat_history"].insert(
                             0,
                             {
                                 "pergunta": pergunta_chat,
                                 "resposta": answer,
-                                "provider": provider,
-                                "modelo": (
-                                    model if provider != "Sem LLM" else "extrativo"
-                                ),
+                                "provider": "Gemini",
+                                "modelo": DEFAULT_GEMINI_MODEL,
                                 "evidencias": evidencias,
                                 "diagnostico": search_result.get("diagnostico", {}),
                             },
                         )
                     except Exception as exc:
-                        st.error(f"Erro ao responder com RAG: {exc}")
+                        st.error(f"Erro ao responder: {exc}")
 
         if not st.session_state["rag_chat_history"]:
             st.info(
@@ -2098,3 +2056,38 @@ if main_section == "Visualizador de Documentos":
                 )
             except Exception as e:
                 st.error(f"Erro ao carregar PDF: {e}")
+
+# ============================================
+# Seção: Sobre o Projeto
+# ============================================
+if main_section == "Sobre o Projeto":
+    st.subheader("Sobre o Projeto")
+    st.markdown(
+        """
+        **AGIR** é um projeto de Engenharia de Software da Universidade de Brasília (UnB), desenvolvido no âmbito do 
+        Programa Institucional de Bolsas de Iniciação em Desenvolvimento Tecnológico e Inovação (PIBITI).
+        
+        O objetivo principal é automatizar a análise de documentos de governança e integridade do Distrito Federal, 
+        utilizando técnicas avançadas de IA e processamento de linguagem.
+        """
+    )
+    
+    st.divider()
+
+    st.subheader("Coordenadores")
+    st.markdown(
+        """
+        - **Fátima de Souza** (ffreire@unb.br)
+        """
+    )
+    
+    st.markdown("A professora orientadora faz parte do **Núcleo NEPECON**.")
+    st.markdown("🔗 [Link do Núcleo NEPECON](git@github.com:StockPilotAI/EstocAI-BackEnd.git)")
+
+    st.subheader("Equipe")
+    st.markdown(
+        """
+        - **Mateus S. Santana** (@Mateus-SS)
+        - **Vinicius M. Martins** (viniciusmendes1019@gmail.com | @yabamiah1)
+        """
+    )
